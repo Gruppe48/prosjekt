@@ -10,6 +10,6 @@ import prosjekt.rooms.abstractroom.AbstractRoom;
  * @studnr 180212
  * @date Mar 26, 2012
  */
-public class HotelRoom extends AbstractRoom implements IHotelRoom {
+public abstract class HotelRoom extends AbstractRoom implements IHotelRoom {
   
 }

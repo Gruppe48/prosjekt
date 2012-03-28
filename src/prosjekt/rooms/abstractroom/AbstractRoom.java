@@ -25,6 +25,13 @@ public abstract class AbstractRoom implements IRoom {
   public static int getRoomNumber() {
     return roomNumber;
   }
+
+  public AbstractRoom() {
+  }
+
+  public static int[] getFacilities() {
+    return facilities;
+  }
   
   
 }

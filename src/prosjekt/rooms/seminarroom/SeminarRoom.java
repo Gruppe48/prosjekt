@@ -10,6 +10,6 @@ import prosjekt.rooms.abstractroom.AbstractRoom;
  * @studnr 180212
  * @date Mar 26, 2012
  */
-public class SeminarRoom extends AbstractRoom implements ISeminarRoom {
+public abstract class SeminarRoom extends AbstractRoom implements ISeminarRoom {
   
 }
