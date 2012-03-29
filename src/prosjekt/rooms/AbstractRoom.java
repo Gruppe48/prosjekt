@@ -1,6 +1,6 @@
 /*
  */
-package prosjekt.rooms.abstractroom;
+package prosjekt.rooms;
 
 /**
  *
@@ -9,7 +9,7 @@ package prosjekt.rooms.abstractroom;
  * @date Mar 26, 2012
  */
 public abstract class AbstractRoom implements IRoom {
-
+  
   public static boolean isBooked() {
     return booked;
   }

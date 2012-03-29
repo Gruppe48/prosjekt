@@ -9,7 +9,5 @@ package prosjekt.utils;
  * @date Mar 26, 2012
  */
 public class Utils {
-  public static enum facilities {
-  TV, AC, MINIBAR, BALCONY, JACUZZI, INTERNET, ROOMSERVICE
-  };
+  
 }

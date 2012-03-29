@@ -1,4 +1,4 @@
-package prosjekt.rooms.abstractroom;
+package prosjekt.rooms;
 
 import prosjekt.utils.Utils;
 
