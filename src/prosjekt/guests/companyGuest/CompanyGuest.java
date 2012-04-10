@@ -13,4 +13,14 @@ import prosjekt.guests.AbstractGuest;
  */
 public class CompanyGuest extends AbstractGuest implements ICompany {
   
+  private String companyName;
+  
+  public CompanyGuest(String fName, String lName, int phoneNr) {
+    super(fName, lName, phoneNr);
+  }
+  
+  @Override
+  public String getCompanyName() {
+    return companyName;
+  }
 }

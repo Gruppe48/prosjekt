@@ -11,5 +11,10 @@ import prosjekt.guests.AbstractGuest;
  * @date Mar 29, 2012
  */
 public class PrivateGuest extends AbstractGuest implements IPrivate {
+          
+  public PrivateGuest (String fName, String lName, int phoneNr, String addr, int postNr, String c) { 
+    super(fName, lName, phoneNr, addr, postNr, c);
+  }
+
   
 }
