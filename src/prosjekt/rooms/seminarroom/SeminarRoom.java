@@ -2,7 +2,7 @@
  */
 package prosjekt.rooms.seminarroom;
 
-import prosjekt.rooms.abstractroom.AbstractRoom;
+import prosjekt.rooms.AbstractRoom;
 
 /**
  *

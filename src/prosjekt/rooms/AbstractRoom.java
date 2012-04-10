@@ -2,6 +2,8 @@
  */
 package prosjekt.rooms;
 
+import prosjekt.guests.AbstractGuest;
+
 /**
  *
  * @author Kristoffer Berdal <web@flexd.net>
@@ -9,27 +11,38 @@ package prosjekt.rooms;
  * @date Mar 26, 2012
  */
 public abstract class AbstractRoom implements IRoom {
+  private int roomNumber = -1;
+  private double price = 0;
+  private boolean booked = false;
+  // TODO: Make AbstractGuest instead of String
+  private AbstractGuest guest;
+  private int[] facilities = new int[20];
   
-  public static boolean isBooked() {
+  @Override
+  public boolean isBooked() {
     return booked;
   }
 
-  public static String getGuest() {
+  @Override
+  public AbstractGuest getGuest() {
     return guest;
   }
 
-  public static double getPrice() {
+  @Override
+  public double getPrice() {
     return price;
   }
 
-  public static int getRoomNumber() {
+  @Override
+  public int getRoomNumber() {
     return roomNumber;
   }
 
   public AbstractRoom() {
   }
 
-  public static int[] getFacilities() {
+  @Override
+  public int[] getFacilities() {
     return facilities;
   }
   
