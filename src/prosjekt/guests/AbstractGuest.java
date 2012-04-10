@@ -12,7 +12,6 @@ public class AbstractGuest implements IGuest {
 
   public static int guestID = 0; 
   public String firstName = "";
-  public String middleName = "";
   public String lastName = "";
   
   public String address = "";
@@ -45,11 +44,6 @@ public class AbstractGuest implements IGuest {
   @Override
   public String getLastName() {
     return lastName;
-  }
-
-  @Override
-  public String getMiddleName() {
-    return middleName;
   }
 
   @Override
