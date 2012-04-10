@@ -12,4 +12,9 @@ import prosjekt.guests.AbstractGuest;
  */
 public class PrivateGuest extends AbstractGuest implements IPrivate {
   
+  public PrivateGuest () {
+    
+  }
+
+  
 }
