@@ -9,46 +9,15 @@ package prosjekt.guests;
  * @date Mar 29, 2012
  */
 public class AbstractGuest implements IGuest {
-
-  public static int guestID = 0; 
-  public String firstName = "";
-  public String lastName = "";
-  
-  public String address = "";
-  public int postNumber = 1337;
-  public String city = "";
+  private static int guestID = 0; 
   
   public AbstractGuest() {
+    guestID += 1;
   }
-
-  @Override
-  public String getAddress() {
-    return address;
-  }
-
-  @Override
-  public String getCity() {
-    return city;
-  }
-
-  @Override
-  public String getFirstName() {
-    return firstName;
-  }
-
+  
   @Override
   public int getGuestID() {
     return guestID;
-  }
-
-  @Override
-  public String getLastName() {
-    return lastName;
-  }
-
-  @Override
-  public int getPostNumber() {
-    return postNumber;
   }
   
 }
