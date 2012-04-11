@@ -11,9 +11,14 @@ import prosjekt.guests.AbstractGuest;
  * @date Mar 29, 2012
  */
 public class PrivateGuest extends AbstractGuest implements IPrivate {
-          
-  public PrivateGuest (String fName, String lName, int phoneNr, String addr, int postNr, String c) { 
-    super(fName, lName, phoneNr, addr, postNr, c);
+  private String address;
+  private int postNumber;
+  
+  public PrivateGuest (String firstName, String lastName, int phoneNumber, String address, int postNumber, String c) { 
+    //TODO: Hva faen er c?
+    super(firstName, lastName, phoneNumber);
+    this.address = address;
+    this.postNumber = postNumber;
   }
 
   

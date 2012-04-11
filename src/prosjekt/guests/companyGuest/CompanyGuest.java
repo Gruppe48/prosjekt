@@ -15,8 +15,9 @@ public class CompanyGuest extends AbstractGuest implements ICompany {
   
   private String companyName;
   
-  public CompanyGuest(String fName, String lName, int phoneNr) {
+  public CompanyGuest(String fName, String lName, int phoneNr, String companyName) {
     super(fName, lName, phoneNr);
+    this.companyName = companyName;
   }
   
   @Override

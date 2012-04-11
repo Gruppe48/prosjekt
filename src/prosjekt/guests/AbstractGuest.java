@@ -14,15 +14,16 @@ public class AbstractGuest implements IGuest {
   private String lastName;
   private int    phoneNumber;
   
-  public AbstractGuest(String fName, String lName, int phoneNr) {
+  public AbstractGuest(String firstName, String lastName, int phoneNumber) {
+    // Død over dumme variabelnavn.
     guestID += 1;
-    firstName   = fName;
-    lastName    = lName;
-    phoneNumber = phoneNr;
+    this.firstName   = firstName;
+    this.lastName    = lastName;
+    this.phoneNumber = phoneNumber;
   }
   
   @Override
-  public int getGuestID() {
+  public int getID() {
     return guestID;
   }
   
@@ -34,6 +35,10 @@ public class AbstractGuest implements IGuest {
   @Override
   public String getLastName() {
     return lastName;
+  }
+
+  public int getPhoneNumber() {
+    return phoneNumber;
   }
   
 }

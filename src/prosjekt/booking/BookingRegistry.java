@@ -11,7 +11,7 @@ import java.util.List;
  * @studnr 180212
  * @date Mar 29, 2012
  */
-public class BookingList {
+public class BookingRegistry {
   private List<BookingEntry> list = new ArrayList();
   
   public boolean add() {

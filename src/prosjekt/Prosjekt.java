@@ -2,6 +2,8 @@
  */
 package prosjekt;
 
+import prosjekt.interfaces.LoginWindow;
+
 /**
  *
  * @author Kristoffer Berdal <web@flexd.net>
@@ -13,6 +15,6 @@ public class Prosjekt {
    */
   public static void main(String[] args) {
     // TODO code application logic here
-    System.out.println("Kittens!");
+    new LoginWindow();
   }
 }
