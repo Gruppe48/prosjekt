@@ -1,6 +1,6 @@
 /*
  */
-package prosjekt.rooms.seminarroom;
+package prosjekt.rooms;
 
 import prosjekt.rooms.AbstractRoom;
 
@@ -10,6 +10,6 @@ import prosjekt.rooms.AbstractRoom;
  * @studnr 180212
  * @date Mar 26, 2012
  */
-public abstract class SeminarRoom extends AbstractRoom implements ISeminarRoom {
+public abstract class HotelRoom extends AbstractRoom implements IHotelRoom {
   
 }

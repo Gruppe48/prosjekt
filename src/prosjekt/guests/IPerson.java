@@ -1,11 +1,11 @@
 /*
  */
-package prosjekt.guests.privateGuest;
+package prosjekt.guests;
 
 /**
  *
  * @author Kristoffer Berdal <web@flexd.net>
  */
-public interface IPrivate {
+public interface IPerson {
 
 }

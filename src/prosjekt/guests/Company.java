@@ -1,6 +1,6 @@
 /*
  */
-package prosjekt.guests.companyGuest;
+package prosjekt.guests;
 
 import prosjekt.guests.AbstractGuest;
 
@@ -11,11 +11,11 @@ import prosjekt.guests.AbstractGuest;
  * @studnr 180212
  * @date Mar 29, 2012
  */
-public class CompanyGuest extends AbstractGuest implements ICompany {
+public class Company extends AbstractGuest implements ICompany {
   
   private String companyName;
   
-  public CompanyGuest(String fName, String lName, int phoneNr, String companyName) {
+  public Company(String fName, String lName, int phoneNr, String companyName) {
     super(fName, lName, phoneNr);
     this.companyName = companyName;
   }

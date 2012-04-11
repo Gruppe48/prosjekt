@@ -1,11 +1,11 @@
 /*
  */
-package prosjekt.rooms.hotelroom;
+package prosjekt.rooms;
 
 /**
  *
  * @author Kristoffer Berdal <web@flexd.net>
  */
-public interface IHotelRoom {
+public interface ISeminarRoom {
   
 }

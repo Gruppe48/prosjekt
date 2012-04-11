@@ -1,6 +1,6 @@
 /*
  */
-package prosjekt.guests.privateGuest;
+package prosjekt.guests;
 
 import prosjekt.guests.AbstractGuest;
 
@@ -10,11 +10,11 @@ import prosjekt.guests.AbstractGuest;
  * @studnr 180212
  * @date Mar 29, 2012
  */
-public class PrivateGuest extends AbstractGuest implements IPrivate {
+public class Person extends AbstractGuest implements IPerson {
   private String address;
   private int postNumber;
   
-  public PrivateGuest (String firstName, String lastName, int phoneNumber, String address, int postNumber, String c) { 
+  public Person (String firstName, String lastName, int phoneNumber, String address, int postNumber, String c) { 
     //TODO: Hva faen er c?
     super(firstName, lastName, phoneNumber);
     this.address = address;

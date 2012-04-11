@@ -1,6 +1,6 @@
 /*
  */
-package prosjekt.guests.companyGuest;
+package prosjekt.guests;
 
 /**
  *
