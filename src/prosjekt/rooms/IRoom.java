@@ -10,9 +10,9 @@ import prosjekt.utils.Utils;
  */
 
 public interface IRoom {
-  public boolean isBooked();
+  public boolean isOccupied();
   public AbstractGuest getGuest();
   public double getPrice();
-  public int getRoomNumber();
+  public int getID();
   public int[] getFacilities();
 }

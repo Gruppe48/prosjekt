@@ -11,16 +11,20 @@ import prosjekt.guests.AbstractGuest;
  * @date Mar 26, 2012
  */
 public abstract class AbstractRoom implements IRoom {
-  private int roomNumber = -1;
+  private static int roomCounter = 0;
+  private int roomID;
   private double price = 0;
-  private boolean booked = false;
+  private boolean occupied = false;
   // TODO: Make AbstractGuest instead of String
   private AbstractGuest guest;
   private int[] facilities = new int[20];
   
+  public AbstractRoom() {
+    roomID = roomCounter++;
+  }
   @Override
-  public boolean isBooked() {
-    return booked;
+  public boolean isOccupied() {
+    return occupied;
   }
 
   @Override
@@ -33,13 +37,11 @@ public abstract class AbstractRoom implements IRoom {
     return price;
   }
 
-  @Override
-  public int getRoomNumber() {
-    return roomNumber;
+  public int getID() {
+    return roomID;
   }
-
-  public AbstractRoom() {
-  }
+  
+  
 
   @Override
   public int[] getFacilities() {

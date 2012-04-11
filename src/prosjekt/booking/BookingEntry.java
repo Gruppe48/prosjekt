@@ -18,4 +18,31 @@ public class BookingEntry {
   private AbstractRoom room = null;
   private Date from = null;
   private Date to = null;
+
+  public BookingEntry(Date from, Date to, AbstractGuest guest, AbstractRoom room) {
+    //TODO: Validering!
+    this.from = from;
+    this.to = to;
+    this.guest = guest;
+    this.room = room;
+  }
+
+  public Date getFromDate() {
+    return from;
+  }
+
+  public AbstractGuest getGuest() {
+    return guest;
+  }
+
+  public AbstractRoom getRoom() {
+    return room;
+  }
+
+  public Date getToDate() {
+    return to;
+  }
+  
+  
+  
 }
