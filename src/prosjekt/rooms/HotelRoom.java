@@ -2,7 +2,7 @@
  */
 package prosjekt.rooms;
 
-import prosjekt.rooms.AbstractRoom;
+import prosjekt.rooms.RoomMisc.facilities;
 
 /**
  *
@@ -11,5 +11,9 @@ import prosjekt.rooms.AbstractRoom;
  * @date Mar 26, 2012
  */
 public abstract class HotelRoom extends AbstractRoom implements IHotelRoom {
-  
+
+  public HotelRoom(float price) {
+    super(price);
+  }
+
 }

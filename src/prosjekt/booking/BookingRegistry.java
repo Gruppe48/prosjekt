@@ -19,10 +19,11 @@ public class BookingRegistry {
   
   public boolean add(Date from, Date to, AbstractGuest guest, AbstractRoom room) {
     //TODO: Sjekk om rommet er reservert, sjekk om gjesten har reservert osv!
-    BookingEntry booking = new BookingEntry(from, to, guest, room);
     if (isBooked(room)) { 
       return false; 
-    } 
+    }
+    BookingEntry booking = new BookingEntry(from, to, guest, room);
+     
     
     list.add(booking);
     return true;

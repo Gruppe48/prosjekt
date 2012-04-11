@@ -3,6 +3,7 @@
 package prosjekt.rooms;
 
 import prosjekt.guests.AbstractGuest;
+import prosjekt.rooms.RoomMisc.facilities;
 
 /**
  *
@@ -13,27 +14,36 @@ import prosjekt.guests.AbstractGuest;
 public abstract class AbstractRoom implements IRoom {
   private static int roomCounter = 0;
   private int roomID;
-  private double price = 0;
-  private boolean occupied = false;
+  private float price = 0;
   // TODO: Make AbstractGuest instead of String
   private AbstractGuest guest;
-  private int[] facilities = new int[20];
+  protected facilities facilities;
   
-  public AbstractRoom() {
+  public AbstractRoom(float price) {
     roomID = roomCounter++;
+    this.price = price;
+  }
+
+  @Override
+  public void rent(AbstractGuest guest) {
+    this.guest = guest;
+  }
+  @Override
+  public void empty() {
+    this.guest = null;
   }
   @Override
   public boolean isOccupied() {
-    return occupied;
+    return (guest != null);
   }
-
+  
   @Override
   public AbstractGuest getGuest() {
     return guest;
   }
 
   @Override
-  public double getPrice() {
+  public float getPrice() {
     return price;
   }
 
@@ -44,8 +54,13 @@ public abstract class AbstractRoom implements IRoom {
   
 
   @Override
-  public int[] getFacilities() {
+  public facilities getFacilities() {
     return facilities;
+  }
+
+  @Override
+  public String toString() {
+    return "ID: " + getID() + ", Pris: " + getPrice() + ", Occupied? " + isOccupied() + "\n";
   }
   
   

@@ -1,7 +1,8 @@
 package prosjekt.rooms;
 
 import prosjekt.guests.AbstractGuest;
-import prosjekt.utils.Utils;
+import prosjekt.rooms.RoomMisc.facilities;
+
 
 /**
  *
@@ -12,7 +13,9 @@ import prosjekt.utils.Utils;
 public interface IRoom {
   public boolean isOccupied();
   public AbstractGuest getGuest();
-  public double getPrice();
+  public float getPrice();
   public int getID();
-  public int[] getFacilities();
+  public facilities getFacilities();
+  public void rent(AbstractGuest guest);
+  public void empty();
 }
