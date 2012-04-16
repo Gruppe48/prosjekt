@@ -2,7 +2,6 @@
  */
 package prosjekt.guests;
 
-import prosjekt.guests.AbstractGuest;
 
 
 /**
@@ -15,8 +14,8 @@ public class Company extends AbstractGuest implements ICompany {
   
   private String companyName;
   
-  public Company(String fName, String lName, int phoneNr, String companyName) {
-    super(fName, lName, phoneNr);
+  public Company(String firstName, String lastName, String phoneNumber, String address, int postNumber, String companyName) {
+    super(firstName, lastName, phoneNumber, address, postNumber);
     this.companyName = companyName;
   }
   
