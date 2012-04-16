@@ -16,7 +16,7 @@ import prosjekt.rooms.AbstractRoom;
 public class BookingRegistry {
   // "Indeksert" etter from, to og room.
   private ArrayList<BookingEntry> list = new ArrayList();
-  
+  private BookingHistory history = new BookingHistory();
   public boolean add(Date from, Date to, AbstractGuest guest, AbstractRoom room) {
     //TODO: Sjekk om rommet er reservert, sjekk om gjesten har reservert osv!
     if (isBooked(room)) { 
@@ -26,6 +26,8 @@ public class BookingRegistry {
      
     
     list.add(booking);
+    history.add(booking); // Save the booking for history!
+    
     return true;
   }
   public ArrayList<BookingEntry> getList() {
@@ -47,5 +49,15 @@ public class BookingRegistry {
       }
      }
     return false;
+  }
+  public ArrayList<BookingEntry> getHistory(int roomID) {
+    ArrayList<BookingEntry> out = new ArrayList<BookingEntry>();
+    
+    for (BookingEntry r : history.getList()) {
+      if (r.getRoom().getID() == roomID) {
+        out.add(r);
+      }
+    }
+    return out;
   }
 }

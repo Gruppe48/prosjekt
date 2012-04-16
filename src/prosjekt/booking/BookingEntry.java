@@ -8,8 +8,7 @@ import prosjekt.rooms.AbstractRoom;
 
 /**
  *
- * @author Kristoffer Berdal <web@flexd.net>
- * @studnr 180212
+ * @author Kristoffer Berdal 180212 <web@flexd.net>
  * @date Mar 29, 2012
  * Dette er objektet som representerer en booking i Bookinglisten.
  */

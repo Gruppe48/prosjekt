@@ -13,9 +13,9 @@ public class AbstractGuest implements IGuest {
   private int guestID;
   private String firstName;
   private String lastName;
-  private int    phoneNumber;
+  private String    phoneNumber;
   
-  public AbstractGuest(String firstName, String lastName, int phoneNumber) {
+  public AbstractGuest(String firstName, String lastName, String phoneNumber) {
     guestID = guestCounter++;
     // Død over dumme variabelnavn.
     this.firstName   = firstName;
@@ -37,7 +37,7 @@ public class AbstractGuest implements IGuest {
     return lastName;
   }
 
-  public int getPhoneNumber() {
+  public String getPhoneNumber() {
     return phoneNumber;
   }
   
