@@ -2,7 +2,7 @@
  */
 package prosjekt;
 
-import prosjekt.interfaces.AdminWindow;
+import prosjekt.interfaces.AdminWindow2;
 import prosjekt.rooms.RoomRegistry;
 import prosjekt.rooms.types.SingleRoom;
 
@@ -22,6 +22,6 @@ public class Main {
       SingleRoom room = new SingleRoom(500f);
       roomRegistry.add(room);
     }
-    new AdminWindow();
+    new AdminWindow2();
   }
 }
