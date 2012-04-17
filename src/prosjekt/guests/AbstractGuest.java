@@ -1,26 +1,57 @@
-/*
- */
 package prosjekt.guests;
 
 /**
  *
  * @author Kristoffer Berdal <web@flexd.net>
- * @studnr 180212
- * @date Mar 29, 2012
+ * @since 2012-04-16
  */
 public class AbstractGuest implements IGuest {
+  /*
+   * Counter to keep track of what then next guestID will be.
+   */
   private static int guestCounter = 0;
+  /*
+   * The guest's ID
+   */
   private int guestID;
+  /*
+   * The guest's first name
+   */
   private String firstName;
+  /*
+   * The guest's last name
+   */
   private String lastName;
-  private int    phoneNumber;
+  /*
+   * The guest's phone number
+   */
+  private String    phoneNumber;
+  /*
+   * The guest's address
+   */
+  private String address;
+  /*
+   * The guest's post number
+   */
+  private int postNumber;
   
-  public AbstractGuest(String firstName, String lastName, int phoneNumber) {
+  /*
+   * Constructor for AbstractGuest
+   * 
+   * Initializes the new AbstractGuest object with the values provided.
+   * 
+   * @param firstName
+   * @param lastName
+   * @param phoneNumber
+   */
+  public AbstractGuest(String firstName, String lastName, String phoneNumber, String address, int postNumber) {
     guestID = guestCounter++;
     // Død over dumme variabelnavn.
     this.firstName   = firstName;
     this.lastName    = lastName;
     this.phoneNumber = phoneNumber;
+    this.address = address;
+    this.postNumber = postNumber;
   }
   @Override
   public int getID() {
@@ -31,14 +62,26 @@ public class AbstractGuest implements IGuest {
   public String getFirstName() {
     return firstName;
   }
-
+  
+  
   @Override
   public String getLastName() {
     return lastName;
   }
-
-  public int getPhoneNumber() {
+  
+  @Override
+  public String getPhoneNumber() {
     return phoneNumber;
   }
+  
+  @Override
+  public String getAddress() {
+    return address;
+  }
+  @Override
+  public int getPostNumber() {
+    return postNumber;
+  }
+  
   
 }

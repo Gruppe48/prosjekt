@@ -13,10 +13,12 @@ import java.util.ArrayList;
 public class RoomRegistry {
   // "Indeksert" etter from, to og room.
   private ArrayList<AbstractRoom> list = new ArrayList();
+  private RoomHistory history = new RoomHistory();
   
   public boolean add(AbstractRoom room) {
     if (!exists(room)) {
           list.add(room);
+          history.add(room);
           return true;
     }
     return false;
