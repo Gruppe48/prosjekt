@@ -78,7 +78,7 @@ public class GuestRegistry {
    */
   public boolean exists(AbstractGuest guest) {
     for (AbstractGuest g : list) {
-      if (g.equals(guest)) {
+      if (g.getID() == guest.getID()) {
         return true;
       }
      }
