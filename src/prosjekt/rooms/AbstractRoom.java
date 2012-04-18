@@ -15,7 +15,7 @@ public abstract class AbstractRoom implements IRoom {
   private static int roomCounter = 0;
   private int roomID;
   private float price = 0;
-  // TODO: Make AbstractGuest instead of String
+
   private AbstractGuest guest;
   protected facilities facilities;
   
