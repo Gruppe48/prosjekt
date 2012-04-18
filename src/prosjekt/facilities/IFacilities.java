@@ -12,13 +12,13 @@ public interface IFacilities {
   
   public String getName();
   
-  public String getDiscription();
+  public String getDescription();
   
   public String getOpeningHours();
   
   public void setName(String name);
   
-  public void setDiscription(String about);
+  public void setDescription(String about);
   
   public void setOpeningHours(String openingHours);
   

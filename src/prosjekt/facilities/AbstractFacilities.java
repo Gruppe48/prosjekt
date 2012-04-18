@@ -10,18 +10,18 @@ package prosjekt.facilities;
  */
 public abstract class AbstractFacilities implements IFacilities{
   
-  /* Information discription the facility. 
-   * I picture discription and menu to just be bulks of text that can be edited as
+  /* Information description the facility. 
+   * I picture description and menu to just be bulks of text that can be edited as
    * they don't serve any other purpose other than information 
    */
   
   private String name;
-  private String discription;
+  private String description;
   private String openingHours;
   
-  public AbstractFacilities(String name,String discription,String openingHours) {
+  public AbstractFacilities(String name,String description,String openingHours) {
     this.name = name;
-    this.discription = discription;
+    this.description = description;
     this.openingHours = openingHours;
   }
   
@@ -31,8 +31,8 @@ public abstract class AbstractFacilities implements IFacilities{
   }
   
   @Override
-  public String getDiscription() {
-    return discription;
+  public String getDescription() {
+    return description;
   }
   
   @Override
@@ -47,8 +47,8 @@ public abstract class AbstractFacilities implements IFacilities{
   }
   
   @Override
-  public void setDiscription(String discription) {
-    this.discription = discription;
+  public void setDescription(String description) {
+    this.description = description;
   }
   
   @Override
