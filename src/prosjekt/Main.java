@@ -7,6 +7,7 @@ import prosjekt.guests.GuestRegistry;
 import prosjekt.interfaces.AdminWindow2;
 import prosjekt.rooms.RoomRegistry;
 import prosjekt.rooms.types.SingleRoom;
+import prosjekt.guests.Person;
 
 /**
  *
@@ -21,6 +22,13 @@ public class Main {
     for (int i = 0; i < 10; i++) {
       SingleRoom room = new SingleRoom(500f);
       roomRegistry.add(room);
+    }
+  }
+  
+  private static void setupGuests() {
+    for (int i = 0; i < 10; i++) {
+      Person guest = new Person("Even"+i, "Augdal"+i, "Tlf"+i, "Adresse"+i, 1000+i);
+      guestRegistry.add(guest);
     }
   }
   /**
