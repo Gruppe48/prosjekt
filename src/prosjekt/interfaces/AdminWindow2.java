@@ -16,11 +16,11 @@ import javax.swing.*;
  */
 public class AdminWindow2 extends GenericWindow {
   private JTabbedPane tabbedPane;
-  private JComponent panelGuest, panel2, panel3;
+  private JComponent panelGuest, panel2, panel3, panel4;
   private JPanel panel, menu; 
   
   public AdminWindow2() {
-    super("Administratorpanel", 900, 600);
+    super("Administratorpanel", 900, 500);
   }
 
   @Override
@@ -41,14 +41,15 @@ public class AdminWindow2 extends GenericWindow {
     tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
     
     panel3 = makeTextPanel("Panel #3");
-    tabbedPane.addTab("Fasiliteter", panel3);
-    tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
+    tabbedPane.addTab("Booking", panel3);
+    tabbedPane.setMnemonicAt(2, KeyEvent.VK_3);
+    
+    panel4 = makeTextPanel("Panel #4");
+    tabbedPane.addTab("Fasiliteter", panel4);
+    tabbedPane.setMnemonicAt(3, KeyEvent.VK_4);
 
  
     c.add(tabbedPane);
-    
-    
-   
     
   }
 
@@ -73,7 +74,10 @@ public class AdminWindow2 extends GenericWindow {
   }
   
   private JComponent guestPanel() {
-    JPanel frame = new JPanel(new GridBagLayout());
+    JPanel frame;
+    JButton searchGuest, showGuests;
+    
+    frame = new JPanel(new GridBagLayout());
     GridBagConstraints c = new GridBagConstraints();
     frame.setBackground(Color.LIGHT_GRAY);
     
@@ -81,19 +85,11 @@ public class AdminWindow2 extends GenericWindow {
     menu = new JPanel(new GridLayout(6,1));
     
     menu.setBackground(Color.LIGHT_GRAY);
-    JButton searchGuest = new JButton("Søk");
-    JButton newGuest    = new JButton("Ny gjest");
-    JButton btn1        = new JButton("Søk");
-    JButton btn2        = new JButton("Ny gjest");
-    JButton btn3        = new JButton("Søk");
-    JButton btn4        = new JButton("Ny gjest");
+    searchGuest = new JButton("Søk");
+    showGuests  = new JButton("Vis alle");
     
     menu.add(searchGuest);
-    menu.add(newGuest);
-    menu.add(btn1);
-    menu.add(btn2);
-    menu.add(btn3);
-    menu.add(btn4);
+    menu.add(showGuests);
     
     // Place MENU
     c.insets  = new Insets(7,7,7,7);
@@ -108,6 +104,7 @@ public class AdminWindow2 extends GenericWindow {
     // PANEL
     panel  = new JPanel(new GridBagLayout());
     panel.setBackground(Color.LIGHT_GRAY);
+    panel = searchGuest(panel);
    
 
     //Place PANEL
@@ -125,15 +122,17 @@ public class AdminWindow2 extends GenericWindow {
     searchGuest.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
+        panel.removeAll();
         panel = searchGuest(panel);
         panel.updateUI();
       }
     });
-    newGuest.addActionListener(new ActionListener() {
+    showGuests.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-       //panel = newGuest();
-        panel.updateUI();
+       panel.removeAll();
+       panel = showAllGuests(panel);
+       panel.updateUI();
       }
     });
     
@@ -143,11 +142,11 @@ public class AdminWindow2 extends GenericWindow {
   }
   
   
-  private JPanel searchGuest(JPanel panel) {
+  private JPanel showAllGuests(JPanel panel) {
     GridBagConstraints c = new GridBagConstraints();
     
     // Display area
-    JTextArea display = new JTextArea(30,50);
+    JTextArea display = new JTextArea(10,30);
     display.setForeground(Color.BLACK);
     display.setBackground(Color.WHITE);
     display.setEditable(false);
@@ -191,7 +190,96 @@ public class AdminWindow2 extends GenericWindow {
     return panel;
   }
   
-  private JPanel newGuest(JPanel panel) {
+  
+  private JPanel searchGuest(JPanel panel) {
+    JPanel inputPanel, buttonPanel;
+    JTextField firstname, lastname, phoneNumber, address, postNumber, companyName;
+    JButton btnSearch, btnEdit;
+    JList searchResults;
+    
+    // Create textfields
+    firstname   = new JTextField(10);
+    lastname    = new JTextField(10);
+    phoneNumber = new JTextField(10);
+    address     = new JTextField(10);
+    postNumber  = new JTextField(10);
+    companyName = new JTextField(10);
+    
+    // Panel for input fields
+    inputPanel = new JPanel(new GridLayout(3,4));
+    inputPanel.setBackground(Color.LIGHT_GRAY);
+    
+    // Adding all labels and textfields to inputPanel
+    inputPanel.add(new JLabel("Fornavn"));
+    inputPanel.add(firstname);
+    inputPanel.add(new JLabel("Adresse"));
+    inputPanel.add(address);
+    inputPanel.add(new JLabel("Etternavn"));
+    inputPanel.add(lastname);
+    inputPanel.add(new JLabel("Postnummer"));
+    inputPanel.add(postNumber);
+    inputPanel.add(new JLabel("Telefonnummer"));
+    inputPanel.add(phoneNumber);
+    inputPanel.add(new JLabel("Bedrift"));
+    inputPanel.add(companyName);
+            
+    // Create a contraints variable for gridbaglayout
+    GridBagConstraints c = new GridBagConstraints();
+    
+    // Constraints
+    c.insets    = new Insets(0,0,0,0);
+    c.fill      = GridBagConstraints.HORIZONTAL;
+    c.anchor    = GridBagConstraints.FIRST_LINE_START;
+    c.gridwidth = 10;
+    c.gridx     = 0;
+    c.gridy     = 0;
+    c.weightx   = 1;
+    c.weighty   = 0;
+    
+    // add inputPanel to panel
+    panel.add(inputPanel, c);
+    
+    // Create search and edit button
+    btnSearch = new JButton("Søk");
+    btnEdit   = new JButton("Endre");
+    btnEdit.setEnabled(false);
+    
+    // Add the buttons to our buttonPanel
+    buttonPanel = new JPanel(new GridLayout(1,2));
+    buttonPanel.setBackground(Color.LIGHT_GRAY);
+    buttonPanel.add(btnEdit);
+    buttonPanel.add(btnSearch);
+    
+    // New constraints
+    c.insets      = new Insets(0,0,0,0);
+    c.fill        = GridBagConstraints.RELATIVE;
+    c.anchor      = GridBagConstraints.LINE_END;
+    c.gridwidth   = 1;
+    c.gridheight  = 1;
+    c.gridx       = 9;
+    c.gridy       = 1;
+    c.weightx     = 1;
+    c.weighty     = 0.05;
+    
+    // Adding buttonPanel to panel
+    panel.add(buttonPanel, c);
+    
+    // Create a JList for searchresults
+    searchResults = new JList();
+    
+    // New constraints
+    c.insets    = new Insets(0,0,0,0);
+    c.fill      = GridBagConstraints.BOTH;
+    c.anchor    = GridBagConstraints.LINE_START;
+    c.gridwidth = 10;
+    c.gridx     = 0;
+    c.gridy     = 2;
+    c.weightx   = 1;
+    c.weighty   = 1;
+    
+    // add searchResults (JList) to panel
+    panel.add(searchResults, c);
+    
     return panel;
   }
   
