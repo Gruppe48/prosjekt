@@ -18,6 +18,7 @@ public class GuestRegistry {
   /*
    * @param STUFF
    * @returns true/false
+   * 
    */
   //TODO: Implement this!
   public boolean add() {
