@@ -161,32 +161,6 @@ public class AdminWindow2 extends GenericWindow {
     c.weighty = 1;
     panel.add(scroll, c);
     
-    // SearchField
-    JTextField searchField = new JTextField(10);
-    c.insets  = new Insets(0,0,0,0);
-    c.gridwidth = GridBagConstraints.RELATIVE;
-    c.fill    = GridBagConstraints.HORIZONTAL;
-    c.anchor  = GridBagConstraints.FIRST_LINE_START;
-    c.gridx   = 0;
-    c.gridy   = 1;
-    c.weightx = 0.9;
-    c.weighty = 0;
-    panel.add(searchField, c);
-    
-    
-    // Submit button
-    JButton btnSearch = new JButton("Søk");
-    c.insets  = new Insets(0,0,0,0);
-    c.gridwidth = 1;
-    c.fill    = GridBagConstraints.HORIZONTAL;
-    c.anchor  = GridBagConstraints.FIRST_LINE_END;
-    c.gridx   = GridBagConstraints.RELATIVE;
-    c.gridy   = 1;
-    c.weightx = 0.1;
-    c.weighty = 0;
-    panel.add(btnSearch, c);
-    
-    
     return panel;
   }
   
