@@ -16,12 +16,15 @@ public class GuestRegistry {
   private ArrayList<AbstractGuest> list = new ArrayList();
   
   /*
-   * @param STUFF
+   * @param AbstractGuest guest
    * @returns true/false
    */
-  //TODO: Implement this!
-  public boolean add() {
- 
+  //TODO: VALIDERING
+  public boolean add(AbstractGuest guest) {
+    if (exists(guest)) {
+      return false;
+    }
+    list.add(guest);
     return true;
   }
   /*
