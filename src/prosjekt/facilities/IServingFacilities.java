@@ -13,4 +13,7 @@ public interface IServingFacilities {
   public String getMenu();
   
   public void setMenu(String menu);
+  
+  public void readMenu(String filename);
+  
 }
