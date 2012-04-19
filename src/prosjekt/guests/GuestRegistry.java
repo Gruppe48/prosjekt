@@ -84,4 +84,32 @@ public class GuestRegistry {
      }
     return false;
   }
+  
+  /*
+   * @param firstName, string to search for as a substring of firstname
+   * @param lastName, string to search for as a substring of lastname
+   * @param phoneNumber, string to search for as a substring of phoneNumber
+   * @param address, string to search for as a substring of address
+   * @param postNumber, int to match a guest's postNumber
+   * 
+   * @returns an ArrayList of matching guests or null if there is no matches.
+   */
+  public ArrayList<AbstractGuest> searchGuests(String firstName, String lastName, String phoneNumber, String address, int postNumber, String company) {
+    ArrayList<AbstractGuest> matches = new ArrayList();
+    
+    for (AbstractGuest g : list) {
+      if(Company.class.isInstance(g)) {
+        Company c = (Company) g;
+        if(c.getCompanyName().contains(company)) {
+          matches.add(g);
+        }
+      }
+      else if(g.getFirstName().contains(firstName) || g.getLastName().contains(lastName) || g.getPhoneNumber().contains(phoneNumber) ||
+              g.getAddress().contains(address) || g.getPostNumber()==postNumber) {
+        matches.add(g);
+      }
+    }
+    
+    return (matches.isEmpty()) ? null : matches;
+  }
 }
