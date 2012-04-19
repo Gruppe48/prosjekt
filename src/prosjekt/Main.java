@@ -29,7 +29,7 @@ public class Main {
   public static void main(String[] args) {
     setupRooms();
     // Open the login window
-    //new LoginWindow();
+    //new LoginWindow(
     new AdminWindow2();
   }
 }
