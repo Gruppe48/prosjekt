@@ -8,7 +8,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import javax.swing.*;
+import prosjekt.Main;
+import prosjekt.guests.AbstractGuest;
+
 
 /**
  *
@@ -18,6 +22,11 @@ public class AdminWindow2 extends GenericWindow {
   private JTabbedPane tabbedPane;
   private JComponent panelGuest, panel2, panel3, panel4;
   private JPanel panel, menu; 
+  private JTextField guestPanelFirstname, guestPanelLastname, guestPanelPhoneNumber, guestPanelAddress, guestPanelPostNumber, guestPanelCompanyName;
+  private JList guestPanelSearchResults;
+  private JButton guestPanelBtnSearch, guestPanelBtnEdit;
+  private ButtonListener btnListener;
+  private DefaultListModel list;
   
   public AdminWindow2() {
     super("Administratorpanel", 900, 500);
@@ -26,6 +35,9 @@ public class AdminWindow2 extends GenericWindow {
   @Override
   public void create() {
     super.create();
+    
+    // Create ButtonListener object
+    btnListener = new ButtonListener();
     
     tabbedPane = new JTabbedPane();
     
@@ -60,7 +72,41 @@ public class AdminWindow2 extends GenericWindow {
 
   @Override
   public void buttonPressed(ActionEvent e) {
-    super.buttonPressed(e);
+    
+    if(e.getSource() == guestPanelBtnSearch) {
+      String firstname    = guestPanelFirstname.getText();
+      String lastname     = guestPanelLastname.getText();
+      String phoneNumber  = guestPanelPhoneNumber.getText();
+      String address      = guestPanelAddress.getText();
+      String companyName  = guestPanelCompanyName.getText();
+      
+      try {
+        int postNumber = 0;
+        
+        if(!guestPanelPostNumber.getText().equals("")) {
+          postNumber = Integer.parseInt(guestPanelPostNumber.getText());
+        }
+        
+        ArrayList<AbstractGuest> listResults = Main.guestRegistry.searchGuests(firstname, lastname, phoneNumber, address, postNumber, companyName);
+          
+        list = new DefaultListModel();
+        
+        if(listResults == null) {
+          list.add(0, "Finner ingen matchende gjester");
+        }
+        else {
+          for (AbstractGuest g : listResults) {
+            list.addElement(g.getFirstName() + "\t" + g.getLastName() + "\t" + g.getPhoneNumber());
+          }
+        }
+
+        guestPanelSearchResults.setModel(list);
+      
+      }
+      catch(NumberFormatException nfe) {
+        System.out.println("error! NumberFormatException");
+      }
+    }
     
   }
 
@@ -167,17 +213,14 @@ public class AdminWindow2 extends GenericWindow {
   
   private JPanel searchGuest(JPanel panel) {
     JPanel inputPanel, buttonPanel;
-    JTextField firstname, lastname, phoneNumber, address, postNumber, companyName;
-    JButton btnSearch, btnEdit;
-    JList searchResults;
     
     // Create textfields
-    firstname   = new JTextField(10);
-    lastname    = new JTextField(10);
-    phoneNumber = new JTextField(10);
-    address     = new JTextField(10);
-    postNumber  = new JTextField(10);
-    companyName = new JTextField(10);
+    guestPanelFirstname   = new JTextField(10);
+    guestPanelLastname    = new JTextField(10);
+    guestPanelPhoneNumber = new JTextField(10);
+    guestPanelAddress     = new JTextField(10);
+    guestPanelPostNumber  = new JTextField(10);
+    guestPanelCompanyName = new JTextField(10);
     
     // Panel for input fields
     inputPanel = new JPanel(new GridLayout(3,4));
@@ -185,17 +228,17 @@ public class AdminWindow2 extends GenericWindow {
     
     // Adding all labels and textfields to inputPanel
     inputPanel.add(new JLabel("Fornavn"));
-    inputPanel.add(firstname);
+    inputPanel.add(guestPanelFirstname);
     inputPanel.add(new JLabel("Adresse"));
-    inputPanel.add(address);
+    inputPanel.add(guestPanelAddress);
     inputPanel.add(new JLabel("Etternavn"));
-    inputPanel.add(lastname);
+    inputPanel.add(guestPanelLastname);
     inputPanel.add(new JLabel("Postnummer"));
-    inputPanel.add(postNumber);
+    inputPanel.add(guestPanelPostNumber);
     inputPanel.add(new JLabel("Telefonnummer"));
-    inputPanel.add(phoneNumber);
+    inputPanel.add(guestPanelPhoneNumber);
     inputPanel.add(new JLabel("Bedrift"));
-    inputPanel.add(companyName);
+    inputPanel.add(guestPanelCompanyName);
             
     // Create a contraints variable for gridbaglayout
     GridBagConstraints c = new GridBagConstraints();
@@ -214,15 +257,17 @@ public class AdminWindow2 extends GenericWindow {
     panel.add(inputPanel, c);
     
     // Create search and edit button
-    btnSearch = new JButton("Søk");
-    btnEdit   = new JButton("Endre");
-    btnEdit.setEnabled(false);
+    guestPanelBtnSearch = new JButton("Søk");
+    guestPanelBtnEdit   = new JButton("Endre");
+    guestPanelBtnEdit.setEnabled(false);
+    guestPanelBtnSearch.addActionListener(btnListener);
+          
     
     // Add the buttons to our buttonPanel
     buttonPanel = new JPanel(new GridLayout(1,2));
     buttonPanel.setBackground(Color.LIGHT_GRAY);
-    buttonPanel.add(btnEdit);
-    buttonPanel.add(btnSearch);
+    buttonPanel.add(guestPanelBtnEdit);
+    buttonPanel.add(guestPanelBtnSearch);
     
     // New constraints
     c.insets      = new Insets(0,0,0,0);
@@ -238,8 +283,9 @@ public class AdminWindow2 extends GenericWindow {
     // Adding buttonPanel to panel
     panel.add(buttonPanel, c);
     
-    // Create a JList for searchresults
-    searchResults = new JList();
+    // Create a JList for guestPanelSearchresults
+    list = new DefaultListModel();
+    guestPanelSearchResults = new JList(list);
     
     // New constraints
     c.insets    = new Insets(0,0,0,0);
@@ -251,8 +297,9 @@ public class AdminWindow2 extends GenericWindow {
     c.weightx   = 1;
     c.weighty   = 1;
     
-    // add searchResults (JList) to panel
-    panel.add(searchResults, c);
+    
+    // add guestPanelSearchResults (JList) to panel
+    panel.add(new JScrollPane(guestPanelSearchResults), c);
     
     return panel;
   }

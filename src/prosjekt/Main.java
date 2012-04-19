@@ -36,6 +36,7 @@ public class Main {
    */
   public static void main(String[] args) {
     setupRooms();
+    setupGuests();
     // Open the login window
     //new LoginWindow(
     new AdminWindow2();

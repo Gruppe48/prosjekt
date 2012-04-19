@@ -55,7 +55,7 @@ public class GenericWindow extends JFrame implements IWindow {
   public void buttonPressed(ActionEvent e) {
     
   }
-  private class ButtonListener implements ActionListener {
+  protected class ButtonListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
       buttonPressed(e);

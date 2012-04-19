@@ -99,14 +99,15 @@ public class GuestRegistry {
     ArrayList<AbstractGuest> matches = new ArrayList();
     
     for (AbstractGuest g : list) {
-      if(Company.class.isInstance(g)) {
+      if(g instanceof Company) {
         Company c = (Company) g;
         if(c.getCompanyName().contains(company)) {
           matches.add(g);
         }
       }
-      else if(g.getFirstName().contains(firstName) || g.getLastName().contains(lastName) || g.getPhoneNumber().contains(phoneNumber) ||
-              g.getAddress().contains(address) || g.getPostNumber()==postNumber) {
+      else if(g.getFirstName().toLowerCase().contains(firstName.toLowerCase()) && g.getLastName().toLowerCase().contains(lastName.toLowerCase()) &&
+              g.getPhoneNumber().toLowerCase().contains(phoneNumber.toLowerCase()) && g.getAddress().toLowerCase().contains(address.toLowerCase()) &&
+              (g.getPostNumber()==postNumber || postNumber==0)) {
         matches.add(g);
       }
     }
