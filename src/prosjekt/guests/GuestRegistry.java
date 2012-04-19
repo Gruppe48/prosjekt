@@ -18,6 +18,7 @@ public class GuestRegistry {
   /*
    * @param AbstractGuest guest
    * @returns true/false
+   * 
    */
   //TODO: VALIDERING
   public boolean add(AbstractGuest guest) {
