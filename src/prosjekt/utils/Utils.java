@@ -46,9 +46,12 @@ public class Utils {
         in = new FileInputStream(new File(filename));
         jr = new JsonReader(in);
         out = jr.readObject();
+      } catch (FileNotFoundException ex) {
+        Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
       } catch (IOException ex) {
         Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
-      } finally {
+      } 
+      finally {
         jr.close();
       }
       return out;

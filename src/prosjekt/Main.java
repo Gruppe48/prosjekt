@@ -65,7 +65,7 @@ public class Main {
    */
   public static void main(String[] args) {
     setupRooms();
-    
+    Utils.load("kittens");
     
     new AdminWindow2();
     
