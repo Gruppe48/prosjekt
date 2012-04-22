@@ -101,6 +101,7 @@ public class AdminWindow2 extends GenericWindow {
         }
 
         guestPanelSearchResults.setModel(list);
+        guestPanelSearchResults.setCellRenderer(new ColoredCellRenderer());
       
       }
       catch(NumberFormatException nfe) {
@@ -109,6 +110,26 @@ public class AdminWindow2 extends GenericWindow {
     }
     
   }
+  
+  private static class ColoredCellRenderer extends DefaultListCellRenderer {  
+    @Override
+        public Component getListCellRendererComponent( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {  
+            Component c = super.getListCellRendererComponent( list, value, index, isSelected, cellHasFocus );  
+            
+            if ( index % 2 == 0 ) {  
+                c.setBackground( Color.WHITE ); 
+                c.setForeground( Color.BLACK);
+            }  
+            else {  
+                c.setBackground( Color.LIGHT_GRAY ); 
+            }  
+            
+            if(isSelected)
+               c.setBackground( Color.GRAY );
+            
+            return c;  
+        }  
+    }
 
   protected JComponent makeTextPanel(String text) {
         JPanel test = new JPanel(false);
@@ -286,6 +307,7 @@ public class AdminWindow2 extends GenericWindow {
     // Create a JList for guestPanelSearchresults
     list = new DefaultListModel();
     guestPanelSearchResults = new JList(list);
+    guestPanelSearchResults.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
     
     // New constraints
     c.insets    = new Insets(0,0,0,0);
