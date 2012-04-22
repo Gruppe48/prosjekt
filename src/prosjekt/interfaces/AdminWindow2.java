@@ -10,6 +10,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import prosjekt.Main;
 import prosjekt.guests.AbstractGuest;
 
@@ -23,10 +25,12 @@ public class AdminWindow2 extends GenericWindow {
   private JComponent panelGuest, panel2, panel3, panel4;
   private JPanel panel, menu; 
   private JTextField guestPanelFirstname, guestPanelLastname, guestPanelPhoneNumber, guestPanelAddress, guestPanelPostNumber, guestPanelCompanyName;
-  private JList guestPanelSearchResults;
+  private JTable guestPanelSearchResults;
   private JButton guestPanelBtnSearch, guestPanelBtnEdit;
   private ButtonListener btnListener;
-  private DefaultListModel list;
+  private TableModel tableModel;
+  private String[][] rowData;
+  private Object columnNames[];
   
   public AdminWindow2() {
     super("Administratorpanel", 900, 500);
@@ -89,20 +93,35 @@ public class AdminWindow2 extends GenericWindow {
         
         ArrayList<AbstractGuest> listResults = Main.guestRegistry.searchGuests(firstname, lastname, phoneNumber, address, postNumber, companyName);
           
-        list = new DefaultListModel();
+        rowData = new String[listResults.size()][5];
         
         if(listResults == null) {
-          list.add(0, "Finner ingen matchende gjester");
+          rowData[0][0] = "Finner ingen matchende gjester";
         }
         else {
+          int i = 0;
           for (AbstractGuest g : listResults) {
-            list.addElement(g.getFirstName() + "\t" + g.getLastName() + "\t" + g.getPhoneNumber());
+            rowData[i][0] = g.getFirstName();
+            rowData[i][1] = g.getLastName();
+            rowData[i][2] = g.getPhoneNumber();
+            rowData[i][3] = g.getAddress();
+            i++;
           }
         }
-
-        guestPanelSearchResults.setModel(list);
-        guestPanelSearchResults.setCellRenderer(new ColoredCellRenderer());
-      
+        
+        // Array of columnnames for our JTable
+        //Object columnNames[] = {"Fornavn", "Etternavn", "Telefon", "Addresse"};
+        
+        columnNames = new String[4];
+        columnNames[0] = "Fornavn";
+        columnNames[1] = "Etternavn";
+        columnNames[2] = "Telefon";
+        columnNames[3] = "Addresse";
+        
+        // Tablemodel for our JTable
+        tableModel = new DefaultTableModel(rowData, columnNames);
+         
+        guestPanelSearchResults.setModel(tableModel);
       }
       catch(NumberFormatException nfe) {
         System.out.println("error! NumberFormatException");
@@ -304,10 +323,10 @@ public class AdminWindow2 extends GenericWindow {
     // Adding buttonPanel to panel
     panel.add(buttonPanel, c);
     
-    // Create a JList for guestPanelSearchresults
-    list = new DefaultListModel();
-    guestPanelSearchResults = new JList(list);
-    guestPanelSearchResults.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+    // Create a JTable for guestPanelSearchresults           
+    tableModel = new DefaultTableModel(rowData, columnNames);
+    guestPanelSearchResults = new JTable(tableModel);
+    guestPanelSearchResults.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     
     // New constraints
     c.insets    = new Insets(0,0,0,0);
@@ -320,7 +339,7 @@ public class AdminWindow2 extends GenericWindow {
     c.weighty   = 1;
     
     
-    // add guestPanelSearchResults (JList) to panel
+    // add guestPanelSearchResults (JTable) to panel
     panel.add(new JScrollPane(guestPanelSearchResults), c);
     
     return panel;
