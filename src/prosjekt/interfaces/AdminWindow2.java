@@ -14,6 +14,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import prosjekt.Main;
 import prosjekt.guests.AbstractGuest;
+import prosjekt.guests.Company;
 
 
 /**
@@ -30,7 +31,7 @@ public class AdminWindow2 extends GenericWindow {
   private ButtonListener btnListener;
   private TableModel tableModel;
   private String[][] rowData;
-  private Object columnNames[];
+  private String columnNames[];
   
   public AdminWindow2() {
     super("Administratorpanel", 900, 500);
@@ -105,21 +106,18 @@ public class AdminWindow2 extends GenericWindow {
             rowData[i][1] = g.getLastName();
             rowData[i][2] = g.getPhoneNumber();
             rowData[i][3] = g.getAddress();
+            
+            if(g instanceof Company) {
+              Company c = (Company) g;
+              rowData[i][4] = c.getCompanyName();
+            }
+            
             i++;
           }
         }
         
-        // Array of columnnames for our JTable
-        //Object columnNames[] = {"Fornavn", "Etternavn", "Telefon", "Addresse"};
-        
-        columnNames = new String[4];
-        columnNames[0] = "Fornavn";
-        columnNames[1] = "Etternavn";
-        columnNames[2] = "Telefon";
-        columnNames[3] = "Addresse";
-        
         // Tablemodel for our JTable
-        tableModel = new DefaultTableModel(rowData, columnNames);
+        tableModel = new CustomTableModel(rowData, columnNames);
          
         guestPanelSearchResults.setModel(tableModel);
       }
@@ -323,8 +321,11 @@ public class AdminWindow2 extends GenericWindow {
     // Adding buttonPanel to panel
     panel.add(buttonPanel, c);
     
+    // Array of columnnames for our JTable
+    columnNames = new String[]{"Fornavn", "Etternavn", "Telefon", "Addresse", "Company"};
+        
     // Create a JTable for guestPanelSearchresults           
-    tableModel = new DefaultTableModel(rowData, columnNames);
+    tableModel = new CustomTableModel(rowData, columnNames);
     guestPanelSearchResults = new JTable(tableModel);
     guestPanelSearchResults.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     

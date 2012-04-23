@@ -3,6 +3,7 @@
 package prosjekt;
 
 import prosjekt.booking.BookingRegistry;
+import prosjekt.guests.Company;
 import prosjekt.guests.GuestRegistry;
 import prosjekt.interfaces.AdminWindow2;
 import prosjekt.rooms.RoomRegistry;
@@ -30,7 +31,12 @@ public class Main {
       Person guest = new Person("Even"+i, "Augdal"+i, "Tlf"+i, "Adresse"+i, 1000+i);
       guestRegistry.add(guest);
     }
+    
+    Company cGuest = new Company("Ole", "Hansen", "12345678", "Kirkeveien 5", 0361, "Microsoft");
+    guestRegistry.add(cGuest);
   }
+  
+  
   /**
    * @param args the command line arguments
    */
