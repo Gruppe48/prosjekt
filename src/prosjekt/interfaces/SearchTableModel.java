@@ -1,7 +1,10 @@
 package prosjekt.interfaces;
 
 
+import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
+import prosjekt.guests.AbstractGuest;
+import prosjekt.guests.Company;
 
 /*
  * To change this template, choose Tools | Templates
@@ -12,13 +15,37 @@ import javax.swing.table.AbstractTableModel;
  *
  * @author Even
  */
-class CustomTableModel extends AbstractTableModel {
+class SearchTableModel extends AbstractTableModel {
   private String[] columnNames;
   private String[][] rowData;
+  ArrayList<AbstractGuest> guestList;
   
+  /*
   public CustomTableModel(String[][] data, String[] columns) {
     columnNames = columns;
     rowData = data;
+  }*/
+  
+  public SearchTableModel(ArrayList<AbstractGuest> guests, String[] columns) {
+    guestList = guests;
+    columnNames = columns;
+    
+    if(guests != null) {
+      rowData = new String[guests.size()][5];
+      
+      int i = 0;
+      for (AbstractGuest g : guests) {
+        rowData[i][0] = g.getFirstName();
+        rowData[i][1] = g.getLastName();
+        rowData[i][2] = g.getPhoneNumber();
+        rowData[i][3] = g.getAddress();
+        if(g instanceof Company) {
+          Company c = (Company) g;
+          rowData[i][4] = c.getCompanyName();
+        }
+        i++;
+      }
+    }
   }
   
   @Override
