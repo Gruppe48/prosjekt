@@ -2,3 +2,7 @@
 /build/
 /dist/
 .DS_Store
+roomRegistry.json
+guestRegistry.json
+bookingRegistry.json
+options.json

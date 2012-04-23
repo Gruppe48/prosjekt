@@ -22,6 +22,10 @@ import java.util.logging.Logger;
  */
 public class Utils {
   
+  public static boolean fileExists(String filename) {
+    File f = new File(filename);
+    return f.exists();
+  }
   public static void save(Object o, String filename) {
     {
       JsonWriter jw = null;
