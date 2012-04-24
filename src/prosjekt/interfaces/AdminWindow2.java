@@ -10,11 +10,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.event.TableModelEvent;
 import javax.swing.table.TableModel;
 import prosjekt.Main;
 import prosjekt.guests.AbstractGuest;
-import prosjekt.guests.Company;
 
 
 /**
@@ -307,6 +306,12 @@ public class AdminWindow2 extends GenericWindow {
     tableModel = new SearchTableModel(listResults, columnNames);
     guestPanelSearchResults = new JTable(tableModel);
     guestPanelSearchResults.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    
+    // Add actionlistener for our JTable
+    JTableListener tableListener = new JTableListener(guestPanelSearchResults);
+    guestPanelSearchResults.getSelectionModel().addListSelectionListener(tableListener);
+    //guestPanelSearchResults.getColumnModel().getSelectionModel().addListSelectionListener(tableListener);
+    
     
     // New constraints
     c.insets    = new Insets(0,0,0,0);

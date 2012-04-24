@@ -19,12 +19,8 @@ class SearchTableModel extends AbstractTableModel {
   private String[] columnNames;
   private String[][] rowData;
   ArrayList<AbstractGuest> guestList;
+
   
-  /*
-  public CustomTableModel(String[][] data, String[] columns) {
-    columnNames = columns;
-    rowData = data;
-  }*/
   
   public SearchTableModel(ArrayList<AbstractGuest> guests, String[] columns) {
     guestList = guests;
@@ -80,7 +76,11 @@ class SearchTableModel extends AbstractTableModel {
   
   @Override
   public boolean isCellEditable(int row, int col) {
-        return false;
-    }
+    return false;
+  }
+  
+  public AbstractGuest getGuestAtPosition(int i) {
+    return guestList.get(i);
+  }
   
 }

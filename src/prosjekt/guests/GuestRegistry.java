@@ -98,10 +98,15 @@ public class GuestRegistry {
   public ArrayList<AbstractGuest> searchGuests(String firstName, String lastName, String phoneNumber, String address, int postNumber, String company) {
     ArrayList<AbstractGuest> matches = new ArrayList();
     
+    /*
     for (AbstractGuest g : list) {
+      
       if(g instanceof Company) {
         Company c = (Company) g;
-        if(c.getCompanyName().contains(company)) {
+        if(company.length() > 0 && c.getCompanyName().toLowerCase().contains(company.toLowerCase())) {
+          matches.add(g);
+        }
+        else if(firstName.length()==0 && lastName.length()==0 && phoneNumber.length()==0 && address.length()==0 && (g.getPostNumber()==postNumber || postNumber==0)) {
           matches.add(g);
         }
       }
@@ -109,7 +114,52 @@ public class GuestRegistry {
               g.getPhoneNumber().toLowerCase().contains(phoneNumber.toLowerCase()) && g.getAddress().toLowerCase().contains(address.toLowerCase()) &&
               (g.getPostNumber()==postNumber || postNumber==0)) {
         matches.add(g);
+      }*/
+      
+    for (AbstractGuest g : list) {
+      if(g instanceof Company) {
+          
+          Company c = (Company) g;
+          
+          if(company.length() > 0 && c.getCompanyName().toLowerCase().contains(company.toLowerCase())) {
+            matches.add(g);
+          }
+          
+          if (c.getPostNumber()==postNumber) {
+            System.out.println(c.getCompanyName());
+            matches.add(c);
+          }
       }
+      
+      if(g.getFirstName().toLowerCase().contains(firstName.toLowerCase()) && g.getLastName().toLowerCase().contains(lastName.toLowerCase()) &&
+              g.getPhoneNumber().toLowerCase().contains(phoneNumber.toLowerCase()) && g.getAddress().toLowerCase().contains(address.toLowerCase()) &&
+              (g.getPostNumber()==postNumber || postNumber==0)) {
+        
+        if(g instanceof Company) {
+          
+          Company c = (Company) g;
+          
+          if (c.getPostNumber()==postNumber) {
+            matches.add(c);
+          }
+          
+          if(company.length() > 0 && c.getCompanyName().toLowerCase().contains(company.toLowerCase())) {
+            matches.add(c);
+            break;
+          }
+          else if (c.getPostNumber()==postNumber) {
+            matches.add(c);
+            break;
+          }
+          
+        }
+       
+        if(company.length() == 0) {
+          matches.add(g);
+        }
+      }
+      
+      
     }
     
     return (matches.isEmpty()) ? null : matches;
