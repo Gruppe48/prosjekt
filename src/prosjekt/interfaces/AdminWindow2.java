@@ -100,8 +100,6 @@ public class AdminWindow2 extends GenericWindow {
         tableModel = new SearchTableModel(listResults, columnNames);
          
         guestPanelSearchResults.setModel(tableModel);
-        ColoredCellRenderer test = new ColoredCellRenderer();
-        guestPanelSearchResults.getColumnModel().getColumn(0).setCellRenderer(test);
       }
       catch(NumberFormatException nfe) {
         System.out.println("error! NumberFormatException");
@@ -340,6 +338,7 @@ public class AdminWindow2 extends GenericWindow {
         }
       } 
     }
+    
   }
 
 }
