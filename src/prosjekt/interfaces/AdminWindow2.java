@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.event.TableModelEvent;
 import javax.swing.table.TableModel;
 import prosjekt.Main;
 import prosjekt.guests.AbstractGuest;
@@ -101,6 +100,8 @@ public class AdminWindow2 extends GenericWindow {
         tableModel = new SearchTableModel(listResults, columnNames);
          
         guestPanelSearchResults.setModel(tableModel);
+        ColoredCellRenderer test = new ColoredCellRenderer();
+        guestPanelSearchResults.getColumnModel().getColumn(0).setCellRenderer(test);
       }
       catch(NumberFormatException nfe) {
         System.out.println("error! NumberFormatException");
@@ -108,26 +109,6 @@ public class AdminWindow2 extends GenericWindow {
     }
     
   }
-  
-  private static class ColoredCellRenderer extends DefaultListCellRenderer {  
-    @Override
-        public Component getListCellRendererComponent( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {  
-            Component c = super.getListCellRendererComponent( list, value, index, isSelected, cellHasFocus );  
-            
-            if ( index % 2 == 0 ) {  
-                c.setBackground( Color.WHITE ); 
-                c.setForeground( Color.BLACK);
-            }  
-            else {  
-                c.setBackground( Color.LIGHT_GRAY ); 
-            }  
-            
-            if(isSelected)
-               c.setBackground( Color.GRAY );
-            
-            return c;  
-        }  
-    }
 
   protected JComponent makeTextPanel(String text) {
         JPanel test = new JPanel(false);
