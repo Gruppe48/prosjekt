@@ -10,10 +10,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.TableModel;
 import prosjekt.Main;
 import prosjekt.guests.AbstractGuest;
+import prosjekt.guests.Company;
 
 
 /**
@@ -307,8 +310,9 @@ public class AdminWindow2 extends GenericWindow {
     guestPanelSearchResults = new JTable(tableModel);
     guestPanelSearchResults.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     
+    
     // Add actionlistener for our JTable
-    JTableListener tableListener = new JTableListener(guestPanelSearchResults);
+    guestSearchResultsListener tableListener = new guestSearchResultsListener();
     guestPanelSearchResults.getSelectionModel().addListSelectionListener(tableListener);
     //guestPanelSearchResults.getColumnModel().getSelectionModel().addListSelectionListener(tableListener);
     
@@ -330,5 +334,31 @@ public class AdminWindow2 extends GenericWindow {
     return panel;
   }
   
+  
+  private class guestSearchResultsListener implements ListSelectionListener {
+    JTable table;
+
+    guestSearchResultsListener() {
+      table = guestPanelSearchResults;
+    }
+
+    @Override
+    public void valueChanged(ListSelectionEvent e) {
+      if (e.getSource() == table.getSelectionModel() && table.getRowSelectionAllowed()) {
+        int i = table.getSelectedRow();
+        guestPanelFirstname.setText(listResults.get(i).getFirstName());
+        guestPanelLastname.setText(listResults.get(i).getLastName());
+        guestPanelAddress.setText(listResults.get(i).getAddress());
+        guestPanelPhoneNumber.setText(listResults.get(i).getPhoneNumber());
+        guestPanelPostNumber.setText(listResults.get(i).getPostNumber() + "");
+        guestPanelCompanyName.setText("");
+        
+        if(listResults.get(i) instanceof Company) {
+          Company c = (Company) listResults.get(i);
+          guestPanelCompanyName.setText(c.getCompanyName());
+        }
+      } 
+    }
+  }
 
 }

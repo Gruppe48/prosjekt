@@ -78,9 +78,4 @@ class SearchTableModel extends AbstractTableModel {
   public boolean isCellEditable(int row, int col) {
     return false;
   }
-  
-  public AbstractGuest getGuestAtPosition(int i) {
-    return guestList.get(i);
-  }
-  
-}
+} 
