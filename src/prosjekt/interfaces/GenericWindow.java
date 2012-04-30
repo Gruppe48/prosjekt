@@ -43,6 +43,7 @@ public class GenericWindow extends JFrame implements IWindow {
     }
   });
   }
+
   @Override
   public void create() {
     // Sette opp stasj hente lagrede data osv?

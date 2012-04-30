@@ -16,6 +16,7 @@ import javax.swing.table.TableModel;
 import prosjekt.Main;
 import prosjekt.guests.AbstractGuest;
 import prosjekt.guests.Company;
+import prosjekt.guests.Person;
 
 
 /**
@@ -23,9 +24,12 @@ import prosjekt.guests.Company;
  * @author Even
  */
 public class AdminWindow2 extends GenericWindow {
+  // General
   private JTabbedPane tabbedPane;
   private JComponent panelGuest, panel2, panel3, panel4;
   private JPanel panel, menu; 
+  
+  // guestPanel
   private JTextField guestPanelFirstname, guestPanelLastname, guestPanelPhoneNumber, guestPanelAddress, guestPanelPostNumber, guestPanelCompanyName;
   private JTable guestPanelSearchResults;
   private JButton guestPanelBtnSearch, guestPanelBtnEdit;
@@ -34,6 +38,8 @@ public class AdminWindow2 extends GenericWindow {
   private String[][] rowData;
   private String columnNames[];
   private ArrayList<AbstractGuest> listResults;
+  
+  // 
   
   public AdminWindow2() {
     super("Administratorpanel", 900, 500);
@@ -81,6 +87,7 @@ public class AdminWindow2 extends GenericWindow {
   public void buttonPressed(ActionEvent e) {
     
     if(e.getSource() == guestPanelBtnSearch) {
+      guestPanelBtnEdit.setEnabled(false);
       String firstname    = guestPanelFirstname.getText();
       String lastname     = guestPanelLastname.getText();
       String phoneNumber  = guestPanelPhoneNumber.getText();
@@ -104,6 +111,41 @@ public class AdminWindow2 extends GenericWindow {
       catch(NumberFormatException nfe) {
         System.out.println("error! NumberFormatException");
       }
+    }
+    else if(e.getSource() == guestPanelBtnEdit) {
+      String firstname    = guestPanelFirstname.getText();
+      String lastname     = guestPanelLastname.getText();
+      String phoneNumber  = guestPanelPhoneNumber.getText();
+      String address      = guestPanelAddress.getText();
+      String companyName  = guestPanelCompanyName.getText();
+      AbstractGuest editedGuest;
+      
+      try {
+        int postNumber = 0;
+        
+        if(!guestPanelPostNumber.getText().equals("")) {
+          postNumber = Integer.parseInt(guestPanelPostNumber.getText());
+        }
+        
+        // Create new guest based on the old
+        if(companyName.length() > 0) {
+          editedGuest = new Company(firstname, lastname, phoneNumber, address, postNumber, companyName);
+        }
+        else {
+          editedGuest = new Person(firstname, lastname, phoneNumber, address, postNumber);
+        }
+        
+        // Swap the old one with the new one.
+        Main.guestRegistry.swapGuest(listResults.get(guestPanelSearchResults.getSelectedRow()), editedGuest);
+        
+      }
+      catch(NumberFormatException nfe) {
+        System.out.println("error! NumberFormatException");
+      }
+      catch(NullPointerException npe) {
+        System.out.println("error! NullPointerException");
+      }
+      
     }
     
   }
@@ -259,6 +301,7 @@ public class AdminWindow2 extends GenericWindow {
     guestPanelBtnEdit   = new JButton("Endre");
     guestPanelBtnEdit.setEnabled(false);
     guestPanelBtnSearch.addActionListener(btnListener);
+    guestPanelBtnEdit.addActionListener(btnListener);
           
     
     // Add the buttons to our buttonPanel
@@ -282,12 +325,13 @@ public class AdminWindow2 extends GenericWindow {
     panel.add(buttonPanel, c);
     
     // Array of columnnames for our JTable
-    columnNames = new String[]{"Fornavn", "Etternavn", "Telefon", "Addresse", "Company"};
+    columnNames = new String[]{"Fornavn", "Etternavn", "Telefon", "Postnummer", "Addresse", "Company"};
         
     // Create a JTable for guestPanelSearchresults           
     tableModel = new SearchTableModel(listResults, columnNames);
     guestPanelSearchResults = new JTable(tableModel);
     guestPanelSearchResults.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
     
     
     // Add actionlistener for our JTable
@@ -325,16 +369,21 @@ public class AdminWindow2 extends GenericWindow {
     public void valueChanged(ListSelectionEvent e) {
       if (e.getSource() == table.getSelectionModel() && table.getRowSelectionAllowed()) {
         int i = table.getSelectedRow();
-        guestPanelFirstname.setText(listResults.get(i).getFirstName());
-        guestPanelLastname.setText(listResults.get(i).getLastName());
-        guestPanelAddress.setText(listResults.get(i).getAddress());
-        guestPanelPhoneNumber.setText(listResults.get(i).getPhoneNumber());
-        guestPanelPostNumber.setText(listResults.get(i).getPostNumber() + "");
-        guestPanelCompanyName.setText("");
         
-        if(listResults.get(i) instanceof Company) {
-          Company c = (Company) listResults.get(i);
-          guestPanelCompanyName.setText(c.getCompanyName());
+        if(i != -1) {
+          guestPanelFirstname.setText(listResults.get(i).getFirstName());
+          guestPanelLastname.setText(listResults.get(i).getLastName());
+          guestPanelAddress.setText(listResults.get(i).getAddress());
+          guestPanelPhoneNumber.setText(listResults.get(i).getPhoneNumber());
+          guestPanelPostNumber.setText(listResults.get(i).getPostNumber() + "");
+          guestPanelCompanyName.setText("");
+
+          guestPanelBtnEdit.setEnabled(true);
+
+          if(listResults.get(i) instanceof Company) {
+            Company c = (Company) listResults.get(i);
+            guestPanelCompanyName.setText(c.getCompanyName());
+          }
         }
       } 
     }

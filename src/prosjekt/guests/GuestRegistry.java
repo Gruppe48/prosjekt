@@ -5,6 +5,7 @@
 package prosjekt.guests;
 
 import java.util.ArrayList;
+import java.util.ListIterator;
 
 /**
  *
@@ -73,6 +74,20 @@ public class GuestRegistry {
     }
     return null;
   }
+  
+  
+  public boolean swapGuest(AbstractGuest oldGuest, AbstractGuest newGuest) {
+     ListIterator listIterator = list.listIterator();
+     
+     while(listIterator.hasNext()) {
+       if(listIterator.next().equals(oldGuest)) {
+         listIterator.set(newGuest);
+         return true;
+       }
+     }
+     return false;
+  }
+  
   /*
    * @param AbstractGuest guest, guest to find
    * @return true/false
@@ -97,53 +112,16 @@ public class GuestRegistry {
    */
   public ArrayList<AbstractGuest> searchGuests(String firstName, String lastName, String phoneNumber, String address, int postNumber, String company) {
     ArrayList<AbstractGuest> matches = new ArrayList();
-    
-    /*
-    for (AbstractGuest g : list) {
-      
-      if(g instanceof Company) {
-        Company c = (Company) g;
-        if(company.length() > 0 && c.getCompanyName().toLowerCase().contains(company.toLowerCase())) {
-          matches.add(g);
-        }
-        else if(firstName.length()==0 && lastName.length()==0 && phoneNumber.length()==0 && address.length()==0 && (g.getPostNumber()==postNumber || postNumber==0)) {
-          matches.add(g);
-        }
-      }
-      else if(g.getFirstName().toLowerCase().contains(firstName.toLowerCase()) && g.getLastName().toLowerCase().contains(lastName.toLowerCase()) &&
-              g.getPhoneNumber().toLowerCase().contains(phoneNumber.toLowerCase()) && g.getAddress().toLowerCase().contains(address.toLowerCase()) &&
-              (g.getPostNumber()==postNumber || postNumber==0)) {
-        matches.add(g);
-      }*/
       
     for (AbstractGuest g : list) {
-      if(g instanceof Company) {
-          
-          Company c = (Company) g;
-          
-          if(company.length() > 0 && c.getCompanyName().toLowerCase().contains(company.toLowerCase())) {
-            matches.add(g);
-          }
-          
-          if (c.getPostNumber()==postNumber) {
-            System.out.println(c.getCompanyName());
-            matches.add(c);
-          }
-      }
-      
       if(g.getFirstName().toLowerCase().contains(firstName.toLowerCase()) && g.getLastName().toLowerCase().contains(lastName.toLowerCase()) &&
               g.getPhoneNumber().toLowerCase().contains(phoneNumber.toLowerCase()) && g.getAddress().toLowerCase().contains(address.toLowerCase()) &&
               (g.getPostNumber()==postNumber || postNumber==0)) {
         
         if(g instanceof Company) {
-          
           Company c = (Company) g;
           
-          if (c.getPostNumber()==postNumber) {
-            matches.add(c);
-          }
-          
-          if(company.length() > 0 && c.getCompanyName().toLowerCase().contains(company.toLowerCase())) {
+          if(company.length()>0 && c.getCompanyName().toLowerCase().contains(company.toLowerCase())) {
             matches.add(c);
             break;
           }
@@ -153,15 +131,14 @@ public class GuestRegistry {
           }
           
         }
-       
+        
+        // if no companyname is specified, we should show the element
         if(company.length() == 0) {
           matches.add(g);
         }
       }
-      
-      
+ 
     }
-    
     return (matches.isEmpty()) ? null : matches;
   }
 }

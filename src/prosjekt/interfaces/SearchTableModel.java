@@ -26,18 +26,20 @@ class SearchTableModel extends AbstractTableModel {
     guestList = guests;
     columnNames = columns;
     
+    
     if(guests != null) {
-      rowData = new String[guests.size()][5];
+      rowData = new String[guests.size()][6];
       
       int i = 0;
       for (AbstractGuest g : guests) {
         rowData[i][0] = g.getFirstName();
         rowData[i][1] = g.getLastName();
         rowData[i][2] = g.getPhoneNumber();
-        rowData[i][3] = g.getAddress();
+        rowData[i][3] = g.getPostNumber() + "";
+        rowData[i][4] = g.getAddress();
         if(g instanceof Company) {
           Company c = (Company) g;
-          rowData[i][4] = c.getCompanyName();
+          rowData[i][5] = c.getCompanyName();
         }
         i++;
       }
@@ -78,4 +80,7 @@ class SearchTableModel extends AbstractTableModel {
   public boolean isCellEditable(int row, int col) {
     return false;
   }
+  
+  
+  
 } 
