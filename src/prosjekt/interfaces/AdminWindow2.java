@@ -497,16 +497,8 @@ public class AdminWindow2 extends GenericWindow {
     
     // Create search and edit button
     roomPanelBtnSearch = new JButton("Søk");
-    roomPanelBtnEdit   = new JButton("Endre");
-    roomPanelBtnEdit.setEnabled(false);
     roomPanelBtnSearch.addActionListener(btnListener);
-    roomPanelBtnEdit.addActionListener(btnListener);
-  
-    // Add the buttons to our buttonPanel
-    buttonPanel = new JPanel(new GridLayout(1,2));
-    buttonPanel.setBackground(Color.LIGHT_GRAY);
-    buttonPanel.add(roomPanelBtnEdit);
-    buttonPanel.add(roomPanelBtnSearch);
+ 
     
     // New constraints
     c.insets      = new Insets(0,0,0,0);
@@ -520,7 +512,7 @@ public class AdminWindow2 extends GenericWindow {
     c.weighty     = 0.05;
     
     // Adding buttonPanel to panel
-    panel.add(buttonPanel, c);
+    panel.add(roomPanelBtnSearch, c);
     
     // Array of columnnames for our JTable
     columnNames = new String[]{"Romnummer", "Type", "Status"};
