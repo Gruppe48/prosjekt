@@ -12,13 +12,13 @@ import java.io.FileReader;
  *
  * @author Dobbelmoral
  */
-public class ServingFacilities extends AbstractFacilities implements IServingFacilities {
+public class ServingFacility extends AbstractFacility implements IServingFacility {
   
   String menu;
   
-    public ServingFacilities(String name, String description, String openingHours, String menu) {
-    super(name,description,openingHours);
-    this.menu = menu;
+    public ServingFacility(String name, String description, String openingHours) {
+      super(name,description,openingHours);
+      this.menu = menu;
     }
 
     @Override

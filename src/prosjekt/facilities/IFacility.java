@@ -8,7 +8,7 @@ package prosjekt.facilities;
  *
  * @author Dobbelmoral
  */
-public interface IFacilities {
+public interface IFacility {
   
   public String getName();
   

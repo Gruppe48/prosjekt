@@ -8,9 +8,9 @@ package prosjekt.facilities;
  *
  * @author Dobbelmoral
  */
-public class OtherFacilities extends AbstractFacilities implements IOtherFacilities {
+public class OtherFacility extends AbstractFacility implements IOtherFacility {
   
-  public OtherFacilities(String name, String description, String openingHours) {
+  public OtherFacility(String name, String description, String openingHours) {
     super(name,description,openingHours);
   }
 }

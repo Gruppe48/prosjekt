@@ -5,16 +5,16 @@
 package prosjekt.rooms.types;
 
 import prosjekt.rooms.HotelRoom;
-import prosjekt.rooms.RoomMisc.facilities;
 
 /**
  *
  * @author kristoffer
  */
-public class SingleRoom extends HotelRoom {
-  public SingleRoom() {
+public class DoubleRoom extends HotelRoom {
+
+  public DoubleRoom() {
     super();
-    bedCount = 1;
-    price = 750;
+    price = 1200;
   }
+  
 }

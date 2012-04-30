@@ -11,9 +11,19 @@ import prosjekt.rooms.RoomMisc.facilities;
  * @date Mar 26, 2012
  */
 public abstract class HotelRoom extends AbstractRoom implements IHotelRoom {
-
-  public HotelRoom(float price) {
-    super(price);
+  protected int bedCount = 0;
+  
+  public HotelRoom() {
+    super();
+  }
+  @Override
+  public int getBedCount() {
+    return bedCount;
   }
 
+  @Override
+  public void setBedCount(int amount) {
+    this.bedCount = amount;
+  }
+  
 }

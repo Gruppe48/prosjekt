@@ -11,9 +11,9 @@ import prosjekt.rooms.RoomMisc.facilities;
  * @date Mar 26, 2012
  */
 public abstract class SeminarRoom extends AbstractRoom implements ISeminarRoom {
-
-  public SeminarRoom(float price) {
-    super(price);
+  
+  public SeminarRoom() {
+    super();
   }
   
 }

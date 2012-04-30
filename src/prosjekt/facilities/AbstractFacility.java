@@ -8,7 +8,7 @@ package prosjekt.facilities;
  *
  * @author Dobbelmoral
  */
-public abstract class AbstractFacilities implements IFacilities{
+public abstract class AbstractFacility implements IFacility{
   
   /* Information description the facility. 
    * I picture description and menu to just be bulks of text that can be edited as
@@ -19,7 +19,7 @@ public abstract class AbstractFacilities implements IFacilities{
   private String description;
   private String openingHours;
   
-  public AbstractFacilities(String name,String description,String openingHours) {
+  public AbstractFacility(String name,String description,String openingHours) {
     this.name = name;
     this.description = description;
     this.openingHours = openingHours;

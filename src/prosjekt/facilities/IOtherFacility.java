@@ -8,12 +8,6 @@ package prosjekt.facilities;
  *
  * @author Dobbelmoral
  */
-public interface IServingFacilities {
-  
-  public String getMenu();
-  
-  public void setMenu(String menu);
-  
-  public String readMenu(String filename);
+public interface IOtherFacility {
   
 }
