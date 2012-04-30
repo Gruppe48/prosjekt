@@ -14,11 +14,11 @@ import java.io.IOException;
  *
  * @author Dobbelmoral
  */
-public class ServingFacilities extends AbstractFacilities implements IServingFacilities {
+public class ServingFacility extends AbstractFacility implements IServingFacility {
   
   String menu = null;
   
-    public ServingFacilities(String name, String description, String openingHours) {
+    public ServingFacility(String name, String description, String openingHours) {
     super(name,description,openingHours);
     }
 
