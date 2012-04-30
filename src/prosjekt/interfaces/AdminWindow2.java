@@ -531,13 +531,6 @@ public class AdminWindow2 extends GenericWindow {
     roomPanelSearchResults.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
     
-    /*
-    // Add actionlistener for our JTable
-    roomSearchResultsListener tableListener = new roomSearchResultsListener();
-    roomPanelSearchResults.getSelectionModel().addListSelectionListener(tableListener);
-    //guestPanelSearchResults.getColumnModel().getSelectionModel().addListSelectionListener(tableListener);
-    */
-    
     // New constraints
     c.insets    = new Insets(0,0,0,0);
     c.fill      = GridBagConstraints.BOTH;
