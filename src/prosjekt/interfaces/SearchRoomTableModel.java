@@ -1,51 +1,40 @@
-package prosjekt.interfaces;
-
-
-import java.util.ArrayList;
-import javax.swing.table.AbstractTableModel;
-import prosjekt.guests.AbstractGuest;
-import prosjekt.guests.Company;
-import prosjekt.rooms.AbstractRoom;
-
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+package prosjekt.interfaces;
+
+import java.util.ArrayList;
+import javax.swing.table.AbstractTableModel;
+import prosjekt.guests.AbstractGuest;
+import prosjekt.rooms.AbstractRoom;
 
 /**
  *
  * @author Even
  */
-class SearchTableModel extends AbstractTableModel {
+public class SearchRoomTableModel extends AbstractTableModel {
   private String[] columnNames;
   private String[][] rowData;
   ArrayList<AbstractGuest> guestList;
-  
-  
-  public SearchTableModel(ArrayList<AbstractGuest> guests, String[] columns) {
-    guestList = guests;
+  ArrayList<AbstractRoom> roomList;
+
+  public SearchRoomTableModel(ArrayList<AbstractRoom> rooms, String[] columns) {
+    roomList    = rooms;
     columnNames = columns;
     
     
-    if(guests != null) {
-      rowData = new String[guests.size()][6];
+    if(rooms != null) {
+      rowData = new String[rooms.size()][3];
       
       int i = 0;
-      for (AbstractGuest g : guests) {
-        rowData[i][0] = g.getFirstName();
-        rowData[i][1] = g.getLastName();
-        rowData[i][2] = g.getPhoneNumber();
-        rowData[i][3] = g.getPostNumber() + "";
-        rowData[i][4] = g.getAddress();
-        if(g instanceof Company) {
-          Company c = (Company) g;
-          rowData[i][5] = c.getCompanyName();
-        }
+      for (AbstractRoom r : rooms) {
+        rowData[i][0] = r.getID() + "";
+        rowData[i][1] = r.getPrice() + "";
         i++;
       }
     }
   }
-  
   
   @Override
   public int getColumnCount() {
@@ -82,6 +71,4 @@ class SearchTableModel extends AbstractTableModel {
     return false;
   }
   
-  
-  
-} 
+}
