@@ -23,7 +23,7 @@ public class Main {
   
   private static void setupRooms() {
     for (int i = 0; i < 10; i++) {
-      SingleRoom room = new SingleRoom(500f);
+      SingleRoom room = new SingleRoom();
       roomRegistry.add(room);
     }
   }
