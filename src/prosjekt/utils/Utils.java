@@ -61,19 +61,4 @@ public class Utils {
       return out;
     }
   }
-//  public void save() {
-//    FileOutputStream out = null;
-//    try {
-//      // Open the login window
-//      //new LoginWindow(
-//      out = new FileOutputStream(new File("roomRegistry.json"));
-//    } catch (FileNotFoundException ex) {
-//      Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-//    }
-//    try {
-//      Utils.save(this, out);
-//    } catch (IOException ex) {
-//      Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-//    }
-//  }
 }

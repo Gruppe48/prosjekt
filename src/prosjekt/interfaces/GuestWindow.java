@@ -4,6 +4,7 @@
  */
 package prosjekt.interfaces;
 
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
@@ -29,6 +30,7 @@ import javax.swing.event.HyperlinkListener;
 import javax.swing.text.EditorKit;
 import javax.swing.text.StyledEditorKit;
 import javax.swing.text.html.HTMLDocument;
+import prosjekt.Main;
 
 /**
  *
@@ -38,7 +40,7 @@ public class GuestWindow extends GenericWindow implements HyperlinkListener {
   JButton facilities, restaurant;
   JPanel buttons, contentarea;
   JEditorPane output;
-  
+  Color uiMainColor;
   public GuestWindow() {
     super("Guest window", 800, 800);
   }
@@ -46,10 +48,11 @@ public class GuestWindow extends GenericWindow implements HyperlinkListener {
   @Override
   public void create() {
     super.create();
+    uiMainColor = (Color)Main.options.get("uiMainColor");
     Container c = getContentPane();
     c.setLayout( new GridBagLayout() );
     
-    
+    this.setBackground(uiMainColor);
     buttons = new JPanel();
     contentarea = new JPanel();
     
