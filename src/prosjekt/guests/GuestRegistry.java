@@ -5,6 +5,7 @@
 package prosjekt.guests;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  *
@@ -13,7 +14,7 @@ import java.util.ArrayList;
  */
 public class GuestRegistry {
   // "Indeksert" etter from, to og room.
-  private ArrayList<AbstractGuest> list = new ArrayList();
+  private HashMap<String, AbstractGuest> list = new HashMap<String, AbstractGuest>();
   
   /*
    * @param AbstractGuest guest
@@ -21,17 +22,26 @@ public class GuestRegistry {
    * 
    */
   //TODO: VALIDERING
+  public String getHash(AbstractGuest guest) {
+    StringBuilder output = new StringBuilder();
+    
+    // Fetch the first name, last name and phone number to create a unique "hash" to identify a guest.
+    output.append(guest.getFirstName());
+    output.append(guest.getLastName());
+    output.append(guest.getPhoneNumber());
+    return output.toString();
+  }
   public boolean add(AbstractGuest guest) {
     if (exists(guest)) {
       return false;
     }
-    list.add(guest);
+    list.put(getHash(guest), guest);
     return true;
   }
   /*
    * @return List of guests (all guests, for all history)
    */
-  public ArrayList<AbstractGuest> getList() {
+  public HashMap<String, AbstractGuest> getList() {
     return list;
   }
   /*
@@ -39,13 +49,11 @@ public class GuestRegistry {
    * @return true/false om gjesten ble fjernet/fantes!
    */
   public boolean remove(AbstractGuest guest) {
-    for (AbstractGuest g : list) {
-      if (g.equals(guest)) {
-        list.remove(g);
-        return true;
-      }
+    boolean result = false;
+    if (list.remove(getHash(guest)) != null) {
+      result = true;
     }
-    return false;
+    return result;
   }
   /*
    * @param firstName Fornavn til gjest du skal finne
@@ -54,36 +62,22 @@ public class GuestRegistry {
    */
   //TODO: Normaliser telefonnummer med regulært utrykk: Hvis noen skriver f.eks 93 82 81 06 må vi kunne matche det mot 93828106 osv.
   public AbstractGuest getGuest(String firstName, String lastName, String phoneNumber) {
-    for (AbstractGuest g : list) {
-      if (g.getFirstName().equals(firstName) && g.getLastName().equals(lastName) && g.getPhoneNumber().equals(phoneNumber)) {
-        return g;
-      }
-    }
-    return null;
+    String hash = firstName + lastName + phoneNumber;
+    return list.get(hash);
   }
   /*
    * @param guest Guest to find
    * @returns AbstractGuest guest
    */
   public AbstractGuest getGuest(AbstractGuest guest) {
-    for (AbstractGuest g : list) {
-      if (g.equals(guest)) {
-        return g;
-      }
-    }
-    return null;
+    return list.get(getHash(guest));
   }
   /*
    * @param AbstractGuest guest, guest to find
    * @return true/false
    */
   public boolean exists(AbstractGuest guest) {
-    for (AbstractGuest g : list) {
-      if (g.getID() == guest.getID()) {
-        return true;
-      }
-     }
-    return false;
+    return list.containsKey(getHash(guest));
   }
   
   /*
@@ -98,7 +92,7 @@ public class GuestRegistry {
   public ArrayList<AbstractGuest> searchGuests(String firstName, String lastName, String phoneNumber, String address, int postNumber, String company) {
     ArrayList<AbstractGuest> matches = new ArrayList();
     
-    for (AbstractGuest g : list) {
+    for (AbstractGuest g : list.values()) {
       if(Company.class.isInstance(g)) {
         Company c = (Company) g;
         if(c.getCompanyName().contains(company)) {
