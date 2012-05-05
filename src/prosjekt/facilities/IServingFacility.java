@@ -14,10 +14,6 @@ public interface IServingFacility {
   
   public void setMenu(String menu);
   
-<<<<<<< HEAD
-  public String readMenu(String filename);
-=======
   public void readMenu(String filename);
->>>>>>> development
   
 }

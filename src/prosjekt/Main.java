@@ -9,6 +9,7 @@ import prosjekt.rooms.types.SingleRoom;
 import prosjekt.guests.Person;
 import prosjekt.interfaces.GuestWindow;
 
+import prosjekt.interfaces.LoginWindow;
 import prosjekt.utils.Utils;
 
 /**
@@ -20,6 +21,7 @@ public class Main {
   public static BookingRegistry bookingRegistry = new BookingRegistry();
   public static GuestRegistry guestRegistry = new GuestRegistry();
   public static Options options = new Options(); // load options!
+  public static GuestBook guestBook;
   
   private static void setupRooms() {
     if (Utils.fileExists("roomRegistry.json")) {
@@ -55,6 +57,16 @@ public class Main {
       saveBooking();
     }
   }
+  
+  private static void setupGuestBook() {
+    if (Utils.fileExists("guestBook.json")) {
+      loadGuestBook();
+    }
+    else {
+      // Setup default options
+      saveGuestBook();
+    }
+  }
   public static void saveRooms() {
     Utils.save(roomRegistry, "roomRegistry.json");
   }
@@ -76,6 +88,13 @@ public class Main {
     bookingRegistry = (BookingRegistry) Utils.load("bookingRegistry.json");
   }
   
+  public static void saveGuestBook() {
+    Utils.save(guestBook, "guestBook.json");
+  }
+  public static void loadGuestBook() {
+    guestBook = (GuestBook) Utils.load("guestBook.json");
+  }
+  
   
   
   /**
@@ -85,6 +104,7 @@ public class Main {
     setupRooms();
     setupGuests();
     setupBooking();
+    setupGuestBook();
     new GuestWindow();
 
     

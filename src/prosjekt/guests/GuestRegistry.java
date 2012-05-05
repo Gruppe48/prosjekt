@@ -13,15 +13,9 @@ import java.util.HashMap;
  * @since 2012-04-16
  */
 public class GuestRegistry {
-  // "Indeksert" etter from, to og room.
   private HashMap<String, AbstractGuest> list = new HashMap<String, AbstractGuest>();
   
-  /*
-   * @param AbstractGuest guest
-   * @returns true/false
-   * 
-   */
-  //TODO: VALIDERING
+  
   public String getHash(AbstractGuest guest) {
     StringBuilder output = new StringBuilder();
     
@@ -31,11 +25,19 @@ public class GuestRegistry {
     output.append(guest.getPhoneNumber());
     return output.toString();
   }
+  /*
+   * @param AbstractGuest guest
+   * @returns true/false
+   * 
+   */
+  //TODO: VALIDERING
   public boolean add(AbstractGuest guest) {
     if (exists(guest)) {
       return false;
     }
-    list.put(getHash(guest), guest);
+    String hash = getHash(guest);
+    list.put(hash, guest);
+    System.out.println("Added guest with hash: " + hash);
     return true;
   }
   /*
@@ -50,7 +52,9 @@ public class GuestRegistry {
    */
   public boolean remove(AbstractGuest guest) {
     boolean result = false;
-    if (list.remove(getHash(guest)) != null) {
+    String hash = getHash(guest);
+    if (list.remove(hash) != null) {
+      System.out.println("Removed guest with hash: " + hash);
       result = true;
     }
     return result;
