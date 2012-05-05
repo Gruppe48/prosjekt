@@ -31,55 +31,63 @@ import javax.swing.text.EditorKit;
 import javax.swing.text.StyledEditorKit;
 import javax.swing.text.html.HTMLDocument;
 import prosjekt.Main;
+import prosjekt.utils.Utils;
 
 /**
  *
  * @author kristoffer
  */
-public class GuestWindow extends GenericWindow implements HyperlinkListener {
-  JButton facilities, restaurant;
-  JPanel buttons, contentarea;
-  JEditorPane output;
-  Color uiMainColor;
+public class GuestWindow extends GenericWindow {
+  private JButton home, facilities, food, activities, guestbook;
+  private JPanel buttons, contentarea;
+  private JTextArea output;
+  private Color uiMainColor;
+  public static final String ROOT_PATH = "assets/guests/";
+  
   public GuestWindow() {
-    super("Guest window", 800, 800);
+    super("Guest window", 800, 400);
   }
 
   @Override
   public void create() {
     super.create();
-    uiMainColor = (Color)Main.options.get("uiMainColor");
+        setUiMainColor((Color)Main.options.get("uiMainColor"));
     Container c = getContentPane();
     c.setLayout( new GridBagLayout() );
     
-    this.setBackground(uiMainColor);
+    this.setBackground(getUiMainColor());
     buttons = new JPanel();
     contentarea = new JPanel();
     
-    output = new JEditorPane();
-    output.setDocument(new HTMLDocument());
-    output.setContentType("text/html");
-    try {
-     
-      output.read(new FileInputStream(new File("assets/guests/index.html")), null);
-    } catch (IOException ex) {
-      Logger.getLogger(GuestWindow.class.getName()).log(Level.SEVERE, null, ex);
-    }
+    output = new JTextArea();
     output.setEditable(false);
-    output.addHyperlinkListener(this);
+    // Initial "front page" value for the output
+    output.setText(Utils.readFile(ROOT_PATH+"index.txt"));
     
     buttons.setLayout(new GridLayout(20, 1));
     contentarea.setLayout(new GridLayout(1,10));
     
     contentarea.add(output);
     
+    home = new JButton("Hjem");
     facilities = new JButton("Fasiliter");
-    restaurant = new JButton("Restaurantmeny"); //TODO: Skrivefeil?
-    buttons.add(facilities);
-    buttons.add(restaurant);
+    food = new JButton("Mat");
+    activities = new JButton("Aktiviteter");
+    guestbook = new JButton("Gjestebok");
     
+    buttons.add(home);
+    buttons.add(facilities);
+    buttons.add(food);
+    buttons.add(activities);
+    buttons.add(guestbook);
+   
+    home.addActionListener(buttonListener);
     facilities.addActionListener(buttonListener);
-    restaurant.addActionListener(buttonListener);
+    food.addActionListener(buttonListener);
+    activities.addActionListener(buttonListener);
+    guestbook.addActionListener(buttonListener);
+    
+    
     GridBagConstraints g = new GridBagConstraints();
     // Buttons
     g.insets = new Insets(5, 5, 5, 5);
@@ -112,35 +120,35 @@ public class GuestWindow extends GenericWindow implements HyperlinkListener {
   @Override
   public void buttonPressed(ActionEvent e) {
     super.buttonPressed(e);
-    
-    if (e.getSource() == facilities) {
-      try {
-        output.read(new FileInputStream(new File("assets/guests/facilities.html")), null);
-      } catch (IOException ex) {
-        Logger.getLogger(GuestWindow.class.getName()).log(Level.SEVERE, null, ex);
-      }
+    if (e.getSource() == home) {
+        output.setText(Utils.readFile(ROOT_PATH+"index.txt"));
     }
-    else if (e.getSource() == restaurant) {
-      try {
-        output.read(new FileInputStream(new File("assets/guests/restaurant.html")), null);
-      } catch (IOException ex) {
-        Logger.getLogger(GuestWindow.class.getName()).log(Level.SEVERE, null, ex);
-      }
+    else if (e.getSource() == facilities) {
+        output.setText(Utils.readFile(ROOT_PATH+"facilities.txt"));
     }
-  }
-  public void hyperlinkUpdate(HyperlinkEvent event) {
-    if (event.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-      try {
-        output.setPage(event.getURL());
-      } catch(IOException ioe) {
-        warnUser("Can't follow link to " 
-                 + event.getURL().toExternalForm() + ": " + ioe);
-      }
+    else if (e.getSource() == food) {
+        output.setText(Utils.readFile(ROOT_PATH+"food.txt"));
+    }
+    else if (e.getSource() == activities) {
+        output.setText(Utils.readFile(ROOT_PATH+"activities.txt"));
+    }
+    else if (e.getSource() == guestbook) {
+       //TODO: Last gjestebok vindu her!
+        System.out.println("Open guestbook window!");
     }
   }
-  
-  private void warnUser(String message) {
-    JOptionPane.showMessageDialog(this, message, "Error", 
-                                  JOptionPane.ERROR_MESSAGE);
-  }
+
+    /**
+     * @return the uiMainColor
+     */
+    public Color getUiMainColor() {
+        return uiMainColor;
+    }
+
+    /**
+     * @param uiMainColor the uiMainColor to set
+     */
+    public void setUiMainColor(Color uiMainColor) {
+        this.uiMainColor = uiMainColor;
+    }
 }

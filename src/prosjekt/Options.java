@@ -38,11 +38,11 @@ public class Options {
     options.put(key, obj);
   }
   public void save() {
-    Utils.save(options, "options.json");
+    Utils.saveObject(options, "options.json");
   }
 
   public final void load() {
-    options = (HashMap<String, Object>) Utils.load("options.json");
+    options = (HashMap<String, Object>) Utils.loadObject("options.json");
   }
 
   public boolean exists(String name) {

@@ -20,7 +20,7 @@ public class Main {
   public static RoomRegistry roomRegistry = new RoomRegistry();
   public static BookingRegistry bookingRegistry = new BookingRegistry();
   public static GuestRegistry guestRegistry = new GuestRegistry();
-  public static Options options = new Options(); // load options!
+  public static Options options = new Options(); // loadObject options!
   public static GuestBook guestBook;
   
   private static void setupRooms() {
@@ -68,31 +68,31 @@ public class Main {
     }
   }
   public static void saveRooms() {
-    Utils.save(roomRegistry, "roomRegistry.json");
+    Utils.saveObject(roomRegistry, "roomRegistry.json");
   }
   public static void loadRooms() {
-    roomRegistry = (RoomRegistry) Utils.load("roomRegistry.json");
+    roomRegistry = (RoomRegistry) Utils.loadObject("roomRegistry.json");
   }
   
   public static void saveGuests() {
-    Utils.save(guestRegistry, "guestRegistry.json");
+    Utils.saveObject(guestRegistry, "guestRegistry.json");
   }
   public static void loadGuests() {
-    guestRegistry = (GuestRegistry) Utils.load("guestRegistry.json");
+    guestRegistry = (GuestRegistry) Utils.loadObject("guestRegistry.json");
   }
   
   public static void saveBooking() {
-    Utils.save(bookingRegistry, "bookingRegistry.json");
+    Utils.saveObject(bookingRegistry, "bookingRegistry.json");
   }
   public static void loadBooking() {
-    bookingRegistry = (BookingRegistry) Utils.load("bookingRegistry.json");
+    bookingRegistry = (BookingRegistry) Utils.loadObject("bookingRegistry.json");
   }
   
   public static void saveGuestBook() {
-    Utils.save(guestBook, "guestBook.json");
+    Utils.saveObject(guestBook, "guestBook.json");
   }
   public static void loadGuestBook() {
-    guestBook = (GuestBook) Utils.load("guestBook.json");
+    guestBook = (GuestBook) Utils.loadObject("guestBook.json");
   }
   
   
