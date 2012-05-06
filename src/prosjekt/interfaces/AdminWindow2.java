@@ -81,6 +81,11 @@ public class AdminWindow2 extends GenericWindow {
     c.add(tabbedPane);
     
   }
+  
+  public JPanel guestPanel() {
+    GuestPanelGUI guestPanel = new GuestPanelGUI();
+    return guestPanel.getPanel();
+  }
 
   @Override
   public void destroy() {
@@ -163,6 +168,7 @@ public class AdminWindow2 extends GenericWindow {
         return test;
   }
   
+  /*
   private JComponent guestPanel() {
     JPanel frame;
     JButton searchGuest, showGuests;
@@ -194,7 +200,9 @@ public class AdminWindow2 extends GenericWindow {
     // PANEL
     panel  = new JPanel(new GridBagLayout());
     panel.setBackground(Color.LIGHT_GRAY);
-    panel = searchGuest(panel);
+    //panel = searchGuest(panel);
+    GuestPanelGUI guestPanel = new GuestPanelGUI();
+    panel = guestPanel.getPanel();
    
 
     //Place PANEL
@@ -213,7 +221,9 @@ public class AdminWindow2 extends GenericWindow {
       @Override
       public void actionPerformed(ActionEvent e) {
         panel.removeAll();
-        panel = searchGuest(panel);
+        //panel = searchGuest(panel);
+        GuestPanelGUI guestPanel = new GuestPanelGUI();
+        panel = guestPanel.getPanel();
         panel.updateUI();
       }
     });
@@ -225,7 +235,6 @@ public class AdminWindow2 extends GenericWindow {
        panel.updateUI();
       }
     });
-    
     
     return frame;
     
@@ -394,6 +403,7 @@ public class AdminWindow2 extends GenericWindow {
     
     return panel;
   }
+  */
   
   private JComponent roomPanel() {
     JPanel frame;
@@ -453,7 +463,7 @@ public class AdminWindow2 extends GenericWindow {
       @Override
       public void actionPerformed(ActionEvent e) {
        panel.removeAll();
-       panel = showAllGuests(panel);
+       //panel = showAllRooms(panel);
        panel.updateUI();
       }
     });
