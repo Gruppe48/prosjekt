@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.table.TableModel;
 import prosjekt.Main;
+import prosjekt.guests.AbstractGuest;
+import prosjekt.guests.Company;
+import prosjekt.guests.Person;
 import prosjekt.rooms.AbstractRoom;
 
 /**
@@ -25,7 +28,8 @@ public class RoomPanelGUI {
   private ActionListener btnListener;
   
   // roomPanel
-  private JTextField txtRoomNumber, txtBedCount;
+  private JTextField txtRoomNumber;
+  private JComboBox cmbRoomTypes;
   private JButton btnSearch, btnEdit, btnSearchRooms, btnShowRooms;;
   private JTable tableSearchResults;
   private ArrayList<AbstractRoom> arrListResults;
@@ -111,7 +115,10 @@ public class RoomPanelGUI {
     
     // Create textfields
     txtRoomNumber = new JTextField(10);
-    txtBedCount   = new JTextField(10);
+   
+    // Create Combobox for roomtypes
+    String[] arrRoomTypes = { "Enkeltrom", "Dobbeltrom" };
+    cmbRoomTypes = new JComboBox(arrRoomTypes);
     
     // Panel for input fields
     inputPanel = new JPanel(new GridLayout(1,2));
@@ -121,7 +128,7 @@ public class RoomPanelGUI {
     inputPanel.add(new JLabel("Romnummer"));
     inputPanel.add(txtRoomNumber);
     inputPanel.add(new JLabel("Sengeplasser"));
-    inputPanel.add(txtBedCount);
+    inputPanel.add(cmbRoomTypes);
             
     // Create a contraints variable for gridbaglayout
     GridBagConstraints c = new GridBagConstraints();
@@ -206,6 +213,64 @@ public class RoomPanelGUI {
     
     return panel;
   }
+ /* 
+  private class ButtonListener implements ActionListener {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      if(e.getSource() == btnSearch) {
+        btnEdit.setEnabled(false);
+        String roomNumber = txtRoomNumber.getText();
+        String roomType   = (String) cmbRoomTypes.getSelectedItem();
+
+        try {
+          arrListResults = Main.roomRegistry.searchRooms(roomNumber, roomType);
+
+          // Tablemodel for our JTable
+          tableModel = new SearchTableModel(arrListResults, columnNames, "rooms");
+
+          tableSearchResults.setModel(tableModel);
+        }
+        catch(NumberFormatException nfe) {
+          System.out.println("error! NumberFormatException");
+        }
+      }
+      else if(e.getSource() == btnEdit) {
+        String firstname    = txtFirstname.getText();
+        String lastname     = txtLastname.getText();
+        String phoneNumber  = txtPhoneNumber.getText();
+        String address      = txtAddress.getText();
+        String companyName  = txtCompanyName.getText();
+        AbstractGuest editedGuest;
+
+        try {
+          int postNumber = 0;
+
+          if(!txtPostNumber.getText().equals("")) {
+            postNumber = Integer.parseInt(txtPostNumber.getText());
+          }
+
+          // Create new guest based on the old
+          if(companyName.length() > 0) {
+            editedGuest = new Company(firstname, lastname, phoneNumber, address, postNumber, companyName);
+          }
+          else {
+            editedGuest = new Person(firstname, lastname, phoneNumber, address, postNumber);
+          }
+
+          // Swap the old one with the new one.
+          Main.guestRegistry.swapGuest(arrListResults.get(tableSearchResults.getSelectedRow()), editedGuest);
+
+        }
+        catch(NumberFormatException nfe) {
+          System.out.println("error! NumberFormatException");
+        }
+        catch(NullPointerException npe) {
+          System.out.println("error! NullPointerException");
+        }
+
+      }
+    }
+  }*/
   
   
 }

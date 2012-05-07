@@ -25,6 +25,7 @@ public class GuestPanelGUI {
   // General
   private JPanel panelContainer, panelMenu, panelMain;
   private String columnNames[];
+  String[][] rowData;
   private TableModel tableModel;
   private ActionListener btnListener;
   
@@ -203,7 +204,7 @@ public class GuestPanelGUI {
     columnNames = new String[]{"Fornavn", "Etternavn", "Telefon", "Postnummer", "Addresse", "Company"};
         
     // Create a JTable for guestPanelSearchresults           
-    tableModel = new SearchTableModel(arrListResults, columnNames);
+    tableModel = new SearchTableModel(rowData, columnNames);
     tableSearchResults = new JTable(tableModel);
     tableSearchResults.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
@@ -308,9 +309,27 @@ public class GuestPanelGUI {
           }
 
           arrListResults = Main.guestRegistry.searchGuests(firstname, lastname, phoneNumber, address, postNumber, companyName);
-
+          
+          // Lets create and fill rowData
+          if(arrListResults != null) {
+            rowData = new String[arrListResults.size()][6];
+            int i = 0;
+            for (AbstractGuest g : arrListResults) {
+              rowData[i][0] = g.getFirstName();
+              rowData[i][1] = g.getLastName();
+              rowData[i][2] = g.getPhoneNumber();
+              rowData[i][3] = g.getPostNumber() + "";
+              rowData[i][4] = g.getAddress();
+              if(g instanceof Company) {
+                Company c = (Company) g;
+                rowData[i][5] = c.getCompanyName();
+              }
+              i++;
+            }
+          }
+          
           // Tablemodel for our JTable
-          tableModel = new SearchTableModel(arrListResults, columnNames);
+          tableModel = new SearchTableModel(rowData, columnNames);
 
           tableSearchResults.setModel(tableModel);
         }
