@@ -23,10 +23,10 @@ import prosjekt.guests.Person;
  */
 public class GuestPanelGUI {
   // General
-  private JPanel panelContainer, panelMenu, panelMain; 
-  private GenericWindow.ButtonListener btnListener;
+  private JPanel panelContainer, panelMenu, panelMain;
   private String columnNames[];
   private TableModel tableModel;
+  private ActionListener btnListener;
   
   // guestPanel
   private JTextField txtFirstname, txtLastname, txtPhoneNumber, txtAddress, txtPostNumber, txtCompanyName;
@@ -173,6 +173,8 @@ public class GuestPanelGUI {
     btnSearch = new JButton("Søk");
     btnEdit   = new JButton("Endre");
     btnEdit.setEnabled(false);
+    // Add actionlistener
+    btnListener = new ButtonListener();
     btnSearch.addActionListener(btnListener);
     btnEdit.addActionListener(btnListener);
           
@@ -285,70 +287,73 @@ public class GuestPanelGUI {
     return panel;
   }
   
-  public void buttonPressed(ActionEvent e) {
-    
-    if(e.getSource() == btnSearch) {
-      btnEdit.setEnabled(false);
-      String firstname    = txtFirstname.getText();
-      String lastname     = txtLastname.getText();
-      String phoneNumber  = txtPhoneNumber.getText();
-      String address      = txtAddress.getText();
-      String companyName  = txtCompanyName.getText();
-      
-      try {
-        int postNumber = 0;
-        
-        if(!txtPostNumber.getText().equals("")) {
-          postNumber = Integer.parseInt(txtPostNumber.getText());
+  
+  
+  private class ButtonListener implements ActionListener {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      if(e.getSource() == btnSearch) {
+        btnEdit.setEnabled(false);
+        String firstname    = txtFirstname.getText();
+        String lastname     = txtLastname.getText();
+        String phoneNumber  = txtPhoneNumber.getText();
+        String address      = txtAddress.getText();
+        String companyName  = txtCompanyName.getText();
+
+        try {
+          int postNumber = 0;
+
+          if(!txtPostNumber.getText().equals("")) {
+            postNumber = Integer.parseInt(txtPostNumber.getText());
+          }
+
+          arrListResults = Main.guestRegistry.searchGuests(firstname, lastname, phoneNumber, address, postNumber, companyName);
+
+          // Tablemodel for our JTable
+          tableModel = new SearchTableModel(arrListResults, columnNames);
+
+          tableSearchResults.setModel(tableModel);
         }
-        
-        arrListResults = Main.guestRegistry.searchGuests(firstname, lastname, phoneNumber, address, postNumber, companyName);
-        
-        // Tablemodel for our JTable
-        tableModel = new SearchTableModel(arrListResults, columnNames);
-         
-        tableSearchResults.setModel(tableModel);
+        catch(NumberFormatException nfe) {
+          System.out.println("error! NumberFormatException");
+        }
       }
-      catch(NumberFormatException nfe) {
-        System.out.println("error! NumberFormatException");
+      else if(e.getSource() == btnEdit) {
+        String firstname    = txtFirstname.getText();
+        String lastname     = txtLastname.getText();
+        String phoneNumber  = txtPhoneNumber.getText();
+        String address      = txtAddress.getText();
+        String companyName  = txtCompanyName.getText();
+        AbstractGuest editedGuest;
+
+        try {
+          int postNumber = 0;
+
+          if(!txtPostNumber.getText().equals("")) {
+            postNumber = Integer.parseInt(txtPostNumber.getText());
+          }
+
+          // Create new guest based on the old
+          if(companyName.length() > 0) {
+            editedGuest = new Company(firstname, lastname, phoneNumber, address, postNumber, companyName);
+          }
+          else {
+            editedGuest = new Person(firstname, lastname, phoneNumber, address, postNumber);
+          }
+
+          // Swap the old one with the new one.
+          Main.guestRegistry.swapGuest(arrListResults.get(tableSearchResults.getSelectedRow()), editedGuest);
+
+        }
+        catch(NumberFormatException nfe) {
+          System.out.println("error! NumberFormatException");
+        }
+        catch(NullPointerException npe) {
+          System.out.println("error! NullPointerException");
+        }
+
       }
     }
-    else if(e.getSource() == btnEdit) {
-      String firstname    = txtFirstname.getText();
-      String lastname     = txtLastname.getText();
-      String phoneNumber  = txtPhoneNumber.getText();
-      String address      = txtAddress.getText();
-      String companyName  = txtCompanyName.getText();
-      AbstractGuest editedGuest;
-      
-      try {
-        int postNumber = 0;
-        
-        if(!txtPostNumber.getText().equals("")) {
-          postNumber = Integer.parseInt(txtPostNumber.getText());
-        }
-        
-        // Create new guest based on the old
-        if(companyName.length() > 0) {
-          editedGuest = new Company(firstname, lastname, phoneNumber, address, postNumber, companyName);
-        }
-        else {
-          editedGuest = new Person(firstname, lastname, phoneNumber, address, postNumber);
-        }
-        
-        // Swap the old one with the new one.
-        Main.guestRegistry.swapGuest(arrListResults.get(tableSearchResults.getSelectedRow()), editedGuest);
-        
-      }
-      catch(NumberFormatException nfe) {
-        System.out.println("error! NumberFormatException");
-      }
-      catch(NullPointerException npe) {
-        System.out.println("error! NullPointerException");
-      }
-      
-    }
-    
   }
   
 }
