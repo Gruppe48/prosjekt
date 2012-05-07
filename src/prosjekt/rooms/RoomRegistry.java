@@ -5,6 +5,7 @@
 package prosjekt.rooms;
 
 import java.util.ArrayList;
+import prosjekt.guests.AbstractGuest;
 
 /**
  *
@@ -42,5 +43,15 @@ public class RoomRegistry {
       }
      }
     return false;
+  }
+  
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    for (AbstractRoom r : list) {
+      sb.append(r.toString());
+      sb.append("\n");
+    }
+    return sb.toString();
   }
 }

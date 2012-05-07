@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.table.TableModel;
+import prosjekt.Main;
 import prosjekt.rooms.AbstractRoom;
 
 /**
@@ -184,6 +185,24 @@ public class RoomPanelGUI {
   }
   
   private JPanel showAllRooms(JPanel panel) {
+    GridBagConstraints c = new GridBagConstraints();
+    
+    // Display area
+    JTextArea display = new JTextArea(10,30);
+    display.setForeground(Color.BLACK);
+    display.setBackground(Color.WHITE);
+    display.setText(Main.roomRegistry.toString());
+    display.setEditable(false);
+    JScrollPane scroll = new JScrollPane(display);
+    c.insets  = new Insets(0,0,0,0);
+    c.fill    = GridBagConstraints.BOTH;
+    c.anchor  = GridBagConstraints.FIRST_LINE_START;
+    c.gridwidth = 8;
+    c.gridx   = 0;
+    c.gridy   = 0;
+    c.weightx = 1;
+    c.weighty = 1;
+    panel.add(scroll, c);
     
     return panel;
   }
