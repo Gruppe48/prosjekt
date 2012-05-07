@@ -6,7 +6,6 @@ package prosjekt.interfaces;
 
 import java.awt.Color;
 import java.awt.Container;
-import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -14,7 +13,6 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,27 +20,26 @@ import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
-import javax.swing.text.EditorKit;
-import javax.swing.text.StyledEditorKit;
 import javax.swing.text.html.HTMLDocument;
 import prosjekt.Main;
+import prosjekt.utils.Utils;
 
 /**
  *
  * @author kristoffer
  */
-public class GuestWindow extends GenericWindow implements HyperlinkListener {
-  JButton facilities, restaurant;
-  JPanel buttons, contentarea;
-  JEditorPane output;
-  Color uiMainColor;
+public class GuestWindow extends GenericWindow {
+  private JButton homeButton, facilitiesButton, restaurantButton;
+  private JPanel buttonPanel, contentPanel;
+  private JTextPane contentPane;
+  private Color uiMainColor;
+  private final String ROOT_PATH = "assets/guests/";
+  
   public GuestWindow() {
-    super("Guest window", 800, 800);
+    super("Guest window", 600, 400);
   }
 
   @Override
@@ -53,33 +50,30 @@ public class GuestWindow extends GenericWindow implements HyperlinkListener {
     c.setLayout( new GridBagLayout() );
     
     this.setBackground(uiMainColor);
-    buttons = new JPanel();
-    contentarea = new JPanel();
+    buttonPanel = new JPanel();
+    contentPanel = new JPanel();
     
-    output = new JEditorPane();
-    output.setDocument(new HTMLDocument());
-    output.setContentType("text/html");
-    try {
-     
-      output.read(new FileInputStream(new File("assets/guests/index.html")), null);
-    } catch (IOException ex) {
-      Logger.getLogger(GuestWindow.class.getName()).log(Level.SEVERE, null, ex);
-    }
-    output.setEditable(false);
-    output.addHyperlinkListener(this);
+    contentPane = new JTextPane();
+    contentPane.setContentType("text/rtf");
+    contentPane.setText(Utils.read(ROOT_PATH+"index.rtf"));
     
-    buttons.setLayout(new GridLayout(20, 1));
-    contentarea.setLayout(new GridLayout(1,10));
+    contentPane.setEditable(false);
     
-    contentarea.add(output);
+    buttonPanel.setLayout(new GridLayout(20, 1));
+    contentPanel.setLayout(new GridLayout(1,10));
     
-    facilities = new JButton("Fasiliter");
-    restaurant = new JButton("Restaurantmeny"); //TODO: Skrivefeil?
-    buttons.add(facilities);
-    buttons.add(restaurant);
+    contentPanel.add(contentPane);
     
-    facilities.addActionListener(buttonListener);
-    restaurant.addActionListener(buttonListener);
+    homeButton = new JButton("Hjem");
+    facilitiesButton = new JButton("Fasiliter");
+    restaurantButton = new JButton("Restaurantmeny");
+    buttonPanel.add(homeButton);
+    buttonPanel.add(facilitiesButton);
+    buttonPanel.add(restaurantButton);
+    
+    homeButton.addActionListener(buttonListener);
+    facilitiesButton.addActionListener(buttonListener);
+    restaurantButton.addActionListener(buttonListener);
     GridBagConstraints g = new GridBagConstraints();
     // Buttons
     g.insets = new Insets(5, 5, 5, 5);
@@ -89,7 +83,7 @@ public class GuestWindow extends GenericWindow implements HyperlinkListener {
     g.gridy = 0;
     g.weightx = 0;
     g.weighty = 0;
-    c.add(buttons, g);
+    c.add(buttonPanel, g);
     // Output
     g.insets = new Insets(5, 5, 5, 5);
     g.fill = GridBagConstraints.BOTH;
@@ -99,7 +93,7 @@ public class GuestWindow extends GenericWindow implements HyperlinkListener {
     g.weightx = 1;
     g.weighty = 1;
     
-    c.add(contentarea, g);
+    c.add(contentPanel, g);
  
     
   }
@@ -113,34 +107,14 @@ public class GuestWindow extends GenericWindow implements HyperlinkListener {
   public void buttonPressed(ActionEvent e) {
     super.buttonPressed(e);
     
-    if (e.getSource() == facilities) {
-      try {
-        output.read(new FileInputStream(new File("assets/guests/facilities.html")), null);
-      } catch (IOException ex) {
-        Logger.getLogger(GuestWindow.class.getName()).log(Level.SEVERE, null, ex);
-      }
+    if (e.getSource() == homeButton) {
+      contentPane.setText(Utils.read(ROOT_PATH+"index.rtf"));
     }
-    else if (e.getSource() == restaurant) {
-      try {
-        output.read(new FileInputStream(new File("assets/guests/restaurant.html")), null);
-      } catch (IOException ex) {
-        Logger.getLogger(GuestWindow.class.getName()).log(Level.SEVERE, null, ex);
-      }
+    else if (e.getSource() == facilitiesButton) {
+      contentPane.setText(Utils.read(ROOT_PATH+"facilities.rtf"));
     }
-  }
-  public void hyperlinkUpdate(HyperlinkEvent event) {
-    if (event.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-      try {
-        output.setPage(event.getURL());
-      } catch(IOException ioe) {
-        warnUser("Can't follow link to " 
-                 + event.getURL().toExternalForm() + ": " + ioe);
-      }
+    else if (e.getSource() == restaurantButton) {
+      contentPane.setText(Utils.read(ROOT_PATH+"restaurant.rtf"));
     }
-  }
-  
-  private void warnUser(String message) {
-    JOptionPane.showMessageDialog(this, message, "Error", 
-                                  JOptionPane.ERROR_MESSAGE);
   }
 }

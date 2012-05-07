@@ -4,10 +4,12 @@ package prosjekt.utils;
 
 import com.cedarsoftware.util.io.JsonReader;
 import com.cedarsoftware.util.io.JsonWriter;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -60,5 +62,22 @@ public class Utils {
       }
       return out;
     }
+  }
+  
+  public static String read(String filename) {
+    StringBuilder output = new StringBuilder();
+    try {
+      BufferedReader reader = new BufferedReader(new FileReader(filename));
+      String line = "";
+      while ((line = reader.readLine()) != null) {
+        output.append(line).append("\n");
+      }
+      
+    }
+    catch (IOException e) {
+      System.err.println("Exception reading " + filename);
+      e.printStackTrace();
+    }
+    return output.toString();
   }
 }
