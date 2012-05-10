@@ -42,6 +42,6 @@ public class Company extends AbstractGuest implements ICompany {
   @Override
   public String toString() {
     return super.toString() +
-            "Company: " + companyName;
+            "Company: " + companyName + "\n";
   }
 }
