@@ -6,8 +6,10 @@ package prosjekt.interfaces;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.Collection;
 import javax.swing.*;
 import prosjekt.Main;
+import prosjekt.guests.GuestBook;
 import prosjekt.utils.Utils;
 
 /**
@@ -16,10 +18,13 @@ import prosjekt.utils.Utils;
  */
 public class GuestWindow extends GenericWindow {
 
-  private JButton homeButton, facilitiesButton, restaurantButton, guestBookButton;
+  private JButton homeButton, facilitiesButton, restaurantButton, guestBookButton, saveMessageButton;
   private JPanel menuPanel, mainPanel, contentPanel;
   private JTextPane contentPane;
+  private JTextArea messageArea;
+  private JTextField messageTextField;
   private Color uiMainColor;
+  private GuestBook guestBook = new GuestBook();
   private final String ROOT_PATH = "assets/guests/";
 
   public GuestWindow() {
@@ -92,6 +97,15 @@ public class GuestWindow extends GenericWindow {
   public void destroy() {
     super.destroy();
   }
+
+  private void getMessages() {
+    Collection<String> messages = Main.guestBook.getList();
+    messageArea.setText("");
+    for (String m : messages) {
+      messageArea.append(m);
+      messageArea.append("\n");
+    }
+  }
   
   private JPanel textContent(JPanel p) {
     // Create a contraints variable for gridbaglayout
@@ -115,10 +129,13 @@ public class GuestWindow extends GenericWindow {
   }
   
   private JPanel guestBook(JPanel p) {
-    JTextArea display = new JTextArea(10, 10);
-    display.setEditable(false);
-    JButton btnSave   = new JButton("Lagre");
-    JTextField txtMessage = new JTextField(10);
+    messageArea = new JTextArea(10, 10);
+    messageArea.setEditable(false);
+    messageArea.setLineWrap(true);
+    getMessages();
+    saveMessageButton   = new JButton("Lagre");
+    saveMessageButton.addActionListener(buttonListener);
+    messageTextField = new JTextField(10);
     
     // Create a contraints variable for gridbaglayout
     GridBagConstraints c = new GridBagConstraints();
@@ -132,7 +149,7 @@ public class GuestWindow extends GenericWindow {
     c.gridy     = 0;
     c.weightx   = 1;
     c.weighty   = 1;
-    p.add(display, c);
+    p.add(new JScrollPane(messageArea), c);
     
     // Place txtMessage
     c.insets    = new Insets(0,0,0,0);
@@ -142,7 +159,7 @@ public class GuestWindow extends GenericWindow {
     c.gridy     = 1;
     c.weightx   = 1;
     c.weighty   = 0;
-    p.add(txtMessage, c);
+    p.add(messageTextField, c);
     
     // Place btnSave
     c.insets    = new Insets(0,0,0,0);
@@ -152,7 +169,7 @@ public class GuestWindow extends GenericWindow {
     c.gridy     = 2;
     c.weightx   = 1;
     c.weighty   = 0;
-    p.add(btnSave, c);
+    p.add(saveMessageButton, c);
 
     
     return p;
@@ -181,6 +198,22 @@ public class GuestWindow extends GenericWindow {
       mainPanel.removeAll();
       mainPanel = guestBook(mainPanel);
       mainPanel.updateUI();
+    } else if (e.getSource() == saveMessageButton) {
+      String message = messageTextField.getText();
+      if (message.equals("")) {
+        JOptionPane.showMessageDialog(this, "Vi kan ikke lagre en tom melding!");
+      }
+      else if (message != null) {
+        boolean result = Main.guestBook.add(message);
+        if (result) {
+          JOptionPane.showMessageDialog(this, "Melding lagret!");
+          getMessages();
+          messageTextField.setText("");
+        }
+        else {
+          JOptionPane.showMessageDialog(this, "Meldingen er for lang!");
+        }
+      }
     }
   }
 }
