@@ -339,7 +339,7 @@ public class BookingPanelGUI {
       }
       else if (e.getSource() == btnNew) {
         newGuest();
-        System.out.println("test: " + txtFirstname2);
+        System.out.println("test: " + txtFirstname2.getText());
       }
       else if (e.getSource() == btnLookup) {
         String firstname    = txtFirstname.getText();
