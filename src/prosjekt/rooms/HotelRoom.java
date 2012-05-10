@@ -2,8 +2,6 @@
  */
 package prosjekt.rooms;
 
-import prosjekt.rooms.RoomMisc.facilities;
-
 /**
  *
  * @author Kristoffer Berdal <web@flexd.net>
