@@ -4,6 +4,10 @@ package prosjekt.rooms;
 
 import prosjekt.guests.AbstractGuest;
 import prosjekt.rooms.RoomMisc.facilities;
+import prosjekt.rooms.types.ConferenceRoom;
+import prosjekt.rooms.types.DoubleRoom;
+import prosjekt.rooms.types.MeetingRoom;
+import prosjekt.rooms.types.SingleRoom;
 
 /**
  *
@@ -55,6 +59,17 @@ public abstract class AbstractRoom implements IRoom {
   @Override
   public facilities getFacilities() {
     return facilities;
+  }
+  
+  public String getRoomType() {
+    String rt = "";
+    
+    if(this instanceof SingleRoom) { rt = "Enkeltrom"; }
+    else if (this instanceof DoubleRoom) { rt = "Dobbeltrom"; }
+    else if (this instanceof ConferenceRoom) { rt = "Konferanserom"; }
+    else if (this instanceof MeetingRoom) { rt = "Møterom"; }
+    
+    return rt;
   }
 
   @Override

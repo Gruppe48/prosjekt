@@ -6,8 +6,10 @@ package prosjekt.interfaces;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.Collection;
 import javax.swing.*;
 import prosjekt.Main;
+import prosjekt.guests.GuestBook;
 import prosjekt.utils.Utils;
 
 /**
@@ -16,14 +18,18 @@ import prosjekt.utils.Utils;
  */
 public class GuestWindow extends GenericWindow {
 
-  private JButton homeButton, facilitiesButton, restaurantButton, guestBookButton;
+  private JButton homeButton, facilitiesButton, restaurantButton, guestBookButton, saveMessageButton;
   private JPanel menuPanel, mainPanel, contentPanel;
   private JTextPane contentPane;
+  private JTextArea messageArea;
+  private JTextField messageTextField;
   private Color uiMainColor;
+  private GuestBook guestBook = new GuestBook();
   private final String ROOT_PATH = "assets/guests/";
+  private JScrollPane scrollPane;
 
   public GuestWindow() {
-    super("Guest window", 600, 400);
+    super("Nyttig informasjon for gjester", 600, 400);
   }
  
   
@@ -48,8 +54,8 @@ public class GuestWindow extends GenericWindow {
     
     // Create menu
     homeButton = new JButton("Hjem");
-    facilitiesButton = new JButton("Fasiliter");
-    restaurantButton = new JButton("Restaurantmeny");
+    facilitiesButton = new JButton("Fasiliter ved hotellet");
+    restaurantButton = new JButton("Mat og uteliv");
     guestBookButton = new JButton("Gjestebok");
     homeButton.addActionListener(buttonListener);
     facilitiesButton.addActionListener(buttonListener);
@@ -158,6 +164,19 @@ public class GuestWindow extends GenericWindow {
     return p;
   }
 
+  private void getMessages() {
+    Collection<String> messages = Main.guestBook.getList();
+    messageArea.setText("");
+    for (String m : messages) {
+      messageArea.append(m);
+      messageArea.append("\n");
+      scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
+
+    }
+  }
+  
+ 
+
   @Override
   public void buttonPressed(ActionEvent e) {
     super.buttonPressed(e);
@@ -181,6 +200,23 @@ public class GuestWindow extends GenericWindow {
       mainPanel.removeAll();
       mainPanel = guestBook(mainPanel);
       mainPanel.updateUI();
+    } else if (e.getSource() == saveMessageButton) {
+      String message = messageTextField.getText();
+      if (message.equals("")) {
+        JOptionPane.showMessageDialog(this, "Vi kan ikke lagre en tom melding!");
+      }
+      else if (message != null) {
+        boolean result = Main.guestBook.add(message);
+        if (result) {
+          JOptionPane.showMessageDialog(this, "Melding lagret!");
+          getMessages();
+          
+          messageTextField.setText("");
+        }
+        else {
+          JOptionPane.showMessageDialog(this, "Meldingen er for lang!");
+        }
+      }
     }
   }
 }

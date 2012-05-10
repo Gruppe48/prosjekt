@@ -1,5 +1,10 @@
 package prosjekt.guests;
 
+import prosjekt.rooms.types.ConferenceRoom;
+import prosjekt.rooms.types.DoubleRoom;
+import prosjekt.rooms.types.MeetingRoom;
+import prosjekt.rooms.types.SingleRoom;
+
 /**
  *
  * @author Kristoffer Berdal <web@flexd.net>
@@ -81,6 +86,7 @@ public class AbstractGuest implements IGuest {
   public int getPostNumber() {
     return postNumber;
   }
+
   
   @Override
   public String toString() {

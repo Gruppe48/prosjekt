@@ -195,12 +195,7 @@ public class RoomPanelGUI {
       int i = 0;
       for (AbstractRoom r : arrListResults) {
         rowData[i][0] = r.getID() + "";
-        
-        if(r instanceof SingleRoom) { rowData[i][1] = "Enkeltrom"; }
-        else if (r instanceof DoubleRoom) { rowData[i][1] = "Dobbeltrom"; }
-        else if (r instanceof ConferenceRoom) { rowData[i][1] = "Konferanserom"; }
-        else if (r instanceof MeetingRoom) { rowData[i][1] = "Møterom"; }
-        
+        rowData[i][1] = r.getRoomType();
         rowData[i][2] = (r.isOccupied()) ? "Opptatt" : "Ledig";
         i++;
       }
