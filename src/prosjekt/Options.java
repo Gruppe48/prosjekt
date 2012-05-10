@@ -6,7 +6,6 @@ package prosjekt;
 
 import java.awt.Color;
 import java.util.HashMap;
-import java.util.LinkedList;
 import prosjekt.utils.Utils;
 
 /**
