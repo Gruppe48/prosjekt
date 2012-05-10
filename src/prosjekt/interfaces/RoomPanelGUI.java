@@ -117,7 +117,7 @@ public class RoomPanelGUI {
     txtRoomNumber = new JTextField(10);
    
     // Create Combobox for roomtypes
-    String[] arrRoomTypes = { "Enkeltrom", "Dobbeltrom" };
+    String[] arrRoomTypes = Main.roomRegistry.getRoomTypes();
     cmbRoomTypes = new JComboBox(arrRoomTypes);
     
     // Panel for input fields

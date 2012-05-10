@@ -54,4 +54,9 @@ public class RoomRegistry {
     }
     return sb.toString();
   }
+  
+  public String[] getRoomTypes() {
+    String[] roomTypes = {"Enkeltrom", "Dobbeltrom", "Familierom"};
+    return roomTypes;
+  }
 }

@@ -32,9 +32,8 @@ public class GuestPanelGUI {
   // guestPanel
   private JTextField txtFirstname, txtLastname, txtPhoneNumber, txtAddress, txtPostNumber, txtCompanyName;
   private JTable tableSearchResults;
-  private JButton btnSearch, btnEdit;
+  private JButton btnSearch, btnEdit, btnSearchGuest, btnShowGuests;
   private ArrayList<AbstractGuest> arrListResults;
-  private JButton btnSearchGuest, btnShowGuests;
 
   
   public GuestPanelGUI() {
@@ -42,14 +41,8 @@ public class GuestPanelGUI {
       panelContainer.removeAll();
     }
     
-    // Create menu:
-    panelMenu = new JPanel(new GridLayout(6,1));
-    panelMenu.setBackground(Color.LIGHT_GRAY);
-    btnSearchGuest = new JButton("Søk");
-    btnShowGuests  = new JButton("Vis alle");
-    panelMenu.add(btnSearchGuest);
-    panelMenu.add(btnShowGuests);
-    
+    // Create buttonlistener
+    btnListener = new ButtonListener();
     
     // Lets make this panel
     panelContainer = guestPanel();
@@ -62,9 +55,7 @@ public class GuestPanelGUI {
   
   
   private JPanel guestPanel() {
-    JPanel frame;
-    
-    frame = new JPanel(new GridBagLayout());
+    JPanel frame = new JPanel(new GridBagLayout());
     GridBagConstraints c = new GridBagConstraints();
     frame.setBackground(Color.LIGHT_GRAY);
     
@@ -73,6 +64,8 @@ public class GuestPanelGUI {
     panelMenu.setBackground(Color.LIGHT_GRAY);
     btnSearchGuest = new JButton("Søk");
     btnShowGuests  = new JButton("Vis alle");
+    btnSearchGuest.addActionListener(btnListener);
+    btnShowGuests.addActionListener(btnListener);
     panelMenu.add(btnSearchGuest);
     panelMenu.add(btnShowGuests);
     
@@ -86,13 +79,13 @@ public class GuestPanelGUI {
     c.weighty = 0;
     frame.add(panelMenu, c);
     
-    // PANEL
+    // MAIN PANEL
     panelMain  = new JPanel(new GridBagLayout());
     panelMain.setBackground(Color.LIGHT_GRAY);
     panelMain = searchGuest(panelMain);
    
 
-    //Place PANEL
+    //Place MAIN PANEL
     c.insets  = new Insets(7,7,7,7);
     c.fill    = GridBagConstraints.BOTH;
     c.anchor  = GridBagConstraints.PAGE_START;
@@ -101,25 +94,6 @@ public class GuestPanelGUI {
     c.weightx = 1;
     c.weighty = 1;
     frame.add(panelMain, c);
-
-    
-    // Add ActionListeners
-    btnSearchGuest.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        panelMain.removeAll();
-        panelMain = searchGuest(panelMain);
-        panelMain.updateUI();
-      }
-    });
-    btnShowGuests.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-       panelMain.removeAll();
-       panelMain = showAllGuests(panelMain);
-       panelMain.updateUI();
-      }
-    });
     
     return frame;
     
@@ -174,8 +148,6 @@ public class GuestPanelGUI {
     btnSearch = new JButton("Søk");
     btnEdit   = new JButton("Endre");
     btnEdit.setEnabled(false);
-    // Add actionlistener
-    btnListener = new ButtonListener();
     btnSearch.addActionListener(btnListener);
     btnEdit.addActionListener(btnListener);
           
@@ -293,7 +265,17 @@ public class GuestPanelGUI {
   private class ButtonListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
-      if(e.getSource() == btnSearch) {
+      if(e.getSource() == btnSearchGuest) {
+        panelMain.removeAll();
+        panelMain = searchGuest(panelMain);
+        panelMain.updateUI();
+      }
+      else if(e.getSource() == btnShowGuests) {
+        panelMain.removeAll();
+        panelMain = showAllGuests(panelMain);
+        panelMain.updateUI();
+      }
+      else if(e.getSource() == btnSearch) {
         btnEdit.setEnabled(false);
         String firstname    = txtFirstname.getText();
         String lastname     = txtLastname.getText();

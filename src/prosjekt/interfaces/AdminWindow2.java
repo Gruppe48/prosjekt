@@ -21,7 +21,7 @@ import javax.swing.JTabbedPane;
 public class AdminWindow2 extends GenericWindow {
   // General
   private JTabbedPane tabbedPane;
-  private JComponent panelGuest, panelRoom, panel3, panel4;
+  private JComponent panelGuest, panelRoom, panelBooking, panelInformation;
   
   public AdminWindow2() {
     super("Administratorpanel", 900, 500);
@@ -45,12 +45,12 @@ public class AdminWindow2 extends GenericWindow {
     tabbedPane.addTab("Rom", panelRoom);
     tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
     
-    panel3 = makeTextPanel("Panel #3");
-    tabbedPane.addTab("Booking", panel3);
+    panelBooking = bookingPanel();
+    tabbedPane.addTab("Booking", panelBooking);
     tabbedPane.setMnemonicAt(2, KeyEvent.VK_3);
     
-    panel4 = makeTextPanel("Panel #4");
-    tabbedPane.addTab("Fasiliteter", panel4);
+    panelInformation = informationPanel();
+    tabbedPane.addTab("Fasiliteter", panelInformation);
     tabbedPane.setMnemonicAt(3, KeyEvent.VK_4);
 
  
@@ -68,23 +68,21 @@ public class AdminWindow2 extends GenericWindow {
     
   }
 
-  protected JComponent makeTextPanel(String text) {
-        JPanel test = new JPanel(false);
-        JLabel filler = new JLabel(text);
-        filler.setHorizontalAlignment(JLabel.CENTER);
-        test.setLayout(new GridLayout(1, 1));
-        test.add(filler);
-        return test;
-  }
 
   private JPanel guestPanel() {
     GuestPanelGUI guestPanel = new GuestPanelGUI();
     return guestPanel.getPanel();
   }
-  
   private JPanel roomPanel() {
     RoomPanelGUI roomPanel = new RoomPanelGUI();
     return roomPanel.getPanel();
-    
+  }
+  private JPanel bookingPanel() {
+    BookingPanelGUI bookingPanel = new BookingPanelGUI();
+    return bookingPanel.getPanel();
+  }
+  private JPanel informationPanel() {
+    InformationPanelGUI informationPanel = new InformationPanelGUI();
+    return informationPanel.getPanel();
   }
 }
