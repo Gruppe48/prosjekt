@@ -4,17 +4,17 @@
  */
 package prosjekt.rooms.types;
 
-import prosjekt.rooms.HotelRoom;
-import prosjekt.rooms.RoomMisc.facilities;
+import prosjekt.rooms.SeminarRoom;
 
 /**
  *
  * @author kristoffer
  */
-public class SingleRoom extends HotelRoom {
-  public SingleRoom() {
+public class MeetingRoom extends SeminarRoom {
+
+  public MeetingRoom() {
     super();
-    bedCount = 1;
-    price = 750;
+    price = 1500;
   }
+  
 }

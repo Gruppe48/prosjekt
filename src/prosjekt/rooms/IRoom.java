@@ -39,4 +39,7 @@ public interface IRoom {
    * @param unrent/clear the room, makes it vacant.
    */
   public void empty();
+  
+  
+  
 }

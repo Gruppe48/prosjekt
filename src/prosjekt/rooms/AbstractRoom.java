@@ -12,16 +12,16 @@ import prosjekt.rooms.RoomMisc.facilities;
  * @date Mar 26, 2012
  */
 public abstract class AbstractRoom implements IRoom {
-  private static int roomCounter = 0;
-  private int roomID;
-  private float price = 0;
+  protected static int roomCounter = 0;
+  protected int roomID;
+  protected float price = 0;
+  
 
-  private AbstractGuest guest;
+  protected AbstractGuest guest;
   protected facilities facilities;
   
-  public AbstractRoom(float price) {
+  public AbstractRoom() {
     roomID = roomCounter++;
-    this.price = price;
   }
 
   @Override
@@ -51,6 +51,7 @@ public abstract class AbstractRoom implements IRoom {
   public int getID() {
     return roomID;
   }
+
   
   
 

@@ -3,3 +3,4 @@
 /dist/
 .DS_Store
 *.json
+Thumbs.db

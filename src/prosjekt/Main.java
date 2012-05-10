@@ -2,15 +2,16 @@
  */
 package prosjekt;
 
-import java.awt.Color;
-import java.awt.Transparency;
+import prosjekt.guests.GuestBook;
+import prosjekt.utils.Options;
 import prosjekt.booking.BookingRegistry;
 import prosjekt.guests.Company;
 import prosjekt.guests.GuestRegistry;
-import prosjekt.interfaces.AdminWindow2;
 import prosjekt.rooms.RoomRegistry;
 import prosjekt.rooms.types.SingleRoom;
 import prosjekt.guests.Person;
+import prosjekt.interfaces.GuestWindow;
+
 import prosjekt.interfaces.LoginWindow;
 import prosjekt.utils.Utils;
 
@@ -23,6 +24,7 @@ public class Main {
   public static BookingRegistry bookingRegistry = new BookingRegistry();
   public static GuestRegistry guestRegistry = new GuestRegistry();
   public static Options options = new Options(); // load options!
+  public static GuestBook guestBook;
   
   private static void setupRooms() {
     if (Utils.fileExists("roomRegistry.json")) {
@@ -30,7 +32,7 @@ public class Main {
     }
     else {
       for (int i = 0; i < 10; i++) {
-        SingleRoom room = new SingleRoom(500f);
+        SingleRoom room = new SingleRoom();
         roomRegistry.add(room);
       }
       saveRooms();
@@ -61,6 +63,16 @@ public class Main {
     Company cGuest = new Company("Ole", "Hansen", "12345678", "Kirkeveien 5", 0361, "Microsoft");
     guestRegistry.add(cGuest);
   }
+  
+  private static void setupGuestBook() {
+    if (Utils.fileExists("guestBook.json")) {
+      loadGuestBook();
+    }
+    else {
+      // Setup default options
+      saveGuestBook();
+    }
+  }
   public static void saveRooms() {
     Utils.save(roomRegistry, "roomRegistry.json");
   }
@@ -81,8 +93,13 @@ public class Main {
   public static void loadBooking() {
     bookingRegistry = (BookingRegistry) Utils.load("bookingRegistry.json");
   }
+  public static void saveGuestBook() {
+    Utils.save(guestBook, "guestBook.json");
+  }
+  public static void loadGuestBook() {
+    guestBook = (GuestBook) Utils.load("guestBook.json");
+  }
   
-
   /**
    * @param args the command line arguments
    */
@@ -90,9 +107,9 @@ public class Main {
     setupRooms();
     setupGuests();
     setupBooking();
-    new AdminWindow2();
+    setupGuestBook();
+    new LoginWindow();
 
- 
     
   }
 }

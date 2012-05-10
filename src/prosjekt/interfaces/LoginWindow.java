@@ -7,6 +7,7 @@ package prosjekt.interfaces;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.io.IOException;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -33,7 +34,7 @@ public class LoginWindow extends GenericWindow {
   public void create() {
     super.create();
     try {
-      logo = new ImageIcon(getClass().getResource("/assets/avatar.gif"));
+      logo = new ImageIcon("assets/avatar.gif");
     }
     catch (Exception e) {
       System.err.println("Logo finnes ikke!");

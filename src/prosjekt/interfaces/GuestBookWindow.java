@@ -21,16 +21,16 @@ import prosjekt.utils.Utils;
  *
  * @author kristoffer
  */
-public class GuestWindow extends GenericWindow {
+public class GuestBookWindow extends GenericWindow {
 
-  private JButton homeButton, facilitiesButton, restaurantButton, guestBookButton;
+  private JButton homeButton;
   private JPanel buttonPanel, contentPanel;
   private JTextPane contentPane;
   private Color uiMainColor;
-  private final String ROOT_PATH = "assets/guests/";
+  private final String ROOT_PATH = "assets/guestbook/";
 
-  public GuestWindow() {
-    super("Guest window", 600, 400);
+  public GuestBookWindow() {
+    super("Gjestebok", 600, 400);
   }
 
   @Override
@@ -56,18 +56,10 @@ public class GuestWindow extends GenericWindow {
     contentPanel.add(contentPane);
 
     homeButton = new JButton("Hjem");
-    facilitiesButton = new JButton("Fasiliter");
-    restaurantButton = new JButton("Restaurantmeny");
-    guestBookButton = new JButton("Gjestebok");
     buttonPanel.add(homeButton);
-    buttonPanel.add(facilitiesButton);
-    buttonPanel.add(restaurantButton);
-    buttonPanel.add(guestBookButton);
-    
+
     homeButton.addActionListener(buttonListener);
-    facilitiesButton.addActionListener(buttonListener);
-    restaurantButton.addActionListener(buttonListener);
-    guestBookButton.addActionListener(buttonListener);
+   
     
     GridBagConstraints g = new GridBagConstraints();
     // Buttons
@@ -104,12 +96,6 @@ public class GuestWindow extends GenericWindow {
 
     if (e.getSource() == homeButton) {
       contentPane.setText(Utils.read(ROOT_PATH + "index.rtf"));
-    } else if (e.getSource() == facilitiesButton) {
-      contentPane.setText(Utils.read(ROOT_PATH + "facilities.rtf"));
-    } else if (e.getSource() == restaurantButton) {
-      contentPane.setText(Utils.read(ROOT_PATH + "restaurant.rtf"));
-    } else if (e.getSource() == guestBookButton) {
-      new GuestBookWindow();
     }
   }
 }

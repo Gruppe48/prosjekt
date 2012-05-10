@@ -14,34 +14,38 @@ import java.util.ListIterator;
  * @since 2012-04-16
  */
 public class GuestRegistry {
-  // "Indeksert" etter from, to og room.
+
   private HashMap<String, AbstractGuest> list = new HashMap<String, AbstractGuest>();
-  
+
   /*
    * @param AbstractGuest guest
-   * @returns true/false
+   * @return String "hash" based on guest.
    * 
    */
   //TODO: VALIDERING
   public String getHash(AbstractGuest guest) {
     StringBuilder output = new StringBuilder();
-    
+
     // Fetch the first name, last name and phone number to create a unique "hash" to identify a guest.
     output.append(guest.getFirstName());
     output.append(guest.getLastName());
     output.append(guest.getPhoneNumber());
     return output.toString();
   }
+
   public boolean add(AbstractGuest guest) {
     if (exists(guest)) {
       return false;
     }
-    list.put(getHash(guest), guest);
+    String hash = getHash(guest);
+    list.put(hash, guest);
+    System.out.println("Added guest with hash: " + hash);
     return true;
   }
   /*
    * @return List of guests (all guests, for all history)
    */
+
   public HashMap<String, AbstractGuest> getList() {
     return list;
   }
@@ -49,9 +53,12 @@ public class GuestRegistry {
    * @param guest guest to remove!
    * @return true/false om gjesten ble fjernet/fantes!
    */
+
   public boolean remove(AbstractGuest guest) {
     boolean result = false;
-    if (list.remove(getHash(guest)) != null) {
+    String hash = getHash(guest);
+    if (list.remove(hash) != null) {
+      System.out.println("Removed guest with hash: " + hash);
       result = true;
     }
     return result;
@@ -62,6 +69,7 @@ public class GuestRegistry {
    * @param phoneNumber Telefonnummer til gjest du skal finne.
    */
   //TODO: Normaliser telefonnummer med regulært utrykk: Hvis noen skriver f.eks 93 82 81 06 må vi kunne matche det mot 93828106 osv.
+
   public AbstractGuest getGuest(String firstName, String lastName, String phoneNumber) {
     String hash = firstName + lastName + phoneNumber;
     return list.get(hash);
@@ -70,23 +78,23 @@ public class GuestRegistry {
    * @param guest Guest to find
    * @returns AbstractGuest guest
    */
+
   public AbstractGuest getGuest(AbstractGuest guest) {
     return list.get(getHash(guest));
   }
-  
-  
+
   public boolean swapGuest(AbstractGuest oldGuest, AbstractGuest newGuest) {
-     ListIterator listIterator = (ListIterator) list.values().iterator();
-     
-     while(listIterator.hasNext()) {
-       if(listIterator.next().equals(oldGuest)) {
-         listIterator.set(newGuest);
-         return true;
-       }
-     }
-     return false;
+    ListIterator listIterator = (ListIterator) list.values().iterator();
+
+    while (listIterator.hasNext()) {
+      if (listIterator.next().equals(oldGuest)) {
+        listIterator.set(newGuest);
+        return true;
+      }
+    }
+    return false;
   }
-  
+
   /*
    * @param AbstractGuest guest, guest to find
    * @return true/false
@@ -94,7 +102,7 @@ public class GuestRegistry {
   public boolean exists(AbstractGuest guest) {
     return list.containsKey(getHash(guest));
   }
-  
+
   /*
    * @param firstName, string to search for as a substring of firstname
    * @param lastName, string to search for as a substring of lastname
@@ -135,15 +143,15 @@ public class GuestRegistry {
     }
     return (matches.isEmpty()) ? null : matches;
   }
-  
-  @Override
-  public String toString() {
+
+    @Override
+    public String toString() {
     StringBuilder r = new StringBuilder();
-    for (AbstractGuest g : list.values()) {
-      r.append(g.toString());
-      r.append("\n");
+      for (AbstractGuest g : list.values()) {
+        r.append(g.toString());
+        r.append("\n");
+      }
+      return r.toString();
     }
-    return r.toString();
+
   }
-  
-}
