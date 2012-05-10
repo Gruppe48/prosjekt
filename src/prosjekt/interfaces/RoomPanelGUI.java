@@ -12,10 +12,6 @@ import javax.swing.*;
 import javax.swing.table.TableModel;
 import prosjekt.Main;
 import prosjekt.rooms.AbstractRoom;
-import prosjekt.rooms.types.ConferenceRoom;
-import prosjekt.rooms.types.DoubleRoom;
-import prosjekt.rooms.types.MeetingRoom;
-import prosjekt.rooms.types.SingleRoom;
 
 /**
  *
@@ -156,9 +152,10 @@ public class RoomPanelGUI {
     
     // Array of columnnames for our JTable
     columnNames = new String[]{"Romnummer", "Type", "Status"};
-        
+    
+    
     // Create a JTable for roomPanelSearchresults           
-    tableModel = new SearchRoomTableModel(arrListResults, columnNames);
+    tableModel = new SearchTableModel(rowData, columnNames);
     tableSearchResults = new JTable(tableModel);
     tableSearchResults.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
@@ -295,23 +292,22 @@ public class RoomPanelGUI {
         String roomType   = (String) cmbRoomTypes.getSelectedItem();
         
         arrListResults = Main.roomRegistry.searchRoom(roomNumber, roomType);
-        
+    
         // Lets create and fill rowData
         if(arrListResults != null) {
           rowData = new String[arrListResults.size()][3];
           int i = 0;
           for (AbstractRoom r : arrListResults) {
             rowData[i][0] = r.getID() + "";
-
-            if(r instanceof SingleRoom) { rowData[i][1] = "Enkeltrom"; }
-            else if (r instanceof DoubleRoom) { rowData[i][1] = "Dobbeltrom"; }
-            else if (r instanceof ConferenceRoom) { rowData[i][1] = "Konferanserom"; }
-            else if (r instanceof MeetingRoom) { rowData[i][1] = "Møterom"; }
-
+            rowData[i][1] = r.getRoomType();
             rowData[i][2] = (r.isOccupied()) ? "Opptatt" : "Ledig";
             i++;
           }
         }
+        
+        // Tablemodel for our JTable
+        tableModel = new SearchTableModel(rowData, columnNames);
+        tableSearchResults.setModel(tableModel);
       }
       
     }
