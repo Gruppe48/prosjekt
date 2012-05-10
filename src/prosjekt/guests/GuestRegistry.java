@@ -5,6 +5,8 @@
 package prosjekt.guests;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.ListIterator;
 
 /**
  *
@@ -13,24 +15,34 @@ import java.util.ArrayList;
  */
 public class GuestRegistry {
   // "Indeksert" etter from, to og room.
-  private ArrayList<AbstractGuest> list = new ArrayList();
+  private HashMap<String, AbstractGuest> list = new HashMap<String, AbstractGuest>();
   
   /*
    * @param AbstractGuest guest
    * @returns true/false
+   * 
    */
   //TODO: VALIDERING
+  public String getHash(AbstractGuest guest) {
+    StringBuilder output = new StringBuilder();
+    
+    // Fetch the first name, last name and phone number to create a unique "hash" to identify a guest.
+    output.append(guest.getFirstName());
+    output.append(guest.getLastName());
+    output.append(guest.getPhoneNumber());
+    return output.toString();
+  }
   public boolean add(AbstractGuest guest) {
     if (exists(guest)) {
       return false;
     }
-    list.add(guest);
+    list.put(getHash(guest), guest);
     return true;
   }
   /*
    * @return List of guests (all guests, for all history)
    */
-  public ArrayList<AbstractGuest> getList() {
+  public HashMap<String, AbstractGuest> getList() {
     return list;
   }
   /*
@@ -38,13 +50,11 @@ public class GuestRegistry {
    * @return true/false om gjesten ble fjernet/fantes!
    */
   public boolean remove(AbstractGuest guest) {
-    for (AbstractGuest g : list) {
-      if (g.equals(guest)) {
-        list.remove(g);
-        return true;
-      }
+    boolean result = false;
+    if (list.remove(getHash(guest)) != null) {
+      result = true;
     }
-    return false;
+    return result;
   }
   /*
    * @param firstName Fornavn til gjest du skal finne
@@ -53,36 +63,36 @@ public class GuestRegistry {
    */
   //TODO: Normaliser telefonnummer med regulært utrykk: Hvis noen skriver f.eks 93 82 81 06 må vi kunne matche det mot 93828106 osv.
   public AbstractGuest getGuest(String firstName, String lastName, String phoneNumber) {
-    for (AbstractGuest g : list) {
-      if (g.getFirstName().equals(firstName) && g.getLastName().equals(lastName) && g.getPhoneNumber().equals(phoneNumber)) {
-        return g;
-      }
-    }
-    return null;
+    String hash = firstName + lastName + phoneNumber;
+    return list.get(hash);
   }
   /*
    * @param guest Guest to find
    * @returns AbstractGuest guest
    */
   public AbstractGuest getGuest(AbstractGuest guest) {
-    for (AbstractGuest g : list) {
-      if (g.equals(guest)) {
-        return g;
-      }
-    }
-    return null;
+    return list.get(getHash(guest));
   }
+  
+  
+  public boolean swapGuest(AbstractGuest oldGuest, AbstractGuest newGuest) {
+     ListIterator listIterator = (ListIterator) list.values().iterator();
+     
+     while(listIterator.hasNext()) {
+       if(listIterator.next().equals(oldGuest)) {
+         listIterator.set(newGuest);
+         return true;
+       }
+     }
+     return false;
+  }
+  
   /*
    * @param AbstractGuest guest, guest to find
    * @return true/false
    */
   public boolean exists(AbstractGuest guest) {
-    for (AbstractGuest g : list) {
-      if (g.getID() == guest.getID()) {
-        return true;
-      }
-     }
-    return false;
+    return list.containsKey(getHash(guest));
   }
   
   /*
@@ -97,19 +107,43 @@ public class GuestRegistry {
   public ArrayList<AbstractGuest> searchGuests(String firstName, String lastName, String phoneNumber, String address, int postNumber, String company) {
     ArrayList<AbstractGuest> matches = new ArrayList();
     
-    for (AbstractGuest g : list) {
-      if(Company.class.isInstance(g)) {
-        Company c = (Company) g;
-        if(c.getCompanyName().contains(company)) {
+    for (AbstractGuest g : list.values()) {
+      if(g.getFirstName().toLowerCase().contains(firstName.toLowerCase()) && g.getLastName().toLowerCase().contains(lastName.toLowerCase()) &&
+              g.getPhoneNumber().toLowerCase().contains(phoneNumber.toLowerCase()) && g.getAddress().toLowerCase().contains(address.toLowerCase()) &&
+              (g.getPostNumber()==postNumber || postNumber==0)) {
+        
+        if(g instanceof Company) {
+          Company c = (Company) g;
+          
+          if(company.length()>0 && c.getCompanyName().toLowerCase().contains(company.toLowerCase())) {
+            matches.add(c);
+            break;
+          }
+          else if (c.getPostNumber()==postNumber) {
+            matches.add(c);
+            break;
+          }
+          
+        }
+        
+        // if no companyname is specified, we should show the element
+        if(company.length() == 0) {
           matches.add(g);
         }
       }
-      else if(g.getFirstName().contains(firstName) || g.getLastName().contains(lastName) || g.getPhoneNumber().contains(phoneNumber) ||
-              g.getAddress().contains(address) || g.getPostNumber()==postNumber) {
-        matches.add(g);
-      }
+ 
     }
-    
     return (matches.isEmpty()) ? null : matches;
   }
+  
+  @Override
+  public String toString() {
+    StringBuilder r = new StringBuilder();
+    for (AbstractGuest g : list.values()) {
+      r.append(g.toString());
+      r.append("\n");
+    }
+    return r.toString();
+  }
+  
 }

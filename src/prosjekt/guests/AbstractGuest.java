@@ -46,12 +46,11 @@ public class AbstractGuest implements IGuest {
    */
   public AbstractGuest(String firstName, String lastName, String phoneNumber, String address, int postNumber) {
     guestID = guestCounter++;
-    // Død over dumme variabelnavn.
-    this.firstName   = firstName;
-    this.lastName    = lastName;
-    this.phoneNumber = phoneNumber;
-    this.address = address;
-    this.postNumber = postNumber;
+    this.firstName    = firstName;
+    this.lastName     = lastName;
+    this.phoneNumber  = phoneNumber;
+    this.address      = address;
+    this.postNumber   = postNumber;
   }
   @Override
   public int getID() {
@@ -83,5 +82,11 @@ public class AbstractGuest implements IGuest {
     return postNumber;
   }
   
-  
+  @Override
+  public String toString() {
+    return "GjesteID: " + guestID + "\n" +
+            "Navn: " + firstName + " " + lastName + "\n" + 
+            "Telefonnummer: " + phoneNumber + "\n" +
+            "Addresse: " + postNumber + " " + address + "\n"; 
+  }
 }

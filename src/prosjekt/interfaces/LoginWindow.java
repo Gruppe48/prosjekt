@@ -74,7 +74,7 @@ public class LoginWindow extends GenericWindow {
         if (user.equals("admin") && pass.equals("admin")) {
           //TODO: Gjør noe.
           setVisible(false);
-          new AdminWindow();
+          new AdminWindow2();
         }
         if (user.equals("gjest") && pass.equals("gjest")) {
           //TODO: Gjør noe annet

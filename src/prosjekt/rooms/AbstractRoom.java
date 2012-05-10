@@ -15,7 +15,7 @@ public abstract class AbstractRoom implements IRoom {
   private static int roomCounter = 0;
   private int roomID;
   private float price = 0;
-  // TODO: Make AbstractGuest instead of String
+
   private AbstractGuest guest;
   protected facilities facilities;
   
@@ -47,6 +47,7 @@ public abstract class AbstractRoom implements IRoom {
     return price;
   }
 
+  @Override
   public int getID() {
     return roomID;
   }
@@ -60,8 +61,14 @@ public abstract class AbstractRoom implements IRoom {
 
   @Override
   public String toString() {
-    return "ID: " + getID() + ", Pris: " + getPrice() + ", Occupied? " + isOccupied() + "\n";
+    String r = "RomID: " + getID() + 
+            "\nPris: " + getPrice() + ",-" + 
+            "\nLedig? ";
+    r += (isOccupied()) ? "Nei" : "Ja" + "\n";
+    
+    return r;
   }
+  
   
   
 }
