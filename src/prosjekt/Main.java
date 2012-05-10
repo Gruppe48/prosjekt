@@ -10,6 +10,7 @@ import prosjekt.guests.GuestRegistry;
 import prosjekt.rooms.RoomRegistry;
 import prosjekt.rooms.types.SingleRoom;
 import prosjekt.guests.Person;
+import prosjekt.interfaces.AdminWindow2;
 import prosjekt.interfaces.GuestWindow;
 
 import prosjekt.interfaces.LoginWindow;
@@ -92,7 +93,7 @@ public class Main {
     setupRooms();
     setupGuests();
     setupBooking();
-    new GuestWindow();
+    new AdminWindow2();
 
     
   }
