@@ -6,6 +6,8 @@ package prosjekt.interfaces;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 import java.util.Collection;
 import javax.swing.*;
 import prosjekt.Main;
@@ -98,6 +100,17 @@ public class GuestWindow extends GenericWindow {
   public void destroy() {
     super.destroy();
   }
+
+  private void getMessages() {
+    Collection<String> messages = Main.guestBook.getList();
+    messageArea.setText("");
+    for (String m : messages) {
+      messageArea.append(m);
+      messageArea.append("\n");
+      scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
+
+    }
+  }
   
   private JPanel textContent(JPanel p) {
     // Create a contraints variable for gridbaglayout
@@ -121,10 +134,14 @@ public class GuestWindow extends GenericWindow {
   }
   
   private JPanel guestBook(JPanel p) {
-    JTextArea display = new JTextArea(10, 10);
-    display.setEditable(false);
-    JButton btnSave   = new JButton("Lagre");
-    JTextField txtMessage = new JTextField(10);
+    messageArea = new JTextArea(10, 10);
+    messageArea.setEditable(false);
+    messageArea.setLineWrap(true);
+    scrollPane = new JScrollPane(messageArea);
+    getMessages();
+    saveMessageButton   = new JButton("Lagre");
+    saveMessageButton.addActionListener(buttonListener);
+    messageTextField = new JTextField(10);
     
     // Create a contraints variable for gridbaglayout
     GridBagConstraints c = new GridBagConstraints();
@@ -138,7 +155,9 @@ public class GuestWindow extends GenericWindow {
     c.gridy     = 0;
     c.weightx   = 1;
     c.weighty   = 1;
-    p.add(display, c);
+    
+   
+    p.add(scrollPane, c);
     
     // Place txtMessage
     c.insets    = new Insets(0,0,0,0);
@@ -148,7 +167,7 @@ public class GuestWindow extends GenericWindow {
     c.gridy     = 1;
     c.weightx   = 1;
     c.weighty   = 0;
-    p.add(txtMessage, c);
+    p.add(messageTextField, c);
     
     // Place btnSave
     c.insets    = new Insets(0,0,0,0);
@@ -158,24 +177,11 @@ public class GuestWindow extends GenericWindow {
     c.gridy     = 2;
     c.weightx   = 1;
     c.weighty   = 0;
-    p.add(btnSave, c);
+    p.add(saveMessageButton, c);
 
     
     return p;
   }
-
-  private void getMessages() {
-    Collection<String> messages = Main.guestBook.getList();
-    messageArea.setText("");
-    for (String m : messages) {
-      messageArea.append(m);
-      messageArea.append("\n");
-      scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
-
-    }
-  }
-  
- 
 
   @Override
   public void buttonPressed(ActionEvent e) {

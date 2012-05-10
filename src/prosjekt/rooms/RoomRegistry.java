@@ -78,11 +78,8 @@ public class RoomRegistry {
     
     for(AbstractRoom r : list) {
       rn = r.roomID + "";
-      if(rn.contains(roomNumber)) { 
-        if(r instanceof SingleRoom && "Enkeltrom".equals(roomType)) { matches.add(r); }
-        else if (r instanceof DoubleRoom && "Dobbeltrom".equals(roomType)) { matches.add(r); }
-        else if (r instanceof ConferenceRoom && "Konferanserom".equals(roomType)) { matches.add(r); }
-        else if (r instanceof MeetingRoom && "Møterom".equals(roomType)) { matches.add(r); }
+      if(rn.contains(roomNumber) && r.getRoomType().equals(roomType)) { 
+        matches.add(r);
       }
     }
     
