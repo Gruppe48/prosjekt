@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package prosjekt;
+package prosjekt.utils;
 
 import java.awt.Color;
 import java.util.HashMap;

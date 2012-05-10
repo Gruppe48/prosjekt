@@ -2,6 +2,8 @@
  */
 package prosjekt;
 
+import prosjekt.guests.GuestBook;
+import prosjekt.utils.Options;
 import prosjekt.booking.BookingRegistry;
 import prosjekt.guests.GuestRegistry;
 import prosjekt.rooms.RoomRegistry;
