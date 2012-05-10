@@ -215,64 +215,6 @@ public class RoomPanelGUI {
     
     return panel;
   }
- /* 
-  private class ButtonListener implements ActionListener {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      if(e.getSource() == btnSearch) {
-        btnEdit.setEnabled(false);
-        String roomNumber = txtRoomNumber.getText();
-        String roomType   = (String) cmbRoomTypes.getSelectedItem();
-
-        try {
-          arrListResults = Main.roomRegistry.searchRooms(roomNumber, roomType);
-
-          // Tablemodel for our JTable
-          tableModel = new SearchTableModel(arrListResults, columnNames, "rooms");
-
-          tableSearchResults.setModel(tableModel);
-        }
-        catch(NumberFormatException nfe) {
-          System.out.println("error! NumberFormatException");
-        }
-      }
-      else if(e.getSource() == btnEdit) {
-        String firstname    = txtFirstname.getText();
-        String lastname     = txtLastname.getText();
-        String phoneNumber  = txtPhoneNumber.getText();
-        String address      = txtAddress.getText();
-        String companyName  = txtCompanyName.getText();
-        AbstractGuest editedGuest;
-
-        try {
-          int postNumber = 0;
-
-          if(!txtPostNumber.getText().equals("")) {
-            postNumber = Integer.parseInt(txtPostNumber.getText());
-          }
-
-          // Create new guest based on the old
-          if(companyName.length() > 0) {
-            editedGuest = new Company(firstname, lastname, phoneNumber, address, postNumber, companyName);
-          }
-          else {
-            editedGuest = new Person(firstname, lastname, phoneNumber, address, postNumber);
-          }
-
-          // Swap the old one with the new one.
-          Main.guestRegistry.swapGuest(arrListResults.get(tableSearchResults.getSelectedRow()), editedGuest);
-
-        }
-        catch(NumberFormatException nfe) {
-          System.out.println("error! NumberFormatException");
-        }
-        catch(NullPointerException npe) {
-          System.out.println("error! NullPointerException");
-        }
-
-      }
-    }
-  }*/
   
   private class ButtonListener implements ActionListener {
     @Override
