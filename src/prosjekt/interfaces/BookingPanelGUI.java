@@ -10,6 +10,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import prosjekt.Main;
 import prosjekt.guests.AbstractGuest;
 import prosjekt.guests.Company;
@@ -23,11 +25,14 @@ public class BookingPanelGUI {
   private ActionListener btnListener;
   private JButton btnNewBooking, btnShowBookings, btnSearch, btnNew, btnLookup;
   private JTextField txtFirstname, txtLastname, txtPhoneNumber, txtAddress, txtPostNumber, txtCompanyName;
+  private JTextField txtFirstname2, txtLastname2, txtPhoneNumber2, txtAddress2, txtPostNumber2, txtCompanyName2;
   private ArrayList<AbstractGuest> arrListResults;
   private String[][] rowData;
   private String[] columnNames;
   private SearchTableModel tableModel;
   private JTable tableSearchResults;
+  private int selectedGuestID;
+  private JTextArea display;
   
   public BookingPanelGUI() {
     if(panelContainer != null) {
@@ -130,7 +135,7 @@ public class BookingPanelGUI {
     
     
     // Create display
-    JTextArea display = new JTextArea(10,50);
+    display = new JTextArea(10,50);
     display.setEditable(false);
     c.insets  = new Insets(0,0,0,0);
     c.fill    = GridBagConstraints.BOTH;
@@ -151,7 +156,49 @@ public class BookingPanelGUI {
     return panel;
   }
   
+  private void newGuest() {
+    JPanel panel = new JPanel(new GridBagLayout());
+    
+    // Inputpanel
+    JPanel inputPanel = new JPanel(new GridLayout(3,4));
+    txtFirstname2   = new JTextField(10);
+    txtLastname2    = new JTextField(10);
+    txtPhoneNumber2 = new JTextField(10);
+    txtAddress2     = new JTextField(10);
+    txtPostNumber2  = new JTextField(10);
+    txtCompanyName2 = new JTextField(10);
+    inputPanel.add(new JLabel("Fornavn"));
+    inputPanel.add(txtFirstname2);
+    inputPanel.add(new JLabel("Adresse"));
+    inputPanel.add(txtAddress2);
+    inputPanel.add(new JLabel("Etternavn"));
+    inputPanel.add(txtLastname2);
+    inputPanel.add(new JLabel("Postnummer"));
+    inputPanel.add(txtPostNumber2);
+    inputPanel.add(new JLabel("Telefonnummer"));
+    inputPanel.add(txtPhoneNumber2);
+    inputPanel.add(new JLabel("Bedrift"));
+    inputPanel.add(txtCompanyName2);
+    GridBagConstraints c = new GridBagConstraints();
+    c.insets    = new Insets(0,0,0,0);
+    c.fill      = GridBagConstraints.HORIZONTAL;
+    c.anchor    = GridBagConstraints.FIRST_LINE_START;
+    c.gridwidth = 10;
+    c.gridx     = 0;
+    c.gridy     = 0;
+    c.weightx   = 1;
+    c.weighty   = 0;
+    panel.add(inputPanel, c);
+    
+    
+    JFrame frame = new JFrame("Opprett ny bruker");
+    JOptionPane.showMessageDialog(frame, panel);
+    
+    
+  }
+  
   private void findGuest() {
+    selectedGuestID = -1;
     JPanel panel = new JPanel(new GridBagLayout());
     
     // Inputpanel
@@ -204,6 +251,9 @@ public class BookingPanelGUI {
     tableModel = new SearchTableModel(rowData, columnNames);
     tableSearchResults = new JTable(tableModel);
     tableSearchResults.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    // Add actionlistener for our JTable
+    TableResultsListener tableListener = new TableResultsListener();
+    tableSearchResults.getSelectionModel().addListSelectionListener(tableListener);
     
     // New constraints
     c.insets    = new Insets(0,0,0,0);
@@ -253,6 +303,20 @@ public class BookingPanelGUI {
     JOptionPane.showMessageDialog(frame, panel);
   }
   
+  private class TableResultsListener implements ListSelectionListener {
+    JTable table;
+    TableResultsListener() {
+      table = tableSearchResults;
+    }
+    @Override
+    public void valueChanged(ListSelectionEvent e) {
+      if (e.getSource() == table.getSelectionModel() && table.getRowSelectionAllowed()) {
+        int i = table.getSelectedRow();
+        selectedGuestID = arrListResults.get(i).getID();
+      } 
+    }
+  }
+  
    private class ButtonListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -268,6 +332,14 @@ public class BookingPanelGUI {
       }
       else if (e.getSource() == btnSearch) {
         findGuest();
+        if(selectedGuestID != -1) {
+          AbstractGuest selectedGuest = Main.guestRegistry.getGuest(selectedGuestID);
+          display.setText("Du har valg følgende gjest: " + selectedGuest.getFirstName() + " " + selectedGuest.getLastName());
+        }
+      }
+      else if (e.getSource() == btnNew) {
+        newGuest();
+        System.out.println("test: " + txtFirstname2);
       }
       else if (e.getSource() == btnLookup) {
         String firstname    = txtFirstname.getText();

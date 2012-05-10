@@ -82,6 +82,15 @@ public class GuestRegistry {
   public AbstractGuest getGuest(AbstractGuest guest) {
     return list.get(getHash(guest));
   }
+  
+  public AbstractGuest getGuest(int i) {
+    for (AbstractGuest g : list.values()) {
+      if(g.getID() == i) {
+        return g;
+      }
+    }
+    return null;
+  }
 
   public boolean swapGuest(AbstractGuest oldGuest, AbstractGuest newGuest) {
     ListIterator listIterator = (ListIterator) list.values().iterator();
@@ -143,7 +152,6 @@ public class GuestRegistry {
     }
     return (matches.isEmpty()) ? null : matches;
   }
-  
 
   @Override
   public String toString() {

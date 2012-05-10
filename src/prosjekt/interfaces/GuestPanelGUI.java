@@ -181,7 +181,7 @@ public class GuestPanelGUI {
 
     
     // Add actionlistener for our JTable
-    tableResultsListener tableListener = new tableResultsListener();
+    TableResultsListener tableListener = new TableResultsListener();
     tableSearchResults.getSelectionModel().addListSelectionListener(tableListener);
     //guestPanelSearchResults.getColumnModel().getSelectionModel().addListSelectionListener(tableListener);
     
@@ -204,10 +204,10 @@ public class GuestPanelGUI {
   }
   
   
-  private class tableResultsListener implements ListSelectionListener {
+  private class TableResultsListener implements ListSelectionListener {
     JTable table;
 
-    tableResultsListener() {
+    TableResultsListener() {
       table = tableSearchResults;
     }
 
@@ -231,7 +231,6 @@ public class GuestPanelGUI {
         }
       } 
     }
-    
   }
   
   private JPanel showAllGuests(JPanel panel) {
