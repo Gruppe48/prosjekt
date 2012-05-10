@@ -64,10 +64,10 @@ public abstract class AbstractRoom implements IRoom {
   public String getRoomType() {
     String rt = "";
     
-    if(this instanceof SingleRoom) { rt = "Enkeltrom"; }
-    else if (this instanceof DoubleRoom) { rt = "Dobbeltrom"; }
-    else if (this instanceof ConferenceRoom) { rt = "Konferanserom"; }
-    else if (this instanceof MeetingRoom) { rt = "Møterom"; }
+    if(this instanceof SingleRoom) { rt = "SingleRoom"; }
+    else if (this instanceof DoubleRoom) { rt = "DoubleRoom"; }
+    else if (this instanceof ConferenceRoom) { rt = "ConferenceRoom"; }
+    else if (this instanceof MeetingRoom) { rt = "MeetingRoom"; }
     
     return rt;
   }

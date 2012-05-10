@@ -4,8 +4,11 @@ package prosjekt.booking;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
+import prosjekt.Main;
 import prosjekt.guests.AbstractGuest;
 import prosjekt.rooms.AbstractRoom;
+import prosjekt.utils.Utils;
 
 /**
  *
@@ -17,18 +20,79 @@ public class BookingRegistry {
   // "Indeksert" etter from, to og room.
   private ArrayList<BookingEntry> list = new ArrayList();
   private BookingHistory history = new BookingHistory();
-  public boolean add(Date from, Date to, AbstractGuest guest, AbstractRoom room) {
-    //TODO: Sjekk om rommet er reservert, sjekk om gjesten har reservert osv!
-    if (isBooked(room)) { 
-      return false; 
+
+  public BookingRegistry() {
+    if (Utils.fileExists("bookingRegistry.json")) {
+      load();
     }
-    BookingEntry booking = new BookingEntry(from, to, guest, room);
-     
+    else {
+      // Setup default options
+      save();
+    }
+  }
+  
+  
+  public boolean add(Date from, Date to, AbstractGuest guest, String type) {
+    //TODO: Sjekk om rommet er reservert, sjekk om gjesten har reservert osv!
     
-    list.add(booking);
-    history.add(booking); // Save the booking for history!
+    AbstractRoom room = findRoom(from, to, type);
     
-    return true;
+    if (room != null) {
+      System.out.println("Rommet er ikke null, lager booking entry!");
+      // We actually found a free room!
+      BookingEntry booking = new BookingEntry(from, to, guest, room);
+      list.add(booking);
+      history.add(booking); // Save the booking for history!
+      save();
+      return true;
+    }
+    else {
+      // There is no room!
+      return false;
+    }
+  }
+  private AbstractRoom findRoom(Date from, Date to, String type) {
+    AbstractRoom room = null;
+    ArrayList<AbstractRoom> rooms = findUnbookedRooms(type);
+    
+    if (rooms.size() > 0) {
+      System.out.println("There is: " + rooms.size() + " free rooms!");
+      // We have one (or more) free rooms.
+      room = rooms.get(0); // Get the first room in the list!
+    }
+    else {
+      // All the rooms have been booked before, let's check the bookingregistry for any rooms free in this period.
+      room = findRoomFromRegistry(from, to, type);
+    }
+   return room; 
+  }
+  private ArrayList<AbstractRoom> findUnbookedRooms(String type) {
+    ArrayList<AbstractRoom> rooms = Main.roomRegistry.getRoomsByType(type);
+    ArrayList<AbstractRoom> bookingRooms = getBookingRooms();
+    ArrayList<AbstractRoom> matches = new ArrayList<AbstractRoom>();
+    
+    for (AbstractRoom r : rooms) {
+      if (isBooked(r)) {
+        continue;
+      }
+      else {
+        matches.add(r);
+      }
+    }
+    return matches;
+  }
+  private AbstractRoom findRoomFromRegistry(Date from, Date to, String type) {
+    ArrayList<AbstractRoom> rooms = Main.roomRegistry.getRoomsByType(type);
+    for (AbstractRoom r : rooms) {
+      for (BookingEntry e : list) {
+        if (e.getRoom().equals(r)) {
+          if ((e.getFromDate().before(from) && e.getToDate().before(to)) || (e.getFromDate().after(from) && e.getToDate().after(to))) {
+            return e.getRoom();
+          }
+        }
+      }
+    }
+    return null;
   }
   public ArrayList<BookingEntry> getList() {
     return list;
@@ -44,7 +108,7 @@ public class BookingRegistry {
   }
   public boolean isBooked(AbstractRoom room) {
     for (BookingEntry e : list) {
-      if (e.getRoom().equals(room)) {
+      if (e.getRoom().getID() == room.getID()) {
         return true;
       }
      }
@@ -59,5 +123,22 @@ public class BookingRegistry {
       }
     }
     return out;
+  }
+
+  public void save() {
+    Utils.save(list, "bookingRegistry.json");
+    history.save();
+  }
+  public void load() {
+    list = (ArrayList<BookingEntry>) Utils.load("bookingRegistry.json");
+    history.load();
+  }
+
+  private ArrayList<AbstractRoom> getBookingRooms() {
+    ArrayList<AbstractRoom> rooms = new ArrayList<AbstractRoom>();
+    for (BookingEntry bookingEntry : list) {
+      rooms.add(bookingEntry.getRoom());
+    }
+    return rooms;
   }
 }
