@@ -18,14 +18,11 @@ import prosjekt.rooms.AbstractRoom;
  * @author Even
  */
 public class RoomPanelGUI {
-  // General
   private JPanel panelContainer, panelMenu, panelMain;
   private String columnNames[];
   private TableModel tableModel;
   private ActionListener btnListener;
-  private String[][] rowData;
-  
-  // roomPanel
+  private String[][] rowData, rowData2;
   private JTextField txtRoomNumber;
   private JComboBox cmbRoomTypes;
   private JButton btnSearch, btnSearchRooms, btnShowRooms;;
@@ -179,8 +176,7 @@ public class RoomPanelGUI {
   
   private JPanel showAllRooms(JPanel panel) {
     GridBagConstraints c = new GridBagConstraints();
-    
-    
+    rowData2 = null;
     
     // Array of columnnames for our JTable
     columnNames = new String[]{"Romnummer", "Type", "Status"};
@@ -188,18 +184,18 @@ public class RoomPanelGUI {
     
     // Lets create and fill rowData
     if(arrListResults != null) {
-      rowData = new String[arrListResults.size()][3];
+      rowData2 = new String[arrListResults.size()][3];
       int i = 0;
       for (AbstractRoom r : arrListResults) {
-        rowData[i][0] = r.getID() + "";
-        rowData[i][1] = r.getRoomType();
-        rowData[i][2] = (r.isOccupied()) ? "Opptatt" : "Ledig";
+        rowData2[i][0] = r.getID() + "";
+        rowData2[i][1] = r.getRoomType();
+        rowData2[i][2] = (r.isOccupied()) ? "Opptatt" : "Ledig";
         i++;
       }
     }
         
     // Create a JTable for roomPanelSearchresults           
-    tableModel = new SearchTableModel(rowData, columnNames);
+    tableModel = new SearchTableModel(rowData2, columnNames);
     tableSearchResults = new JTable(tableModel);
     tableSearchResults.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     
