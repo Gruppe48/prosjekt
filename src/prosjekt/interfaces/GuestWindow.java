@@ -6,6 +6,8 @@ package prosjekt.interfaces;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 import java.util.Collection;
 import javax.swing.*;
 import prosjekt.Main;
@@ -26,9 +28,10 @@ public class GuestWindow extends GenericWindow {
   private Color uiMainColor;
   private GuestBook guestBook = new GuestBook();
   private final String ROOT_PATH = "assets/guests/";
+  private JScrollPane scrollPane;
 
   public GuestWindow() {
-    super("Guest window", 600, 400);
+    super("Nyttig informasjon for gjester", 600, 400);
   }
  
   
@@ -53,8 +56,8 @@ public class GuestWindow extends GenericWindow {
     
     // Create menu
     homeButton = new JButton("Hjem");
-    facilitiesButton = new JButton("Fasiliter");
-    restaurantButton = new JButton("Restaurantmeny");
+    facilitiesButton = new JButton("Fasiliter ved hotellet");
+    restaurantButton = new JButton("Mat og uteliv");
     guestBookButton = new JButton("Gjestebok");
     homeButton.addActionListener(buttonListener);
     facilitiesButton.addActionListener(buttonListener);
@@ -104,6 +107,8 @@ public class GuestWindow extends GenericWindow {
     for (String m : messages) {
       messageArea.append(m);
       messageArea.append("\n");
+      scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
+
     }
   }
   
@@ -132,6 +137,7 @@ public class GuestWindow extends GenericWindow {
     messageArea = new JTextArea(10, 10);
     messageArea.setEditable(false);
     messageArea.setLineWrap(true);
+    scrollPane = new JScrollPane(messageArea);
     getMessages();
     saveMessageButton   = new JButton("Lagre");
     saveMessageButton.addActionListener(buttonListener);
@@ -149,7 +155,9 @@ public class GuestWindow extends GenericWindow {
     c.gridy     = 0;
     c.weightx   = 1;
     c.weighty   = 1;
-    p.add(new JScrollPane(messageArea), c);
+    
+   
+    p.add(scrollPane, c);
     
     // Place txtMessage
     c.insets    = new Insets(0,0,0,0);
@@ -208,6 +216,7 @@ public class GuestWindow extends GenericWindow {
         if (result) {
           JOptionPane.showMessageDialog(this, "Melding lagret!");
           getMessages();
+          
           messageTextField.setText("");
         }
         else {
