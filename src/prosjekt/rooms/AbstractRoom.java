@@ -4,6 +4,10 @@ package prosjekt.rooms;
 
 import prosjekt.guests.AbstractGuest;
 import prosjekt.rooms.RoomMisc.facilities;
+import prosjekt.rooms.types.ConferenceRoom;
+import prosjekt.rooms.types.DoubleRoom;
+import prosjekt.rooms.types.MeetingRoom;
+import prosjekt.rooms.types.SingleRoom;
 
 /**
  *
@@ -15,7 +19,6 @@ public abstract class AbstractRoom implements IRoom {
   protected static int roomCounter = 0;
   protected int roomID;
   protected float price = 0;
-  
 
   protected AbstractGuest guest;
   protected facilities facilities;
@@ -51,13 +54,22 @@ public abstract class AbstractRoom implements IRoom {
   public int getID() {
     return roomID;
   }
-
-  
   
 
   @Override
   public facilities getFacilities() {
     return facilities;
+  }
+  
+  public String getRoomType() {
+    String rt = "";
+    
+    if(this instanceof SingleRoom) { rt = "SingleRoom"; }
+    else if (this instanceof DoubleRoom) { rt = "DoubleRoom"; }
+    else if (this instanceof ConferenceRoom) { rt = "ConferenceRoom"; }
+    else if (this instanceof MeetingRoom) { rt = "MeetingRoom"; }
+    
+    return rt;
   }
 
   @Override

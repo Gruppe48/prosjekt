@@ -6,9 +6,7 @@ package prosjekt.guests;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedList;
 import prosjekt.utils.Utils;
 

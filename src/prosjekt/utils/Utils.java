@@ -5,11 +5,13 @@ package prosjekt.utils;
 import com.cedarsoftware.util.io.JsonReader;
 import com.cedarsoftware.util.io.JsonWriter;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -80,4 +82,36 @@ public class Utils {
     }
     return output.toString();
   }
+
+  public static void write(String filename, String data) {
+        
+        BufferedWriter bufferedWriter = null;
+        if (data == null) { System.err.println("Data er null!");
+        return;
+        }
+        try {
+            
+            //Construct the BufferedWriter object
+            bufferedWriter = new BufferedWriter(new FileWriter(filename));
+            
+            //Start writing to the output stream
+            bufferedWriter.write(data);
+            bufferedWriter.newLine();
+            
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally {
+            //Close the BufferedWriter
+            try {
+                if (bufferedWriter != null) {
+                    bufferedWriter.flush();
+                    bufferedWriter.close();
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
 }

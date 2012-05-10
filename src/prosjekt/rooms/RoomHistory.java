@@ -5,6 +5,7 @@
 package prosjekt.rooms;
 
 import java.util.ArrayList;
+import prosjekt.utils.Utils;
 
 /**
  *
@@ -14,14 +15,27 @@ import java.util.ArrayList;
 public class RoomHistory {
   // "Indeksert" etter from, to og room.
   private ArrayList<AbstractRoom> list = new ArrayList();
+
+  public RoomHistory() {
+    if (Utils.fileExists("roomHistory.json")) {
+      load();
+    }
+    else {
+      save();
+    }
+  }
   
+  
+  public void save() {
+    Utils.save(list, "roomHistory.json");
+  }
+  public void load() {
+    list = (ArrayList<AbstractRoom>) Utils.load("roomHistory.json");
+  }
   public void add(AbstractRoom room) {
     list.add(room);
   }
-  public ArrayList<AbstractRoom> getList() {
-    return list;
-  }
-  /* 
+   /* 
    * Gets a list of previous AbstractRoom's for this room.
    * 
    * @param roomID ID of the room you want history for.
@@ -30,22 +44,9 @@ public class RoomHistory {
    * @return List containing the room history, or empty list.
    * 
    */
-  
-//  public boolean remove(AbstractRoom room) {
-//    for (AbstractRoom r : list) {
-//      if (r.equals(room)) {
-//        list.remove(r);
-//        return true;
-//      }
-//    }
-//    return false;
-//  }
-//  public boolean exists(AbstractRoom room) {
-//    for (AbstractRoom r : list) {
-//      if (r.equals(room)) {
-//        return true;
-//      }
-//     }
-//    return false;
-//  }
+  public ArrayList<AbstractRoom> getList() {
+    return list;
+  }
+ 
+ 
 }

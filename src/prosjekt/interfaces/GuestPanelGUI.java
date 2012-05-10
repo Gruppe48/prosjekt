@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -144,7 +145,7 @@ public class GuestPanelGUI {
     // add inputPanel to panel
     panel.add(inputPanel, c);
     
-    // Create search and edit button
+    // Create buttons
     btnSearch = new JButton("Søk");
     btnEdit   = new JButton("Endre");
     btnEdit.setEnabled(false);
@@ -240,26 +241,53 @@ public class GuestPanelGUI {
   private JPanel showAllGuests(JPanel panel) {
     GridBagConstraints c = new GridBagConstraints();
     
-    // Display area
-    JTextArea display = new JTextArea(10,30);
-    display.setForeground(Color.BLACK);
-    display.setBackground(Color.WHITE);
-    display.setText(Main.guestRegistry.toString());
-    display.setEditable(false);
-    JScrollPane scroll = new JScrollPane(display);
-    c.insets  = new Insets(0,0,0,0);
-    c.fill    = GridBagConstraints.BOTH;
-    c.anchor  = GridBagConstraints.FIRST_LINE_START;
-    c.gridwidth = 8;
-    c.gridx   = 0;
-    c.gridy   = 0;
-    c.weightx = 1;
-    c.weighty = 1;
-    panel.add(scroll, c);
+    // Array of columnnames for our JTable
+    columnNames = new String[]{"Fornavn", "Etternavn", "Telefon", "Postnummer", "Addresse", "Company"};
+        
+    // Create a JTable for guestPanelSearchresults           
+    tableModel = new SearchTableModel(rowData, columnNames);
+    tableSearchResults = new JTable(tableModel);
+    tableSearchResults.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    
+    // New constraints
+    c.insets    = new Insets(0,0,0,0);
+    c.fill      = GridBagConstraints.BOTH;
+    c.anchor    = GridBagConstraints.LINE_START;
+    c.gridwidth = 10;
+    c.gridx     = 0;
+    c.gridy     = 2;
+    c.weightx   = 1;
+    c.weighty   = 1;
+    
+    HashMap<String, AbstractGuest> hashmapAllGuests = Main.guestRegistry.getList();
+          
+    // Lets create and fill rowData
+    if(hashmapAllGuests != null) {
+      rowData = new String[hashmapAllGuests.size()][6];
+      int i = 0;
+      for (AbstractGuest g : hashmapAllGuests.values()) {
+        rowData[i][0] = g.getFirstName();
+        rowData[i][1] = g.getLastName();
+        rowData[i][2] = g.getPhoneNumber();
+        rowData[i][3] = g.getPostNumber() + "";
+        rowData[i][4] = g.getAddress();
+        if(g instanceof Company) {
+          Company company = (Company) g;
+          rowData[i][5] = company.getCompanyName();
+        }
+        i++;
+      }
+    }
+
+    // Tablemodel for our JTable
+    tableModel = new SearchTableModel(rowData, columnNames);
+    tableSearchResults.setModel(tableModel);
+    
+    // add guestPanelSearchResults (JTable) to panel
+    panel.add(new JScrollPane(tableSearchResults), c);
     
     return panel;
   }
-  
   
   
   private class ButtonListener implements ActionListener {

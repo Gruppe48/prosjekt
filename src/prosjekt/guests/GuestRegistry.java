@@ -7,6 +7,7 @@ package prosjekt.guests;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ListIterator;
+import prosjekt.utils.Utils;
 
 /**
  *
@@ -17,6 +18,25 @@ public class GuestRegistry {
 
   private HashMap<String, AbstractGuest> list = new HashMap<String, AbstractGuest>();
 
+  public GuestRegistry() {
+     if (Utils.fileExists("guestRegistry.json")) {
+      load();
+    }
+    else {
+      for (int i = 0; i < 10; i++) {
+        Person guest = new Person("Even"+i, "Augdal"+i, "Tlf"+i, "Adresse"+i, 1000+i);
+        add(guest);
+      }
+      save();
+    }
+  }
+  public void save() {
+    Utils.save(list, "guestRegistry.json");
+  }
+  public void load() {
+    list = (HashMap<String, AbstractGuest>) Utils.load("guestRegistry.json");
+  }
+  
   /*
    * @param AbstractGuest guest
    * @return String "hash" based on guest.
@@ -143,15 +163,15 @@ public class GuestRegistry {
     }
     return (matches.isEmpty()) ? null : matches;
   }
+  
 
-    @Override
-    public String toString() {
-    StringBuilder r = new StringBuilder();
-      for (AbstractGuest g : list.values()) {
-        r.append(g.toString());
-        r.append("\n");
-      }
-      return r.toString();
+  @Override
+  public String toString() {
+  StringBuilder r = new StringBuilder();
+    for (AbstractGuest g : list.values()) {
+      r.append(g.toString());
+      r.append("\n");
     }
-
+    return r.toString();
   }
+}
