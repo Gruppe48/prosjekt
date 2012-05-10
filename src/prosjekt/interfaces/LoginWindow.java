@@ -12,6 +12,7 @@ import java.io.IOException;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
@@ -20,9 +21,9 @@ import javax.swing.JTextField;
  * @author kristoffer
  */
 public class LoginWindow extends GenericWindow {
-  JTextField username;
-  JPasswordField password;
-  JButton login, cancel;
+  JTextField usernameField;
+  JPasswordField passwordField;
+  JButton loginButton, exitButton;
   JLabel logoLabel;
   ImageIcon logo;
   
@@ -42,19 +43,19 @@ public class LoginWindow extends GenericWindow {
     Container c = getContentPane();
     c.setLayout( new FlowLayout() );
     logoLabel = new JLabel(logo);
-    username = new JTextField(10);
-    password = new JPasswordField(10);
+    usernameField = new JTextField(10);
+    passwordField = new JPasswordField(10);
     // Create Buttons
-    login      = new JButton("Login");
-    cancel     = new JButton("Exit");
+    loginButton      = new JButton("Login");
+    exitButton     = new JButton("Exit");
     
-    login.addActionListener(buttonListener);
-    cancel.addActionListener(buttonListener);
+    loginButton.addActionListener(buttonListener);
+    exitButton.addActionListener(buttonListener);
     c.add(logoLabel);
-    c.add(username);
-    c.add(password);
-    c.add(login);
-    c.add(cancel);
+    c.add(usernameField);
+    c.add(passwordField);
+    c.add(loginButton);
+    c.add(exitButton);
   }
 
   @Override
@@ -66,10 +67,10 @@ public class LoginWindow extends GenericWindow {
   public void buttonPressed(ActionEvent e) {
     super.buttonPressed(e);
     
-    if (e.getSource().equals(login)) {
+    if (e.getSource().equals(loginButton)) {
       //TODO: Noe mer fancy?
-      String user = username.getText();
-      String pass = new String(password.getPassword());
+      String user = usernameField.getText();
+      String pass = new String(passwordField.getPassword());
       if (!user.equals("") && !pass.equals("")) {
         // Vi har bruker og passord.
         if (user.equals("admin") && pass.equals("admin")) {
@@ -77,12 +78,20 @@ public class LoginWindow extends GenericWindow {
           setVisible(false);
           new AdminWindow2();
         }
-        if (user.equals("gjest") && pass.equals("gjest")) {
+        else if (user.equals("gjest") && pass.equals("gjest")) {
           //TODO: Gjør noe annet
           setVisible(false);
           new GuestWindow();
         }
+        else {
+          JOptionPane.showMessageDialog(this, "Denne brukeren finnes ikke");
+          usernameField.setText("");
+          passwordField.setText("");
+        }
       }
+    }
+    else if (e.getSource().equals(exitButton)) {
+      System.exit(0);
     }
     
   }
