@@ -11,4 +11,5 @@ public interface ICompany {
    * @return the company name
    */
   public String getCompanyName();
+  
 }

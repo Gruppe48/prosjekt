@@ -6,6 +6,7 @@ package prosjekt.guests;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.ListIterator;
 
 /**
  *
@@ -72,6 +73,20 @@ public class GuestRegistry {
   public AbstractGuest getGuest(AbstractGuest guest) {
     return list.get(getHash(guest));
   }
+  
+  
+  public boolean swapGuest(AbstractGuest oldGuest, AbstractGuest newGuest) {
+     ListIterator listIterator = (ListIterator) list.values().iterator();
+     
+     while(listIterator.hasNext()) {
+       if(listIterator.next().equals(oldGuest)) {
+         listIterator.set(newGuest);
+         return true;
+       }
+     }
+     return false;
+  }
+  
   /*
    * @param AbstractGuest guest, guest to find
    * @return true/false
@@ -93,18 +108,42 @@ public class GuestRegistry {
     ArrayList<AbstractGuest> matches = new ArrayList();
     
     for (AbstractGuest g : list.values()) {
-      if(Company.class.isInstance(g)) {
-        Company c = (Company) g;
-        if(c.getCompanyName().contains(company)) {
+      if(g.getFirstName().toLowerCase().contains(firstName.toLowerCase()) && g.getLastName().toLowerCase().contains(lastName.toLowerCase()) &&
+              g.getPhoneNumber().toLowerCase().contains(phoneNumber.toLowerCase()) && g.getAddress().toLowerCase().contains(address.toLowerCase()) &&
+              (g.getPostNumber()==postNumber || postNumber==0)) {
+        
+        if(g instanceof Company) {
+          Company c = (Company) g;
+          
+          if(company.length()>0 && c.getCompanyName().toLowerCase().contains(company.toLowerCase())) {
+            matches.add(c);
+            break;
+          }
+          else if (c.getPostNumber()==postNumber) {
+            matches.add(c);
+            break;
+          }
+          
+        }
+        
+        // if no companyname is specified, we should show the element
+        if(company.length() == 0) {
           matches.add(g);
         }
       }
-      else if(g.getFirstName().contains(firstName) || g.getLastName().contains(lastName) || g.getPhoneNumber().contains(phoneNumber) ||
-              g.getAddress().contains(address) || g.getPostNumber()==postNumber) {
-        matches.add(g);
-      }
+ 
     }
-    
     return (matches.isEmpty()) ? null : matches;
   }
+  
+  @Override
+  public String toString() {
+    StringBuilder r = new StringBuilder();
+    for (AbstractGuest g : list.values()) {
+      r.append(g.toString());
+      r.append("\n");
+    }
+    return r.toString();
+  }
+  
 }

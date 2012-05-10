@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import prosjekt.Main;
 import prosjekt.utils.Utils;
+import prosjekt.guests.AbstractGuest;
 
 /**
  *
@@ -50,5 +51,20 @@ public class RoomRegistry {
       }
      }
     return false;
+  }
+  
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    for (AbstractRoom r : list) {
+      sb.append(r.toString());
+      sb.append("\n");
+    }
+    return sb.toString();
+  }
+  
+  public String[] getRoomTypes() {
+    String[] roomTypes = {"Enkeltrom", "Dobbeltrom", "Familierom"};
+    return roomTypes;
   }
 }

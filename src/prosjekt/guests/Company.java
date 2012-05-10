@@ -38,4 +38,10 @@ public class Company extends AbstractGuest implements ICompany {
   public String getCompanyName() {
     return companyName;
   }
+  
+  @Override
+  public String toString() {
+    return super.toString() +
+            "Company: " + companyName;
+  }
 }

@@ -5,6 +5,7 @@ package prosjekt;
 import java.awt.Color;
 import java.awt.Transparency;
 import prosjekt.booking.BookingRegistry;
+import prosjekt.guests.Company;
 import prosjekt.guests.GuestRegistry;
 import prosjekt.interfaces.AdminWindow2;
 import prosjekt.rooms.RoomRegistry;
@@ -56,6 +57,9 @@ public class Main {
       // Setup default options
       saveBooking();
     }
+    
+    Company cGuest = new Company("Ole", "Hansen", "12345678", "Kirkeveien 5", 0361, "Microsoft");
+    guestRegistry.add(cGuest);
   }
   public static void saveRooms() {
     Utils.save(roomRegistry, "roomRegistry.json");
@@ -78,8 +82,7 @@ public class Main {
     bookingRegistry = (BookingRegistry) Utils.load("bookingRegistry.json");
   }
   
-  
-  
+
   /**
    * @param args the command line arguments
    */
