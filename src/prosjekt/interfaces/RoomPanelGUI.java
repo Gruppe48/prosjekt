@@ -11,10 +11,11 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.table.TableModel;
 import prosjekt.Main;
-import prosjekt.guests.AbstractGuest;
-import prosjekt.guests.Company;
-import prosjekt.guests.Person;
 import prosjekt.rooms.AbstractRoom;
+import prosjekt.rooms.types.ConferenceRoom;
+import prosjekt.rooms.types.DoubleRoom;
+import prosjekt.rooms.types.MeetingRoom;
+import prosjekt.rooms.types.SingleRoom;
 
 /**
  *
@@ -26,11 +27,12 @@ public class RoomPanelGUI {
   private String columnNames[];
   private TableModel tableModel;
   private ActionListener btnListener;
+  private String[][] rowData;
   
   // roomPanel
   private JTextField txtRoomNumber;
   private JComboBox cmbRoomTypes;
-  private JButton btnSearch, btnEdit, btnSearchRooms, btnShowRooms;;
+  private JButton btnSearch, btnSearchRooms, btnShowRooms;;
   private JTable tableSearchResults;
   private ArrayList<AbstractRoom> arrListResults;
   
@@ -38,6 +40,9 @@ public class RoomPanelGUI {
     if(panelContainer != null) {
       panelContainer.removeAll();
     }
+    
+    // Create buttonlistener
+    btnListener = new ButtonListener();
     
     // Lets make this panel
     panelContainer = roomPanel();
@@ -59,6 +64,8 @@ public class RoomPanelGUI {
     panelMenu.setBackground(Color.LIGHT_GRAY);
     btnSearchRooms = new JButton("Søk");
     btnShowRooms   = new JButton("Vis alle");
+    btnSearchRooms.addActionListener(btnListener);
+    btnShowRooms.addActionListener(btnListener);
     panelMenu.add(btnSearchRooms);
     panelMenu.add(btnShowRooms);
     
@@ -88,24 +95,6 @@ public class RoomPanelGUI {
     c.weighty = 1;
     frame.add(panelMain, c);
 
-    
-    // Add ActionListeners
-    btnSearchRooms.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        panelMain.removeAll();
-        panelMain = searchRooms(panelMain);
-        panelMain.updateUI();
-      }
-    });
-    btnShowRooms.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-       panelMain.removeAll();
-       panelMain = showAllRooms(panelMain);
-       panelMain.updateUI();
-      }
-    });
     
     return frame; 
   }
@@ -194,13 +183,34 @@ public class RoomPanelGUI {
   private JPanel showAllRooms(JPanel panel) {
     GridBagConstraints c = new GridBagConstraints();
     
-    // Display area
-    JTextArea display = new JTextArea(10,30);
-    display.setForeground(Color.BLACK);
-    display.setBackground(Color.WHITE);
-    display.setText(Main.roomRegistry.toString());
-    display.setEditable(false);
-    JScrollPane scroll = new JScrollPane(display);
+    
+    
+    // Array of columnnames for our JTable
+    columnNames = new String[]{"Romnummer", "Type", "Status"};
+    arrListResults = Main.roomRegistry.getList();
+    
+    // Lets create and fill rowData
+    if(arrListResults != null) {
+      rowData = new String[arrListResults.size()][3];
+      int i = 0;
+      for (AbstractRoom r : arrListResults) {
+        rowData[i][0] = r.getID() + "";
+        
+        if(r instanceof SingleRoom) { rowData[i][1] = "Enkeltrom"; }
+        else if (r instanceof DoubleRoom) { rowData[i][1] = "Dobbeltrom"; }
+        else if (r instanceof ConferenceRoom) { rowData[i][1] = "Konferanserom"; }
+        else if (r instanceof MeetingRoom) { rowData[i][1] = "Møterom"; }
+        
+        rowData[i][2] = (r.isOccupied()) ? "Opptatt" : "Ledig";
+        i++;
+      }
+    }
+        
+    // Create a JTable for roomPanelSearchresults           
+    tableModel = new SearchTableModel(rowData, columnNames);
+    tableSearchResults = new JTable(tableModel);
+    tableSearchResults.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    
     c.insets  = new Insets(0,0,0,0);
     c.fill    = GridBagConstraints.BOTH;
     c.anchor  = GridBagConstraints.FIRST_LINE_START;
@@ -209,7 +219,7 @@ public class RoomPanelGUI {
     c.gridy   = 0;
     c.weightx = 1;
     c.weighty = 1;
-    panel.add(scroll, c);
+    panel.add(new JScrollPane(tableSearchResults), c);
     
     return panel;
   }
@@ -271,6 +281,47 @@ public class RoomPanelGUI {
       }
     }
   }*/
+  
+  private class ButtonListener implements ActionListener {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      if(e.getSource() == btnSearchRooms) {
+        panelMain.removeAll();
+        panelMain = searchRooms(panelMain);
+        panelMain.updateUI();
+      }
+      else if(e.getSource() == btnShowRooms) {
+        panelMain.removeAll();
+        panelMain = showAllRooms(panelMain);
+        panelMain.updateUI();
+      }
+      else if(e.getSource() == btnSearch) {
+        String roomNumber = txtRoomNumber.getText();
+        String roomType   = (String) cmbRoomTypes.getSelectedItem();
+        
+        arrListResults = Main.roomRegistry.searchRoom(roomNumber, roomType);
+        
+        // Lets create and fill rowData
+        if(arrListResults != null) {
+          rowData = new String[arrListResults.size()][3];
+          int i = 0;
+          for (AbstractRoom r : arrListResults) {
+            rowData[i][0] = r.getID() + "";
+
+            if(r instanceof SingleRoom) { rowData[i][1] = "Enkeltrom"; }
+            else if (r instanceof DoubleRoom) { rowData[i][1] = "Dobbeltrom"; }
+            else if (r instanceof ConferenceRoom) { rowData[i][1] = "Konferanserom"; }
+            else if (r instanceof MeetingRoom) { rowData[i][1] = "Møterom"; }
+
+            rowData[i][2] = (r.isOccupied()) ? "Opptatt" : "Ledig";
+            i++;
+          }
+        }
+      }
+      
+    }
+
+  }
   
   
 }

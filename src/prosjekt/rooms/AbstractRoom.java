@@ -15,7 +15,6 @@ public abstract class AbstractRoom implements IRoom {
   protected static int roomCounter = 0;
   protected int roomID;
   protected float price = 0;
-  
 
   protected AbstractGuest guest;
   protected facilities facilities;
@@ -51,8 +50,6 @@ public abstract class AbstractRoom implements IRoom {
   public int getID() {
     return roomID;
   }
-
-  
   
 
   @Override

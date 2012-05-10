@@ -14,6 +14,10 @@ import java.util.logging.Logger;
 import prosjekt.Main;
 import prosjekt.utils.Utils;
 import prosjekt.guests.AbstractGuest;
+import prosjekt.rooms.types.ConferenceRoom;
+import prosjekt.rooms.types.DoubleRoom;
+import prosjekt.rooms.types.MeetingRoom;
+import prosjekt.rooms.types.SingleRoom;
 
 /**
  *
@@ -64,7 +68,24 @@ public class RoomRegistry {
   }
   
   public String[] getRoomTypes() {
-    String[] roomTypes = {"Enkeltrom", "Dobbeltrom", "Familierom"};
+    String[] roomTypes = {"Enkeltrom", "Dobbeltrom", "Konferanserom", "Møterom"};
     return roomTypes;
+  }
+  
+  public ArrayList<AbstractRoom> searchRoom(String roomNumber, String roomType) {
+    ArrayList<AbstractRoom> matches = new ArrayList();
+    String rn;
+    
+    for(AbstractRoom r : list) {
+      rn = r.roomID + "";
+      if(rn.contains(roomNumber)) { 
+        if(r instanceof SingleRoom && "Enkeltrom".equals(roomType)) { matches.add(r); }
+        else if (r instanceof DoubleRoom && "Dobbeltrom".equals(roomType)) { matches.add(r); }
+        else if (r instanceof ConferenceRoom && "Konferanserom".equals(roomType)) { matches.add(r); }
+        else if (r instanceof MeetingRoom && "Møterom".equals(roomType)) { matches.add(r); }
+      }
+    }
+    
+    return matches;
   }
 }
