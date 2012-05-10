@@ -143,15 +143,15 @@ public class GuestRegistry {
     }
     return (matches.isEmpty()) ? null : matches;
   }
+  
 
-    @Override
-    public String toString() {
-    StringBuilder r = new StringBuilder();
-      for (AbstractGuest g : list.values()) {
-        r.append(g.toString());
-        r.append("\n");
-      }
-      return r.toString();
+  @Override
+  public String toString() {
+  StringBuilder r = new StringBuilder();
+    for (AbstractGuest g : list.values()) {
+      r.append(g.toString());
+      r.append("\n");
     }
-
+    return r.toString();
   }
+}
