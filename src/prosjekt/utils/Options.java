@@ -18,7 +18,7 @@ public class Options {
   //private LinkedList<Option> options = new LinkedList<Option>();
   private HashMap<String, Object> options = new HashMap<String, Object>();
   public Options() {
-    if (false && Utils.fileExists("options.json")) {
+    if (Utils.fileExists("options.json")) {
       load();
     }
     else {
