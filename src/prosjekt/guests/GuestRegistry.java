@@ -28,9 +28,30 @@ public class GuestRegistry implements IStorable {
       load();
     }
     else {
-      for (int i = 0; i < 10; i++) {
-        Person guest = new Person("Even"+i, "Augdal"+i, "Tlf"+i, "Adresse"+i, 1000+i);
-        add(guest);
+      // Default values
+      ArrayList<AbstractGuest> guests = new ArrayList<AbstractGuest>();
+      // 10 people
+      guests.add(new Person("Even", "Augdal", "12345678", "Skoleveien 1", 1000));
+      guests.add(new Person("Kristoffer", "Berdal", "93828106", "Skoleveien 2", 1000));
+      guests.add(new Person("Ole", "Hansen",   "38383838", "Skoleveien 5", 1000));
+      guests.add(new Person("Ole", "Augdal",   "99999999", "En vei 2", 4000));
+      guests.add(new Person("Jens", "Knutsen", "48586949", "Skoleveien 389", 5000));
+      guests.add(new Person("Hanna", "Jonsen", "13131313", "Byveien 2", 2222));
+      guests.add(new Person("Even", "Halvorsen", "14949494", "Skogveien 50", 7070));
+      guests.add(new Person("Tommy", "Nyrud", "50392342", "Fjellveien 3", 5883));
+      guests.add(new Person("Lise", "Olsen", "16969482", "Skoleveien 19", 1000));
+      guests.add(new Person("Marie", "Olsen", "15838292", "Skoleveien 19", 1000));
+      
+      // 5 companies
+      guests.add(new Company("Sergey", "Brin", "10203040", "Ampfitheatre Parkway", 1600, "Google"));
+      guests.add(new Company("Steve", "Jobs", "30405060", "Infinite Loop 1", 1337, "Apple"));
+      guests.add(new Company("Steve", "Balmer", "92939106", "Microsoft road 1", 0101, "Microsoft"));
+      guests.add(new Company("Jeff", "Bezos", "30284020", "Amazonas 1", 1593, "Amazon"));
+      guests.add(new Company("Paul", "Graham", "13371337", "San Franscisco road 1", 4022, "YCombinator"));
+      
+      // Loop through and add them all.
+      for (AbstractGuest g : guests) {
+        add(g);
       }
       save();
     }
