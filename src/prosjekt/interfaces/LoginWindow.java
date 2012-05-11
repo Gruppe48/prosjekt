@@ -4,6 +4,8 @@
  */
 package prosjekt.interfaces;
 
+import prosjekt.interfaces.guest.GuestWindow;
+import prosjekt.interfaces.admin.AdminWindow;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;

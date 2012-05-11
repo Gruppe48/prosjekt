@@ -13,7 +13,7 @@ import prosjekt.rooms.RoomRegistry;
 import prosjekt.rooms.types.SingleRoom;
 import prosjekt.guests.Person;
 
-import prosjekt.interfaces.AdminWindow;
+import prosjekt.interfaces.admin.AdminWindow;
 import prosjekt.utils.Utils;
 
 /**

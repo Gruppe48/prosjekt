@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package prosjekt.interfaces;
+package prosjekt.interfaces.admin;
 
 import com.toedter.calendar.JDateChooser;
 import java.awt.*;
@@ -17,7 +17,6 @@ import prosjekt.booking.BookingEntry;
 import prosjekt.guests.AbstractGuest;
 import prosjekt.guests.Company;
 import prosjekt.guests.Person;
-import prosjekt.rooms.AbstractRoom;
 import prosjekt.utils.Utils;
 
 /**

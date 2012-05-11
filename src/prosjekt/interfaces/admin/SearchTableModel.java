@@ -1,4 +1,4 @@
-package prosjekt.interfaces;
+package prosjekt.interfaces.admin;
 
 
 import java.util.ArrayList;
