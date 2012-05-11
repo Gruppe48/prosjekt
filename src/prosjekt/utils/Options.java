@@ -7,17 +7,22 @@ package prosjekt.utils;
 import java.awt.Color;
 import java.util.HashMap;
 import prosjekt.utils.Utils;
-
+import prosjekt.IStorable;
 /**
  *
  * @author kristoffer
  */
-public class Options {
+public class Options implements IStorable {
   
   
   //private LinkedList<Option> options = new LinkedList<Option>();
   private HashMap<String, Object> options = new HashMap<String, Object>();
   public Options() {
+    init();
+  }
+  
+   @Override
+  public final void init() {
     if (Utils.fileExists("options.json")) {
       load();
     }
@@ -29,6 +34,15 @@ public class Options {
       save();
     }
   }
+   @Override
+  public void save() {
+    Utils.save(options, "options.json");
+  }
+
+  @Override
+  public final void load() {
+    options = (HashMap<String, Object>) Utils.load("options.json");
+  }
   
   public Object get(String key) {
     return options.get(key);
@@ -36,14 +50,6 @@ public class Options {
   public void set(String key, Object obj) {
     options.put(key, obj);
   }
-  public void save() {
-    Utils.save(options, "options.json");
-  }
-
-  public final void load() {
-    options = (HashMap<String, Object>) Utils.load("options.json");
-  }
-
   public boolean exists(String name) {
     
     for (String keyName : options.keySet()) {

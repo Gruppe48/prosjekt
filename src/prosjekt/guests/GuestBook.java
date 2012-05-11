@@ -8,6 +8,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
+import prosjekt.IStorable;
 import prosjekt.utils.Utils;
 
 /**
@@ -15,11 +16,17 @@ import prosjekt.utils.Utils;
  * @author Kristoffer Berdal <web@flexd.net>
  * @since 2012-04-16
  */
-public class GuestBook {
+public class GuestBook implements IStorable {
   private static LinkedList<String> list = new LinkedList<String>();
 
   public GuestBook() {
-     if (Utils.fileExists("guestBook.json")) {
+    init();
+  }
+
+  @Override
+  public final void init() {
+    // If the file exists, load the guestbook data.
+    if (Utils.fileExists("guestBook.json")) {
       load();
     }
     else {
@@ -28,10 +35,12 @@ public class GuestBook {
     }
   }
   
-  public static void save() {
+  @Override
+  public void save() {
     Utils.save(list, "guestBook.json");
   }
-  public static void load() {
+  @Override
+  public void load() {
     list = (LinkedList<String>) Utils.load("guestBook.json");
   }
   private String getDateTime() {

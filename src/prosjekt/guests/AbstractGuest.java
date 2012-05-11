@@ -31,6 +31,7 @@ public class AbstractGuest implements IGuest {
    * The guest's phone number
    */
   private String    phoneNumber;
+
   /*
    * The guest's address
    */
@@ -38,7 +39,8 @@ public class AbstractGuest implements IGuest {
   /*
    * The guest's post number
    */
-  private int postNumber;
+  private String postNumber;
+  private StringBuilder errors = new StringBuilder();
   
   /*
    * Constructor for AbstractGuest
@@ -49,14 +51,16 @@ public class AbstractGuest implements IGuest {
    * @param lastName
    * @param phoneNumber
    */
-  public AbstractGuest(String firstName, String lastName, String phoneNumber, String address, int postNumber) {
+  public AbstractGuest(String firstName, String lastName, String phoneNumber, String address, String postNumber) {
     guestID = guestCounter++;
-    this.firstName    = firstName;
-    this.lastName     = lastName;
-    this.phoneNumber  = phoneNumber;
-    this.address      = address;
-    this.postNumber   = postNumber;
+
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.phoneNumber = phoneNumber;
+    this.address = address;
+    this.postNumber = postNumber;
   }
+  
   @Override
   public int getID() {
     return guestID;
@@ -83,7 +87,7 @@ public class AbstractGuest implements IGuest {
     return address;
   }
   @Override
-  public int getPostNumber() {
+  public String getPostNumber() {
     return postNumber;
   }
 
@@ -94,5 +98,10 @@ public class AbstractGuest implements IGuest {
             "Navn: " + firstName + " " + lastName + "\n" + 
             "Telefonnummer: " + phoneNumber + "\n" +
             "Addresse: " + postNumber + " " + address + "\n"; 
+  }
+
+  @Override
+  public String getErrors() {
+    return errors.toString();
   }
 }

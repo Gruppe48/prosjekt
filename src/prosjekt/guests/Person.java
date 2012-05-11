@@ -22,7 +22,7 @@ public class Person extends AbstractGuest implements IPerson {
    * @param String address
    * @param int postNumber
    */
-  public Person (String firstName, String lastName, String phoneNumber, String address, int postNumber) { 
+  public Person (String firstName, String lastName, String phoneNumber, String address, String postNumber) { 
 
     super(firstName, lastName, phoneNumber, address, postNumber);
     

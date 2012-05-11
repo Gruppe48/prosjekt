@@ -7,6 +7,7 @@ package prosjekt.guests;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ListIterator;
+import prosjekt.IStorable;
 import prosjekt.utils.Utils;
 
 /**
@@ -14,25 +15,52 @@ import prosjekt.utils.Utils;
  * @author Kristoffer Berdal <web@flexd.net>
  * @since 2012-04-16
  */
-public class GuestRegistry {
+public class GuestRegistry implements IStorable {
 
   private HashMap<String, AbstractGuest> list = new HashMap<String, AbstractGuest>();
 
   public GuestRegistry() {
+    init();
+  }
+  @Override
+  public final void init() {
      if (Utils.fileExists("guestRegistry.json")) {
       load();
     }
     else {
-      for (int i = 0; i < 10; i++) {
-        Person guest = new Person("Even"+i, "Augdal"+i, "Tlf"+i, "Adresse"+i, 1000+i);
-        add(guest);
+      // Default values
+      ArrayList<AbstractGuest> guests = new ArrayList<AbstractGuest>();
+      // 10 people
+      guests.add(new Person("Even", "Augdal", "12345678", "Skoleveien 1", "1000"));
+      guests.add(new Person("Kristoffer", "Berdal", "93828106", "Skoleveien 2", "1000"));
+      guests.add(new Person("Ole", "Hansen",   "38383838", "Skoleveien 5", "1000"));
+      guests.add(new Person("Ole", "Augdal",   "99999999", "En vei 2", "4000"));
+      guests.add(new Person("Jens", "Knutsen", "48586949", "Skoleveien 389", "5000"));
+      guests.add(new Person("Hanna", "Jonsen", "13131313", "Byveien 2", "2222"));
+      guests.add(new Person("Even", "Halvorsen", "14949494", "Skogveien 50", "7070"));
+      guests.add(new Person("Tommy", "Nyrud", "50392342", "Fjellveien 3", "5883"));
+      guests.add(new Person("Lise", "Olsen", "16969482", "Skoleveien 19", "1000"));
+      guests.add(new Person("Marie", "Olsen", "15838292", "Skoleveien 19", "1000"));
+      
+      // 5 companies
+      guests.add(new Company("Sergey", "Brin", "10203040", "Ampfitheatre Parkway", "1600", "Google"));
+      guests.add(new Company("Steve", "Jobs", "30405060", "Infinite Loop 1", "1337", "Apple"));
+      guests.add(new Company("Steve", "Balmer", "92939106", "Microsoft road 1", "0101", "Microsoft"));
+      guests.add(new Company("Jeff", "Bezos", "30284020", "Amazonas 1", "1593", "Amazon"));
+      guests.add(new Company("Paul", "Graham", "13371337", "San Franscisco road 1", "4022", "YCombinator"));
+      
+      // Loop through and add them all.
+      for (AbstractGuest g : guests) {
+        add(g);
       }
       save();
     }
   }
+  @Override
   public void save() {
     Utils.save(list, "guestRegistry.json");
   }
+  @Override
   public void load() {
     list = (HashMap<String, AbstractGuest>) Utils.load("guestRegistry.json");
   }
@@ -45,7 +73,8 @@ public class GuestRegistry {
   //TODO: VALIDERING
   public String getHash(AbstractGuest guest) {
     StringBuilder output = new StringBuilder();
-
+    // This is not the best way of making a hash, and should probably be refactored in a future version. Changing a guests details will result in a new hash, which means that guests bookings and everything will need to be changed to the new hash.
+    
     // Fetch the first name, last name and phone number to create a unique "hash" to identify a guest.
     output.append(guest.getFirstName());
     output.append(guest.getLastName());
@@ -59,7 +88,6 @@ public class GuestRegistry {
     }
     String hash = getHash(guest);
     list.put(hash, guest);
-    System.out.println("Added guest with hash: " + hash);
     return true;
   }
   /*
@@ -78,7 +106,6 @@ public class GuestRegistry {
     boolean result = false;
     String hash = getHash(guest);
     if (list.remove(hash) != null) {
-      System.out.println("Removed guest with hash: " + hash);
       result = true;
     }
     return result;
@@ -141,13 +168,13 @@ public class GuestRegistry {
    * 
    * @returns an ArrayList of matching guests or null if there is no matches.
    */
-  public ArrayList<AbstractGuest> searchGuests(String firstName, String lastName, String phoneNumber, String address, int postNumber, String company) {
+  public ArrayList<AbstractGuest> searchGuests(String firstName, String lastName, String phoneNumber, String address, String postNumber, String company) {
     ArrayList<AbstractGuest> matches = new ArrayList();
     
     for (AbstractGuest g : list.values()) {
       if(g.getFirstName().toLowerCase().contains(firstName.toLowerCase()) && g.getLastName().toLowerCase().contains(lastName.toLowerCase()) &&
               g.getPhoneNumber().toLowerCase().contains(phoneNumber.toLowerCase()) && g.getAddress().toLowerCase().contains(address.toLowerCase()) &&
-              (g.getPostNumber()==postNumber || postNumber==0)) {
+              (g.getPostNumber().equals(postNumber) || postNumber.equals("0"))) {
         
         if(g instanceof Company) {
           Company c = (Company) g;

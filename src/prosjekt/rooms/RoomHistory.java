@@ -5,6 +5,7 @@
 package prosjekt.rooms;
 
 import java.util.ArrayList;
+import prosjekt.IStorable;
 import prosjekt.utils.Utils;
 
 /**
@@ -12,11 +13,15 @@ import prosjekt.utils.Utils;
  * @author Kristoffer Berdal <web@flexd.net>
  * @since 2012-04-16
  */
-public class RoomHistory {
+public class RoomHistory implements IStorable {
   // "Indeksert" etter from, to og room.
   private ArrayList<AbstractRoom> list = new ArrayList();
 
   public RoomHistory() {
+    init();
+  }
+  @Override
+  public final void init() {
     if (Utils.fileExists("roomHistory.json")) {
       load();
     }
@@ -25,10 +30,11 @@ public class RoomHistory {
     }
   }
   
-  
+  @Override
   public void save() {
     Utils.save(list, "roomHistory.json");
   }
+  @Override
   public void load() {
     list = (ArrayList<AbstractRoom>) Utils.load("roomHistory.json");
   }

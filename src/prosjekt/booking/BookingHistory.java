@@ -4,6 +4,7 @@ package prosjekt.booking;
 
 import java.util.ArrayList;
 import java.util.Date;
+import prosjekt.IStorable;
 import prosjekt.guests.AbstractGuest;
 import prosjekt.rooms.AbstractRoom;
 import prosjekt.utils.Utils;
@@ -14,12 +15,16 @@ import prosjekt.utils.Utils;
  * @studnr 180212
  * @date Mar 29, 2012
  */
-public class BookingHistory {
+public class BookingHistory implements IStorable {
   // "Indeksert" etter from, to og room.
   private ArrayList<BookingEntry> list = new ArrayList();
 
   public BookingHistory() {
-     if (Utils.fileExists("bookingHistory.json")) {
+   init();
+  }
+  @Override
+  public final void init() {
+      if (Utils.fileExists("bookingHistory.json")) {
       load();
     }
     else {
@@ -28,10 +33,11 @@ public class BookingHistory {
     }
   }
   
-  
+  @Override
    public void save() {
     Utils.save(list, "bookingHistory.json");
   }
+  @Override
   public void load() {
     list = (ArrayList<BookingEntry>) Utils.load("bookingHistory.json");
   }
