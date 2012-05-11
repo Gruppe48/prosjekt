@@ -33,6 +33,13 @@ public interface IGuest {
   /*
    * @return the guest's post number
    */
-  public int getPostNumber();
+  public String getPostNumber();
+  
+  /*
+   * @return Returns the errors.
+   */
+  public String getErrors();
+  
+
 }
 
