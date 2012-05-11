@@ -12,6 +12,7 @@ import prosjekt.rooms.RoomRegistry;
 import prosjekt.rooms.types.SingleRoom;
 import prosjekt.guests.Person;
 
+import prosjekt.interfaces.AdminWindow2;
 import prosjekt.utils.Utils;
 
 /**
