@@ -5,9 +5,7 @@
 package prosjekt.rooms;
 
 import java.util.ArrayList;
-import prosjekt.rooms.types.ConferenceRoom;
-import prosjekt.rooms.types.DoubleRoom;
-import prosjekt.rooms.types.MeetingRoom;
+import prosjekt.IStorable;
 import prosjekt.rooms.types.SingleRoom;
 import prosjekt.utils.Utils;
 
@@ -15,12 +13,16 @@ import prosjekt.utils.Utils;
  *
  * @author kristoffer
  */
-public class RoomRegistry {
+public class RoomRegistry implements IStorable {
   // "Indeksert" etter from, to og room.
   private ArrayList<AbstractRoom> list = new ArrayList();
   private RoomHistory history = new RoomHistory();
 
   public RoomRegistry() {
+    init();
+  }
+  @Override
+  public final void init() {
     if (Utils.fileExists("roomRegistry.json")) {
       load();
     }
@@ -32,10 +34,12 @@ public class RoomRegistry {
       save();
     }
   }
+  @Override
   public void save() {
     Utils.save(list, "roomRegistry.json");
     history.save();
   }
+  @Override
   public void load() {
     list = (ArrayList<AbstractRoom>) Utils.load("roomRegistry.json");
     history.load();
@@ -107,4 +111,6 @@ public class RoomRegistry {
     
     return matches;
   }
+
+  
 }

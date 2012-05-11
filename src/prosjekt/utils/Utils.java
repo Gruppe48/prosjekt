@@ -4,6 +4,7 @@ package prosjekt.utils;
 
 import com.cedarsoftware.util.io.JsonReader;
 import com.cedarsoftware.util.io.JsonWriter;
+import java.awt.Component;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -17,6 +18,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -26,6 +28,18 @@ import java.util.logging.Logger;
  */
 public class Utils {
   
+  public static void showErrorMessage(Component c, String m, String title) {
+    JOptionPane.showMessageDialog(c, m, title,
+        JOptionPane.ERROR_MESSAGE);
+  }
+  public static void showInformationMessage(Component c, String m, String title) {
+    JOptionPane.showMessageDialog(c, m, title,
+        JOptionPane.INFORMATION_MESSAGE);
+  }
+  public static void showWarningMessage(Component c, String m, String title) {
+    JOptionPane.showMessageDialog(c, m, title,
+        JOptionPane.WARNING_MESSAGE);
+  }
   public static boolean fileExists(String filename) {
     File f = new File(filename);
     return f.exists();

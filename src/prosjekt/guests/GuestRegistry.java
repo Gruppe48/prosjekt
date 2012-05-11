@@ -7,6 +7,7 @@ package prosjekt.guests;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ListIterator;
+import prosjekt.IStorable;
 import prosjekt.utils.Utils;
 
 /**
@@ -14,11 +15,15 @@ import prosjekt.utils.Utils;
  * @author Kristoffer Berdal <web@flexd.net>
  * @since 2012-04-16
  */
-public class GuestRegistry {
+public class GuestRegistry implements IStorable {
 
   private HashMap<String, AbstractGuest> list = new HashMap<String, AbstractGuest>();
 
   public GuestRegistry() {
+    init();
+  }
+  @Override
+  public final void init() {
      if (Utils.fileExists("guestRegistry.json")) {
       load();
     }
@@ -30,9 +35,11 @@ public class GuestRegistry {
       save();
     }
   }
+  @Override
   public void save() {
     Utils.save(list, "guestRegistry.json");
   }
+  @Override
   public void load() {
     list = (HashMap<String, AbstractGuest>) Utils.load("guestRegistry.json");
   }
@@ -45,7 +52,8 @@ public class GuestRegistry {
   //TODO: VALIDERING
   public String getHash(AbstractGuest guest) {
     StringBuilder output = new StringBuilder();
-
+    // This is not the best way of making a hash, and should probably be refactored in a future version. Changing a guests details will result in a new hash, which means that guests bookings and everything will need to be changed to the new hash.
+    
     // Fetch the first name, last name and phone number to create a unique "hash" to identify a guest.
     output.append(guest.getFirstName());
     output.append(guest.getLastName());

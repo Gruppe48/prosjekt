@@ -5,6 +5,7 @@ package prosjekt.booking;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
+import prosjekt.IStorable;
 import prosjekt.Main;
 import prosjekt.guests.AbstractGuest;
 import prosjekt.rooms.AbstractRoom;
@@ -16,12 +17,17 @@ import prosjekt.utils.Utils;
  * @studnr 180212
  * @date Mar 29, 2012
  */
-public class BookingRegistry {
+public class BookingRegistry implements IStorable {
   // "Indeksert" etter from, to og room.
   private ArrayList<BookingEntry> list = new ArrayList();
   private BookingHistory history = new BookingHistory();
 
   public BookingRegistry() {
+    init();
+  }
+  
+  @Override
+  public final void init() {
     if (Utils.fileExists("bookingRegistry.json")) {
       load();
     }
@@ -30,8 +36,17 @@ public class BookingRegistry {
       save();
     }
   }
-  
-  
+  @Override
+  public void save() {
+    Utils.save(list, "bookingRegistry.json");
+    history.save();
+  }
+  @Override
+  public void load() {
+    list = (ArrayList<BookingEntry>) Utils.load("bookingRegistry.json");
+    history.load();
+  }
+
   public boolean add(Date from, Date to, AbstractGuest guest, String type) {
     //TODO: Sjekk om rommet er reservert, sjekk om gjesten har reservert osv!
     
@@ -125,15 +140,7 @@ public class BookingRegistry {
     return out;
   }
 
-  public void save() {
-    Utils.save(list, "bookingRegistry.json");
-    history.save();
-  }
-  public void load() {
-    list = (ArrayList<BookingEntry>) Utils.load("bookingRegistry.json");
-    history.load();
-  }
-
+ 
   private ArrayList<AbstractRoom> getBookingRooms() {
     ArrayList<AbstractRoom> rooms = new ArrayList<AbstractRoom>();
     for (BookingEntry bookingEntry : list) {
