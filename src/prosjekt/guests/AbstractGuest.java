@@ -1,11 +1,9 @@
 package prosjekt.guests;
 
-import prosjekt.Main;
 import prosjekt.rooms.types.ConferenceRoom;
 import prosjekt.rooms.types.DoubleRoom;
 import prosjekt.rooms.types.MeetingRoom;
 import prosjekt.rooms.types.SingleRoom;
-import prosjekt.utils.Utils;
 
 /**
  *
@@ -24,24 +22,23 @@ public class AbstractGuest implements IGuest {
   /*
    * The guest's first name
    */
-  private String firstName = "";
+  private String firstName;
   /*
    * The guest's last name
    */
-  private String lastName = "";
+  private String lastName;
   /*
    * The guest's phone number
    */
-  private String phoneNumber = "";
+  private String    phoneNumber;
   /*
    * The guest's address
    */
-  private String address = "";
+  private String address;
   /*
    * The guest's post number
    */
-  private String postNumber = "";
-  private StringBuilder errors = new StringBuilder();
+  private int postNumber;
   
   /*
    * Constructor for AbstractGuest
@@ -52,51 +49,14 @@ public class AbstractGuest implements IGuest {
    * @param lastName
    * @param phoneNumber
    */
-  public AbstractGuest(String firstName, String lastName, String phoneNumber, String address, String postNumber) {
+  public AbstractGuest(String firstName, String lastName, String phoneNumber, String address, int postNumber) {
     guestID = guestCounter++;
-    setFirstName(firstName);
-    setLastName(lastName);
-    setPhoneNumber(phoneNumber);
-    setAddress(address);
-    setPostNumber(postNumber);
+    this.firstName    = firstName;
+    this.lastName     = lastName;
+    this.phoneNumber  = phoneNumber;
+    this.address      = address;
+    this.postNumber   = postNumber;
   }
-  @Override
-  public final boolean setAddress(String address) {
-    //TODO: Validation?
-    this.address = address;
-    return true;
-  }
-
-  @Override
-  public final boolean setFirstName(String firstName) {
-    this.firstName = firstName;
-    return true;
-  }
-
-  @Override
-  public final boolean setLastName(String lastName) {
-    this.lastName = lastName;
-    return true;
-  }
-
-  @Override
-  public final boolean setPhoneNumber(String phoneNumber) {
-    if (phoneNumber.matches("\\d{8}")) {
-      this.phoneNumber = phoneNumber;
-      return true;
-    }
-    return false;
-  }
-
-  @Override
-  public final boolean setPostNumber(String postNumber) {
-    if (postNumber.matches("[0123456789]{4,4}")) {
-      this.postNumber = postNumber;
-      return true;
-    }
-    return false;
-  }
-  
   @Override
   public int getID() {
     return guestID;
@@ -123,7 +83,7 @@ public class AbstractGuest implements IGuest {
     return address;
   }
   @Override
-  public String getPostNumber() {
+  public int getPostNumber() {
     return postNumber;
   }
 
@@ -134,24 +94,5 @@ public class AbstractGuest implements IGuest {
             "Navn: " + firstName + " " + lastName + "\n" + 
             "Telefonnummer: " + phoneNumber + "\n" +
             "Addresse: " + postNumber + " " + address + "\n"; 
-  }
-
-  public boolean validate() {
-    boolean status = true;
-    if (!phoneNumber.matches("\\d{8}")) {
-      errors.append("Phone number is not valid!");
-      errors.append("\n");
-      status = false;
-    }
-    if (!postNumber.matches("\\d{4}")) {
-      errors.append("Post number is not valid!");
-      errors.append("\n");
-      status = false;
-    }
-    return status;
-  }
-
-  public String getErrors() {
-    return errors.toString();
   }
 }
