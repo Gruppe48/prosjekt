@@ -29,7 +29,7 @@ public class Main {
    * @param args the command line arguments
    */
   public static void main(String[] args) throws ParseException {
-    //new AdminWindow2();
+    new AdminWindow2();
     SimpleDateFormat formatter = new SimpleDateFormat("d/M/yyyy");
     boolean result = false;
 
