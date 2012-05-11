@@ -35,10 +35,6 @@ public class Main {
     boolean result = false;
 
     result = bookingRegistry.add(formatter.parse("1/02/2012"), formatter.parse("1/02/2013"), guestRegistry.getGuest("Even0", "Augdal0", "Tlf0"), "SingleRoom");
-    System.out.println(result);
-
-    
-
-   
+    System.out.println(result); 
   }
 }
