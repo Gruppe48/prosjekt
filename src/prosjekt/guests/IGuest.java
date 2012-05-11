@@ -35,36 +35,6 @@ public interface IGuest {
    */
   public String getPostNumber();
   
-  
-  /*
-   * @param name First name to set.
-   * @return true if it succeeds, false if it fails.
-   */
-  public boolean setFirstName(String name);
-  /*
-   * @param name last name to set.
-    * @return true if it succeeds, false if it fails.
-   */
-  public boolean setLastName(String name);
-  
-  /*
-   * @return number the phone number to set.
-   * @return true if it succeeds, false if it fails.
-   */
-  public boolean setPhoneNumber(String number);
-  
-  /*
-   * @param address the address to set.
-   * @return true if it succeeds, false if it fails.
-   */
-  public boolean setAddress(String address);
-  
-  /*
-   * @param number the number to set.
-   * @return true if it succeeds, false if it fails.
-   */
-  public boolean setPostNumber(String number);
-  
   /*
    * @return Returns the errors.
    */
