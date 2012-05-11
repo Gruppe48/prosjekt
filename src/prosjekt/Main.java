@@ -12,6 +12,7 @@ import prosjekt.rooms.RoomRegistry;
 import prosjekt.rooms.types.SingleRoom;
 import prosjekt.guests.Person;
 
+import prosjekt.interfaces.AdminWindow2;
 import prosjekt.utils.Utils;
 
 /**
@@ -29,7 +30,7 @@ public class Main {
    * @param args the command line arguments
    */
   public static void main(String[] args) throws ParseException {
-    //new AdminWindow2();
+    new AdminWindow2();
     SimpleDateFormat formatter = new SimpleDateFormat("d/M/yyyy");
     boolean result = false;
 
