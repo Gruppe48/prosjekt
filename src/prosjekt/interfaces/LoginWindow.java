@@ -7,14 +7,7 @@ package prosjekt.interfaces;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
-import java.io.File;
-import java.io.IOException;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 /**
  *
@@ -76,7 +69,7 @@ public class LoginWindow extends GenericWindow {
         if (user.equals("admin") && pass.equals("admin")) {
           //TODO: Gjør noe.
           setVisible(false);
-          new AdminWindow2();
+          new AdminWindow();
         }
         else if (user.equals("gjest") && pass.equals("gjest")) {
           //TODO: Gjør noe annet

@@ -12,7 +12,6 @@ import java.io.FileOutputStream;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.text.rtf.RTFEditorKit;
 import prosjekt.utils.Utils;
 
