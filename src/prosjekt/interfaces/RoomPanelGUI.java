@@ -109,7 +109,7 @@ public class RoomPanelGUI {
     // Adding all labels and textfields to inputPanel
     inputPanel.add(new JLabel("Romnummer"));
     inputPanel.add(txtRoomNumber);
-    inputPanel.add(new JLabel("Sengeplasser"));
+    inputPanel.add(new JLabel("Romtype"));
     inputPanel.add(cmbRoomTypes);
             
     // Create a contraints variable for gridbaglayout
