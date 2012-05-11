@@ -34,7 +34,7 @@ public class Main {
     SimpleDateFormat formatter = new SimpleDateFormat("d/M/yyyy");
     boolean result = false;
 
-    result = bookingRegistry.add(formatter.parse("1/02/2012"), formatter.parse("1/02/2013"), guestRegistry.getGuest("Even0", "Augdal0", "Tlf0"), "SingleRoom");
+    result = bookingRegistry.add(formatter.parse("1/02/2012"), formatter.parse("1/02/2014"), guestRegistry.getGuest("Kristoffer", "Berdal", "93828106"), "Enkeltrom");
     System.out.println(result); 
   }
 }

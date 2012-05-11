@@ -349,10 +349,10 @@ public class BookingPanelGUI {
         String companyName  = txtCompanyName.getText();
 
         try {
-          int postNumber = 0;
+          String postNumber = "0";
 
           if(!txtPostNumber.getText().equals("")) {
-            postNumber = Integer.parseInt(txtPostNumber.getText());
+            postNumber = txtPostNumber.getText();
           }
           
           arrListResults = Main.guestRegistry.searchGuests(firstname, lastname, phoneNumber, address, postNumber, companyName);

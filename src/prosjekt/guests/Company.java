@@ -29,7 +29,7 @@ public class Company extends AbstractGuest implements ICompany {
    * @param int postNumber
    * @param String companyName
    */
-  public Company(String firstName, String lastName, String phoneNumber, String address, int postNumber, String companyName) {
+  public Company(String firstName, String lastName, String phoneNumber, String address, String postNumber, String companyName) {
     super(firstName, lastName, phoneNumber, address, postNumber);
     this.companyName = companyName;
   }

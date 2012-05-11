@@ -98,16 +98,31 @@ public class BookingRegistry implements IStorable {
   }
   private AbstractRoom findRoomFromRegistry(Date from, Date to, String type) {
     ArrayList<AbstractRoom> rooms = Main.roomRegistry.getRoomsByType(type);
+    AbstractRoom result = null;
     for (AbstractRoom r : rooms) {
       for (BookingEntry e : list) {
-        if (e.getRoom().equals(r)) {
-          if ((e.getFromDate().before(from) && e.getToDate().before(to)) || (e.getFromDate().after(from) && e.getToDate().after(to))) {
-            return e.getRoom();
+        if (e.getRoom().getID() == r.getID()) {
+          // Entry overlapping our timeframe
+          if ((e.getFromDate().before(from)) && (e.getToDate().after(to))) {
+            continue;
           }
+          // Entry inside our timeframe
+          else if ((e.getFromDate().after(from)) && (e.getToDate().after(from)) && (e.getToDate().before(to))) {
+            continue;
+          }
+          // Entry starts before our from, but ends inside our timeframe.
+          else if ((e.getFromDate().before(from)) && (e.getToDate().after(from)) && (e.getToDate().before(to))) {
+            continue;
+          }
+          // Entry starts within our timeframe and ends after our to.
+          else if ((e.getFromDate().after(from)) && (e.getFromDate().before(to)) && (e.getToDate().after(to))) {
+            continue;
+          }
+          result = e.getRoom();
         }
       }
     }
-    return null;
+    return result;
   }
   public ArrayList<BookingEntry> getList() {
     return list;
