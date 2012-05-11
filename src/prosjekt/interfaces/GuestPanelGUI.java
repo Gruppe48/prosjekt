@@ -16,7 +16,6 @@ import javax.swing.table.TableModel;
 import prosjekt.Main;
 import prosjekt.guests.AbstractGuest;
 import prosjekt.guests.Company;
-import prosjekt.guests.Person;
 
 /**
  *
@@ -26,14 +25,14 @@ public class GuestPanelGUI {
   // General
   private JPanel panelContainer, panelMenu, panelMain;
   private String columnNames[];
-  String[][] rowData;
+  String[][] rowData, rowData2;
   private TableModel tableModel;
   private ActionListener btnListener;
   
   // guestPanel
   private JTextField txtFirstname, txtLastname, txtPhoneNumber, txtAddress, txtPostNumber, txtCompanyName;
   private JTable tableSearchResults;
-  private JButton btnSearch, btnEdit, btnSearchGuest, btnShowGuests;
+  private JButton btnSearch, btnClear, btnSearchGuest, btnShowGuests;
   private ArrayList<AbstractGuest> arrListResults;
 
   
@@ -147,16 +146,15 @@ public class GuestPanelGUI {
     
     // Create buttons
     btnSearch = new JButton("Søk");
-    btnEdit   = new JButton("Endre");
-    btnEdit.setEnabled(false);
+    btnClear  = new JButton("Tøm");
     btnSearch.addActionListener(btnListener);
-    btnEdit.addActionListener(btnListener);
+    btnClear.addActionListener(btnListener);
           
     
     // Add the buttons to our buttonPanel
     buttonPanel = new JPanel(new GridLayout(1,2));
     buttonPanel.setBackground(Color.LIGHT_GRAY);
-    buttonPanel.add(btnEdit);
+    buttonPanel.add(btnClear);
     buttonPanel.add(btnSearch);
     
     // New constraints
@@ -183,7 +181,7 @@ public class GuestPanelGUI {
 
     
     // Add actionlistener for our JTable
-    tableResultsListener tableListener = new tableResultsListener();
+    TableResultsListener tableListener = new TableResultsListener();
     tableSearchResults.getSelectionModel().addListSelectionListener(tableListener);
     //guestPanelSearchResults.getColumnModel().getSelectionModel().addListSelectionListener(tableListener);
     
@@ -206,10 +204,10 @@ public class GuestPanelGUI {
   }
   
   
-  private class tableResultsListener implements ListSelectionListener {
+  private class TableResultsListener implements ListSelectionListener {
     JTable table;
 
-    tableResultsListener() {
+    TableResultsListener() {
       table = tableSearchResults;
     }
 
@@ -226,8 +224,6 @@ public class GuestPanelGUI {
           txtPostNumber.setText(arrListResults.get(i).getPostNumber() + "");
           txtCompanyName.setText("");
 
-          btnEdit.setEnabled(true);
-
           if(arrListResults.get(i) instanceof Company) {
             Company c = (Company) arrListResults.get(i);
             txtCompanyName.setText(c.getCompanyName());
@@ -235,17 +231,17 @@ public class GuestPanelGUI {
         }
       } 
     }
-    
   }
   
   private JPanel showAllGuests(JPanel panel) {
     GridBagConstraints c = new GridBagConstraints();
+    rowData2 = null;
     
     // Array of columnnames for our JTable
     columnNames = new String[]{"Fornavn", "Etternavn", "Telefon", "Postnummer", "Addresse", "Company"};
-        
+    
     // Create a JTable for guestPanelSearchresults           
-    tableModel = new SearchTableModel(rowData, columnNames);
+    tableModel = new SearchTableModel(rowData2, columnNames);
     tableSearchResults = new JTable(tableModel);
     tableSearchResults.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     
@@ -263,24 +259,24 @@ public class GuestPanelGUI {
           
     // Lets create and fill rowData
     if(hashmapAllGuests != null) {
-      rowData = new String[hashmapAllGuests.size()][6];
+      rowData2 = new String[hashmapAllGuests.size()][6];
       int i = 0;
       for (AbstractGuest g : hashmapAllGuests.values()) {
-        rowData[i][0] = g.getFirstName();
-        rowData[i][1] = g.getLastName();
-        rowData[i][2] = g.getPhoneNumber();
-        rowData[i][3] = g.getPostNumber() + "";
-        rowData[i][4] = g.getAddress();
+        rowData2[i][0] = g.getFirstName();
+        rowData2[i][1] = g.getLastName();
+        rowData2[i][2] = g.getPhoneNumber();
+        rowData2[i][3] = g.getPostNumber() + "";
+        rowData2[i][4] = g.getAddress();
         if(g instanceof Company) {
           Company company = (Company) g;
-          rowData[i][5] = company.getCompanyName();
+          rowData2[i][5] = company.getCompanyName();
         }
         i++;
       }
     }
 
     // Tablemodel for our JTable
-    tableModel = new SearchTableModel(rowData, columnNames);
+    tableModel = new SearchTableModel(rowData2, columnNames);
     tableSearchResults.setModel(tableModel);
     
     // add guestPanelSearchResults (JTable) to panel
@@ -303,8 +299,15 @@ public class GuestPanelGUI {
         panelMain = showAllGuests(panelMain);
         panelMain.updateUI();
       }
+      else if(e.getSource() == btnClear) {
+        txtFirstname.setText("");
+        txtLastname.setText("");
+        txtPhoneNumber.setText("");
+        txtPostNumber.setText("");
+        txtAddress.setText("");
+        txtCompanyName.setText("");
+      }
       else if(e.getSource() == btnSearch) {
-        btnEdit.setEnabled(false);
         String firstname    = txtFirstname.getText();
         String lastname     = txtLastname.getText();
         String phoneNumber  = txtPhoneNumber.getText();
@@ -317,7 +320,7 @@ public class GuestPanelGUI {
           if(!txtPostNumber.getText().equals("")) {
             postNumber = Integer.parseInt(txtPostNumber.getText());
           }
-
+          
           arrListResults = Main.guestRegistry.searchGuests(firstname, lastname, phoneNumber, address, postNumber, companyName);
           
           // Lets create and fill rowData
@@ -340,47 +343,11 @@ public class GuestPanelGUI {
           
           // Tablemodel for our JTable
           tableModel = new SearchTableModel(rowData, columnNames);
-
           tableSearchResults.setModel(tableModel);
         }
         catch(NumberFormatException nfe) {
           System.out.println("error! NumberFormatException");
         }
-      }
-      else if(e.getSource() == btnEdit) {
-        String firstname    = txtFirstname.getText();
-        String lastname     = txtLastname.getText();
-        String phoneNumber  = txtPhoneNumber.getText();
-        String address      = txtAddress.getText();
-        String companyName  = txtCompanyName.getText();
-        AbstractGuest editedGuest;
-
-        try {
-          int postNumber = 0;
-
-          if(!txtPostNumber.getText().equals("")) {
-            postNumber = Integer.parseInt(txtPostNumber.getText());
-          }
-
-          // Create new guest based on the old
-          if(companyName.length() > 0) {
-            editedGuest = new Company(firstname, lastname, phoneNumber, address, postNumber, companyName);
-          }
-          else {
-            editedGuest = new Person(firstname, lastname, phoneNumber, address, postNumber);
-          }
-
-          // Swap the old one with the new one.
-          Main.guestRegistry.swapGuest(arrListResults.get(tableSearchResults.getSelectedRow()), editedGuest);
-
-        }
-        catch(NumberFormatException nfe) {
-          System.out.println("error! NumberFormatException");
-        }
-        catch(NullPointerException npe) {
-          System.out.println("error! NullPointerException");
-        }
-
       }
     }
   }

@@ -12,24 +12,17 @@ import javax.swing.*;
 import javax.swing.table.TableModel;
 import prosjekt.Main;
 import prosjekt.rooms.AbstractRoom;
-import prosjekt.rooms.types.ConferenceRoom;
-import prosjekt.rooms.types.DoubleRoom;
-import prosjekt.rooms.types.MeetingRoom;
-import prosjekt.rooms.types.SingleRoom;
 
 /**
  *
  * @author Even
  */
 public class RoomPanelGUI {
-  // General
   private JPanel panelContainer, panelMenu, panelMain;
   private String columnNames[];
   private TableModel tableModel;
   private ActionListener btnListener;
-  private String[][] rowData;
-  
-  // roomPanel
+  private String[][] rowData, rowData2;
   private JTextField txtRoomNumber;
   private JComboBox cmbRoomTypes;
   private JButton btnSearch, btnSearchRooms, btnShowRooms;;
@@ -156,9 +149,10 @@ public class RoomPanelGUI {
     
     // Array of columnnames for our JTable
     columnNames = new String[]{"Romnummer", "Type", "Status"};
-        
+    
+    
     // Create a JTable for roomPanelSearchresults           
-    tableModel = new SearchRoomTableModel(arrListResults, columnNames);
+    tableModel = new SearchTableModel(rowData, columnNames);
     tableSearchResults = new JTable(tableModel);
     tableSearchResults.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
@@ -182,8 +176,7 @@ public class RoomPanelGUI {
   
   private JPanel showAllRooms(JPanel panel) {
     GridBagConstraints c = new GridBagConstraints();
-    
-    
+    rowData2 = null;
     
     // Array of columnnames for our JTable
     columnNames = new String[]{"Romnummer", "Type", "Status"};
@@ -191,18 +184,18 @@ public class RoomPanelGUI {
     
     // Lets create and fill rowData
     if(arrListResults != null) {
-      rowData = new String[arrListResults.size()][3];
+      rowData2 = new String[arrListResults.size()][3];
       int i = 0;
       for (AbstractRoom r : arrListResults) {
-        rowData[i][0] = r.getID() + "";
-        rowData[i][1] = r.getRoomType();
-        rowData[i][2] = (r.isOccupied()) ? "Opptatt" : "Ledig";
+        rowData2[i][0] = r.getID() + "";
+        rowData2[i][1] = r.getRoomType();
+        rowData2[i][2] = (r.isOccupied()) ? "Opptatt" : "Ledig";
         i++;
       }
     }
         
     // Create a JTable for roomPanelSearchresults           
-    tableModel = new SearchTableModel(rowData, columnNames);
+    tableModel = new SearchTableModel(rowData2, columnNames);
     tableSearchResults = new JTable(tableModel);
     tableSearchResults.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     
@@ -218,64 +211,6 @@ public class RoomPanelGUI {
     
     return panel;
   }
- /* 
-  private class ButtonListener implements ActionListener {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      if(e.getSource() == btnSearch) {
-        btnEdit.setEnabled(false);
-        String roomNumber = txtRoomNumber.getText();
-        String roomType   = (String) cmbRoomTypes.getSelectedItem();
-
-        try {
-          arrListResults = Main.roomRegistry.searchRooms(roomNumber, roomType);
-
-          // Tablemodel for our JTable
-          tableModel = new SearchTableModel(arrListResults, columnNames, "rooms");
-
-          tableSearchResults.setModel(tableModel);
-        }
-        catch(NumberFormatException nfe) {
-          System.out.println("error! NumberFormatException");
-        }
-      }
-      else if(e.getSource() == btnEdit) {
-        String firstname    = txtFirstname.getText();
-        String lastname     = txtLastname.getText();
-        String phoneNumber  = txtPhoneNumber.getText();
-        String address      = txtAddress.getText();
-        String companyName  = txtCompanyName.getText();
-        AbstractGuest editedGuest;
-
-        try {
-          int postNumber = 0;
-
-          if(!txtPostNumber.getText().equals("")) {
-            postNumber = Integer.parseInt(txtPostNumber.getText());
-          }
-
-          // Create new guest based on the old
-          if(companyName.length() > 0) {
-            editedGuest = new Company(firstname, lastname, phoneNumber, address, postNumber, companyName);
-          }
-          else {
-            editedGuest = new Person(firstname, lastname, phoneNumber, address, postNumber);
-          }
-
-          // Swap the old one with the new one.
-          Main.guestRegistry.swapGuest(arrListResults.get(tableSearchResults.getSelectedRow()), editedGuest);
-
-        }
-        catch(NumberFormatException nfe) {
-          System.out.println("error! NumberFormatException");
-        }
-        catch(NullPointerException npe) {
-          System.out.println("error! NullPointerException");
-        }
-
-      }
-    }
-  }*/
   
   private class ButtonListener implements ActionListener {
     @Override
@@ -295,23 +230,22 @@ public class RoomPanelGUI {
         String roomType   = (String) cmbRoomTypes.getSelectedItem();
         
         arrListResults = Main.roomRegistry.searchRoom(roomNumber, roomType);
-        
+    
         // Lets create and fill rowData
         if(arrListResults != null) {
           rowData = new String[arrListResults.size()][3];
           int i = 0;
           for (AbstractRoom r : arrListResults) {
             rowData[i][0] = r.getID() + "";
-
-            if(r instanceof SingleRoom) { rowData[i][1] = "Enkeltrom"; }
-            else if (r instanceof DoubleRoom) { rowData[i][1] = "Dobbeltrom"; }
-            else if (r instanceof ConferenceRoom) { rowData[i][1] = "Konferanserom"; }
-            else if (r instanceof MeetingRoom) { rowData[i][1] = "Møterom"; }
-
+            rowData[i][1] = r.getRoomType();
             rowData[i][2] = (r.isOccupied()) ? "Opptatt" : "Ledig";
             i++;
           }
         }
+        
+        // Tablemodel for our JTable
+        tableModel = new SearchTableModel(rowData, columnNames);
+        tableSearchResults.setModel(tableModel);
       }
       
     }
