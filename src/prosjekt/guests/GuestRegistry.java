@@ -31,7 +31,7 @@ public class GuestRegistry implements IStorable {
       // Default values
       ArrayList<AbstractGuest> guests = new ArrayList<AbstractGuest>();
       // 10 people
-      guests.add(new Person("Even", "Augdal", "12345678", "Skoleveien 1", "1000"));
+      guests.add(new Person("Even", "Augdal", "1234567822", "Skoleveien 1", "1002"));
       guests.add(new Person("Kristoffer", "Berdal", "93828106", "Skoleveien 2", "1000"));
       guests.add(new Person("Ole", "Hansen",   "38383838", "Skoleveien 5", "1000"));
       guests.add(new Person("Ole", "Augdal",   "99999999", "En vei 2", "4000"));
@@ -81,9 +81,15 @@ public class GuestRegistry implements IStorable {
     output.append(guest.getPhoneNumber());
     return output.toString();
   }
-
+  /*
+   * 
+   */
   public boolean add(AbstractGuest guest) {
     if (exists(guest)) {
+      return false;
+    }
+    if (!guest.validate()) {
+      Utils.showWarningMessage(null, "Gjesten er ikke gyldig! " + guest.getFirstName() + " " + guest.getLastName() + "\n" + "Feilmelding: " + guest.getErrors(), "Validerings feil!");
       return false;
     }
     String hash = getHash(guest);
@@ -106,6 +112,7 @@ public class GuestRegistry implements IStorable {
     boolean result = false;
     String hash = getHash(guest);
     if (list.remove(hash) != null) {
+      System.out.println("Removed guest with hash: " + hash);
       result = true;
     }
     return result;

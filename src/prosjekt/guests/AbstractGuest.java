@@ -1,9 +1,11 @@
 package prosjekt.guests;
 
+import prosjekt.Main;
 import prosjekt.rooms.types.ConferenceRoom;
 import prosjekt.rooms.types.DoubleRoom;
 import prosjekt.rooms.types.MeetingRoom;
 import prosjekt.rooms.types.SingleRoom;
+import prosjekt.utils.Utils;
 
 /**
  *
@@ -30,8 +32,7 @@ public class AbstractGuest implements IGuest {
   /*
    * The guest's phone number
    */
-  private String    phoneNumber;
-
+  private String phoneNumber;
   /*
    * The guest's address
    */
@@ -53,7 +54,6 @@ public class AbstractGuest implements IGuest {
    */
   public AbstractGuest(String firstName, String lastName, String phoneNumber, String address, String postNumber) {
     guestID = guestCounter++;
-
     this.firstName = firstName;
     this.lastName = lastName;
     this.phoneNumber = phoneNumber;
@@ -100,7 +100,21 @@ public class AbstractGuest implements IGuest {
             "Addresse: " + postNumber + " " + address + "\n"; 
   }
 
-  @Override
+  public boolean validate() {
+    boolean status = true;
+    if (!phoneNumber.matches("\\d{8}")) {
+      errors.append("Phone number is not valid!");
+      errors.append("\n");
+      status = false;
+    }
+    if (!postNumber.matches("\\d{4}")) {
+      errors.append("Post number is not valid!");
+      errors.append("\n");
+      status = false;
+    }
+    return status;
+  }
+
   public String getErrors() {
     return errors.toString();
   }
