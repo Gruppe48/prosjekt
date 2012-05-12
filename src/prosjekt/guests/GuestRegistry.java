@@ -19,36 +19,47 @@ public class GuestRegistry implements IStorable {
 
   private HashMap<String, AbstractGuest> list = new HashMap<String, AbstractGuest>();
 
+  /**
+   * This is the constructor for the GuestRegistry.
+   * This runs the method init() which either loads the registry from file (if it exists) or creates a sane default.
+   *
+   */
   public GuestRegistry() {
     init();
   }
+
+  /**
+   *
+   * This is the method init()
+   * This method either loads the list from the file 'guestRegistry.json' or creates sane defaults before saving it.
+   *
+   */
   @Override
   public final void init() {
-     if (Utils.fileExists("guestRegistry.json")) {
+    if (Utils.fileExists("guestRegistry.json")) {
       load();
-    }
-    else {
+    } else {
       // Default values
       ArrayList<AbstractGuest> guests = new ArrayList<AbstractGuest>();
       // 10 people
       guests.add(new Person("Even", "Augdal", "1234567822", "Skoleveien 1", "1002"));
       guests.add(new Person("Kristoffer", "Berdal", "93828106", "Skoleveien 2", "1000"));
-      guests.add(new Person("Ole", "Hansen",   "38383838", "Skoleveien 5", "1000"));
-      guests.add(new Person("Ole", "Augdal",   "99999999", "En vei 2", "4000"));
+      guests.add(new Person("Ole", "Hansen", "38383838", "Skoleveien 5", "1000"));
+      guests.add(new Person("Ole", "Augdal", "99999999", "En vei 2", "4000"));
       guests.add(new Person("Jens", "Knutsen", "48586949", "Skoleveien 389", "5000"));
       guests.add(new Person("Hanna", "Jonsen", "13131313", "Byveien 2", "2222"));
       guests.add(new Person("Even", "Halvorsen", "14949494", "Skogveien 50", "7070"));
       guests.add(new Person("Tommy", "Nyrud", "50392342", "Fjellveien 3", "5883"));
       guests.add(new Person("Lise", "Olsen", "16969482", "Skoleveien 19", "1000"));
       guests.add(new Person("Marie", "Olsen", "15838292", "Skoleveien 19", "1000"));
-      
+
       // 5 companies
       guests.add(new Company("Sergey", "Brin", "10203040", "Ampfitheatre Parkway", "1600", "Google"));
       guests.add(new Company("Steve", "Jobs", "30405060", "Infinite Loop 1", "1337", "Apple"));
       guests.add(new Company("Steve", "Balmer", "92939106", "Microsoft road 1", "0101", "Microsoft"));
       guests.add(new Company("Jeff", "Bezos", "30284020", "Amazonas 1", "1593", "Amazon"));
       guests.add(new Company("Paul", "Graham", "13371337", "San Franscisco road 1", "4022", "YCombinator"));
-      
+
       // Loop through and add them all.
       for (AbstractGuest g : guests) {
         add(g);
@@ -56,33 +67,52 @@ public class GuestRegistry implements IStorable {
       save();
     }
   }
+  
+  /**
+   *
+   * This is the method save()
+   * This method saves the list to the file 'guestRegistry.json'
+   *
+   */
   @Override
   public void save() {
     Utils.save(list, "guestRegistry.json");
   }
+  
+  /**
+   *
+   * This is the method load()
+   * This method loads the list from the file 'guestRegistry.json'
+   *
+   */
   @Override
   public void load() {
     list = (HashMap<String, AbstractGuest>) Utils.load("guestRegistry.json");
   }
-  
+
   /*
+   * This method creates a very simple hash based on the guests first name, last name and phoneNumber.
+   * In the future this should be replaced with a better solution.
+   * 
    * @param AbstractGuest guest
    * @return String "hash" based on guest.
    * 
    */
-  //TODO: VALIDERING
   public String getHash(AbstractGuest guest) {
     StringBuilder output = new StringBuilder();
     // This is not the best way of making a hash, and should probably be refactored in a future version. Changing a guests details will result in a new hash, which means that guests bookings and everything will need to be changed to the new hash.
-    
+
     // Fetch the first name, last name and phone number to create a unique "hash" to identify a guest.
     output.append(guest.getFirstName());
     output.append(guest.getLastName());
     output.append(guest.getPhoneNumber());
     return output.toString();
   }
-  /*
-   * 
+  
+  /**
+   * This method adds a guest to the guestregistry.
+   * This method saves the list to the file 'guestRegistry.json'
+   *
    */
   public boolean add(AbstractGuest guest) {
     if (exists(guest)) {
@@ -99,7 +129,6 @@ public class GuestRegistry implements IStorable {
   /*
    * @return List of guests (all guests, for all history)
    */
-
   public HashMap<String, AbstractGuest> getList() {
     return list;
   }
@@ -122,9 +151,9 @@ public class GuestRegistry implements IStorable {
    * @param lastName  Etternavn til gjest du skal finne.
    * @param phoneNumber Telefonnummer til gjest du skal finne.
    */
-  //TODO: Normaliser telefonnummer med regulært utrykk: Hvis noen skriver f.eks 93 82 81 06 må vi kunne matche det mot 93828106 osv.
-
   public AbstractGuest getGuest(String firstName, String lastName, String phoneNumber) {
+    //TODO: Normaliser telefonnummer med regulært utrykk: Hvis noen skriver f.eks 93 82 81 06 må vi kunne matche det mot 93828106 osv.
+
     String hash = firstName + lastName + phoneNumber;
     return list.get(hash);
   }
@@ -136,10 +165,10 @@ public class GuestRegistry implements IStorable {
   public AbstractGuest getGuest(AbstractGuest guest) {
     return list.get(getHash(guest));
   }
-  
+
   public AbstractGuest getGuest(int i) {
     for (AbstractGuest g : list.values()) {
-      if(g.getID() == i) {
+      if (g.getID() == i) {
         return g;
       }
     }
@@ -177,39 +206,38 @@ public class GuestRegistry implements IStorable {
    */
   public ArrayList<AbstractGuest> searchGuests(String firstName, String lastName, String phoneNumber, String address, String postNumber, String company) {
     ArrayList<AbstractGuest> matches = new ArrayList();
-    
+
     for (AbstractGuest g : list.values()) {
-      if(g.getFirstName().toLowerCase().contains(firstName.toLowerCase()) && g.getLastName().toLowerCase().contains(lastName.toLowerCase()) &&
-              g.getPhoneNumber().toLowerCase().contains(phoneNumber.toLowerCase()) && g.getAddress().toLowerCase().contains(address.toLowerCase()) &&
-              (g.getPostNumber().equals(postNumber) || postNumber.equals("0"))) {
-        
-        if(g instanceof Company) {
+      if (g.getFirstName().toLowerCase().contains(firstName.toLowerCase()) && g.getLastName().toLowerCase().contains(lastName.toLowerCase())
+              && g.getPhoneNumber().toLowerCase().contains(phoneNumber.toLowerCase()) && g.getAddress().toLowerCase().contains(address.toLowerCase())
+              && (g.getPostNumber().equals(postNumber) || postNumber.equals("0"))) {
+
+        if (g instanceof Company) {
           Company c = (Company) g;
-          
-          if(company.length()>0 && c.getCompanyName().toLowerCase().contains(company.toLowerCase())) {
+
+          if (company.length() > 0 && c.getCompanyName().toLowerCase().contains(company.toLowerCase())) {
+            matches.add(c);
+            break;
+          } else if (c.getPostNumber() == postNumber) {
             matches.add(c);
             break;
           }
-          else if (c.getPostNumber()==postNumber) {
-            matches.add(c);
-            break;
-          }
-          
+
         }
-        
+
         // if no companyname is specified, we should show the element
-        if(company.length() == 0) {
+        if (company.length() == 0) {
           matches.add(g);
         }
       }
- 
+
     }
     return (matches.isEmpty()) ? null : matches;
   }
 
   @Override
   public String toString() {
-  StringBuilder r = new StringBuilder();
+    StringBuilder r = new StringBuilder();
     for (AbstractGuest g : list.values()) {
       r.append(g.toString());
       r.append("\n");
