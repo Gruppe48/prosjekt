@@ -1,5 +1,3 @@
-/*
- */
 package prosjekt.guests;
 
 
@@ -13,7 +11,7 @@ package prosjekt.guests;
  */
 public class Person extends AbstractGuest implements IPerson {
   
-  /*
+  /**
    * Constructor for Person
    * 
    * Initializes the new Company object with the values provided.

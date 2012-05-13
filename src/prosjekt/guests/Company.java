@@ -1,8 +1,4 @@
-/*
- */
 package prosjekt.guests;
-
-
 
 /**
  * This is the class for our Company object.

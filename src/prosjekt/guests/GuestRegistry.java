@@ -1,12 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package prosjekt.guests;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.ListIterator;
 import prosjekt.IStorable;
 import prosjekt.utils.Utils;
 
@@ -37,6 +32,7 @@ public class GuestRegistry implements IStorable {
    *
    * This is the method init()
    * This method either loads the list from the file 'guestRegistry.json' or creates sane defaults before saving it.
+   * This is also where we create our guests for demo purposes.
    *
    */
   @Override

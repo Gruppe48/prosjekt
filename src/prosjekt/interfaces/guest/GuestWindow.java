@@ -1,13 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package prosjekt.interfaces.guest;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener;
 import java.util.Collection;
 import javax.swing.*;
 import prosjekt.Main;
@@ -16,11 +10,16 @@ import prosjekt.interfaces.GenericWindow;
 import prosjekt.utils.Utils;
 
 /**
- *
- * @author kristoffer
+ * This is the GuestWindow.
+ * This is the window guests will be able to see at a computer (or several)
+ * in the lobby. This window displays information about the hotel and 
+ * the surrounding areas to guests.
+ * 
+ * @author Kristoffer Berdall <web@flexd.net>
  */
 public class GuestWindow extends GenericWindow {
 
+  // Declare all the things.
   private JButton homeButton, facilitiesButton, restaurantButton, guestBookButton, saveMessageButton;
   private JPanel menuPanel, mainPanel, contentPanel;
   private JTextPane contentPane;
@@ -30,7 +29,11 @@ public class GuestWindow extends GenericWindow {
   private GuestBook guestBook = new GuestBook();
   private final String ROOT_PATH = "assets/guests/";
   private JScrollPane scrollPane;
-
+  
+  /**
+   * This is the GuestWindow's constructor, which calls to GenericWindow's constructor with
+   * our title and dimensions.
+   */
   public GuestWindow() {
     super("Nyttig informasjon for gjester", 600, 400);
   }
@@ -101,7 +104,12 @@ public class GuestWindow extends GenericWindow {
   public void destroy() {
     super.destroy();
   }
-
+  /**
+   * This method gets the latest Guestbook messages
+   * and adds them to the guestbook messageArea.
+   * It also attempts at scrolling the messageArea as 
+   * far down as it possible to see the latest message.
+   */
   private void getMessages() {
     Collection<String> messages = Main.guestBook.getList();
     messageArea.setText("");
@@ -112,7 +120,14 @@ public class GuestWindow extends GenericWindow {
 
     }
   }
-  
+  /**
+   * This method sets up the textContent panel
+   * The textContent panel is for the information panels
+   * like introduction page, facilities and food & restaurants
+   * that is loaded from file.
+   * 
+   * @return The textContent JPanel.
+   */
   private JPanel textContent(JPanel p) {
     // Create a contraints variable for gridbaglayout
     GridBagConstraints c = new GridBagConstraints();
@@ -134,6 +149,11 @@ public class GuestWindow extends GenericWindow {
     return p;
   }
   
+  /**
+   * This method sets up the guestBook panel
+   * 
+   * @return The guettBook JPanel.
+   */
   private JPanel guestBook(JPanel p) {
     messageArea = new JTextArea(10, 10);
     messageArea.setEditable(false);
@@ -188,6 +208,7 @@ public class GuestWindow extends GenericWindow {
   public void buttonPressed(ActionEvent e) {
     super.buttonPressed(e);
 
+    // Based on which button clicked, load the appropriate panel and contents.
     if (e.getSource() == homeButton) {
       mainPanel.removeAll();
       mainPanel = textContent(mainPanel);
@@ -203,6 +224,8 @@ public class GuestWindow extends GenericWindow {
       mainPanel = textContent(mainPanel);
       contentPane.setText(Utils.read(ROOT_PATH + "restaurant.rtf"));
       mainPanel.updateUI();
+      
+      // Guest book buttons below.
     } else if (e.getSource() == guestBookButton) {
       mainPanel.removeAll();
       mainPanel = guestBook(mainPanel);
@@ -216,7 +239,7 @@ public class GuestWindow extends GenericWindow {
         boolean result = Main.guestBook.add(message);
         if (result) {
           JOptionPane.showMessageDialog(this, "Melding lagret!");
-          getMessages();
+          getMessages(); // Reload the messages after adding a new one!
           
           messageTextField.setText("");
         }
