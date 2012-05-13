@@ -12,19 +12,31 @@ import prosjekt.rooms.AbstractRoom;
 import prosjekt.utils.Utils;
 
 /**
- *
+ * This class implements the BookingRegistry
+ * It is responsible for handling all booking of rooms.
+ * 
+ * 
  * @author Kristoffer Berdal <web@flexd.net>
- * @studnr 180212
  * @date Mar 29, 2012
  */
 public class BookingRegistry implements IStorable {
-  // "Indeksert" etter from, to og room.
+  /**
+   * The booking list itself.
+   */
   private ArrayList<BookingEntry> list = new ArrayList();
+  /**
+   * This is our booking history object, it is pretty much identical and holds previous bookings.
+   * Currently it is actually a bit surplus since bookings are never removed from the booking list.
+   */
   private BookingHistory history = new BookingHistory();
 
+  /**
+   * The constructor for BookingRegistry calls init() as per the IStorable interface.
+   */
   public BookingRegistry() {
     init();
   }
+  
   
   @Override
   public final void init() {
@@ -47,6 +59,19 @@ public class BookingRegistry implements IStorable {
     history.load();
   }
 
+  
+
+  
+  /**
+   * This method adds a booking entry to the booking list,
+   * if there is a available room.
+   * 
+   * @param from Start of the booking entry
+   * @param to end of the booking entry.
+   * @param guest Which guest is making a reservation/booking.
+   * @param type What kind of room being booked.
+   * @return A booking entry if successful, null if unsuccessful.
+   */
   public BookingEntry add(Date from, Date to, AbstractGuest guest, String type) {
     //TODO: Sjekk om rommet er reservert, sjekk om gjesten har reservert osv!
     
@@ -66,6 +91,15 @@ public class BookingRegistry implements IStorable {
       return null;
     }
   }
+  /**
+   * 
+   * This method finds a available room of a specific type, in a specific time frame.
+   * 
+   * @param from start of time frame.
+   * @param to end of time frame.
+   * @param type Type of room we want.
+   * @return A room that is available in that time frame, or null if none are available.
+   */
   private AbstractRoom findRoom(Date from, Date to, String type) {
     AbstractRoom room = null;
     ArrayList<AbstractRoom> rooms = findUnbookedRooms(type);
@@ -81,6 +115,12 @@ public class BookingRegistry implements IStorable {
     }
    return room; 
   }
+  /**
+   * This method finds all the rooms of a specific type that have never been booked before.
+   * i.e the rooms that are guaranteed to be free.
+   * @param type The type of room.
+   * @return A list of free rooms.
+   */
   private ArrayList<AbstractRoom> findUnbookedRooms(String type) {
     ArrayList<AbstractRoom> rooms = Main.roomRegistry.getRoomsByType(type);
     ArrayList<AbstractRoom> bookingRooms = getBookingRooms();
@@ -96,6 +136,15 @@ public class BookingRegistry implements IStorable {
     }
     return matches;
   }
+  /**
+   * This method finds free rooms of a specific type in a specific time frame,
+   * from the rooms that have been previously booked.
+   * i.e rooms that have been booked before but are available again.
+   * @param from the start of the time frame
+   * @param to the end of the time frame
+   * @param type the type of room we are looking for.
+   * @return This method returns a available room, or null if there are no available rooms.
+   */
   private AbstractRoom findRoomFromRegistry(Date from, Date to, String type) {
     ArrayList<AbstractRoom> rooms = Main.roomRegistry.getRoomsByType(type);
     for (AbstractRoom r : rooms) {
@@ -109,9 +158,21 @@ public class BookingRegistry implements IStorable {
     }
     return null;
   }
+  /**
+   * This method returns the bookingRegistry list.
+   * @return A list of all the booking entries.
+   */
   public ArrayList<BookingEntry> getList() {
     return list;
   }
+  /**
+   * This method removes a specific booking entry.
+   * 
+   * @param from the start of the time frame
+   * @param to the end of the time frame
+   * @param room the specific room we are looking to remove.
+   * @return true or false based on result, false if we cannot find the specified booking entry.
+   */
   public boolean remove(Date from, Date to, AbstractRoom room) {
     for (BookingEntry e : list) {
       if (e.getFromDate().equals(from) && e.getToDate().equals(to) && e.getRoom().equals(room)) {
@@ -121,6 +182,9 @@ public class BookingRegistry implements IStorable {
     }
     return false;
   }
+  /**
+   * TODO: Fix this!
+   */
   public boolean isBooked(AbstractRoom room) {
     for (BookingEntry e : list) {
       if (e.getRoom().getID() == room.getID()) {
@@ -129,6 +193,11 @@ public class BookingRegistry implements IStorable {
      }
     return false;
   }
+  /**
+   * This method returns the booking history of a specfic room.
+   * @param roomID  The roomID of the specific room we want the history of.
+   * @return A list of booking entries for this room, or a empty list.
+   */
   public ArrayList<BookingEntry> getHistory(int roomID) {
     ArrayList<BookingEntry> out = new ArrayList<BookingEntry>();
     
@@ -140,7 +209,10 @@ public class BookingRegistry implements IStorable {
     return out;
   }
 
- 
+ /**
+   * This method returns all the rooms that exist in the booking list.
+   * @return A list of all rooms that have previously (or are currently) booked.
+   */
   private ArrayList<AbstractRoom> getBookingRooms() {
     ArrayList<AbstractRoom> rooms = new ArrayList<AbstractRoom>();
     for (BookingEntry bookingEntry : list) {
