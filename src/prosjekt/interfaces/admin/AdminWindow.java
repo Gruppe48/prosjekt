@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package prosjekt.interfaces;
+package prosjekt.interfaces.admin;
 
 import java.awt.Container;
 import java.awt.GridLayout;
@@ -11,18 +11,19 @@ import java.awt.event.KeyEvent;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import prosjekt.interfaces.GenericWindow;
 
 
 /**
  *
  * @author Even
  */
-public class AdminWindow2 extends GenericWindow {
+public class AdminWindow extends GenericWindow {
   // General
   private JTabbedPane tabbedPane;
   private JComponent panelGuest, panelRoom, panelBooking, panelInformation;
   
-  public AdminWindow2() {
+  public AdminWindow() {
     super("Administratorpanel", 900, 500);
   }
 
@@ -49,7 +50,7 @@ public class AdminWindow2 extends GenericWindow {
     tabbedPane.setMnemonicAt(2, KeyEvent.VK_3);
     
     panelInformation = informationPanel();
-    tabbedPane.addTab("Fasiliteter", panelInformation);
+    tabbedPane.addTab("Informasjon", panelInformation);
     tabbedPane.setMnemonicAt(3, KeyEvent.VK_4);
 
  

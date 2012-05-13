@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package prosjekt.interfaces;
+package prosjekt.interfaces.guest;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -12,6 +12,7 @@ import java.util.Collection;
 import javax.swing.*;
 import prosjekt.Main;
 import prosjekt.guests.GuestBook;
+import prosjekt.interfaces.GenericWindow;
 import prosjekt.utils.Utils;
 
 /**

@@ -47,7 +47,7 @@ public class BookingRegistry implements IStorable {
     history.load();
   }
 
-  public boolean add(Date from, Date to, AbstractGuest guest, String type) {
+  public BookingEntry add(Date from, Date to, AbstractGuest guest, String type) {
     //TODO: Sjekk om rommet er reservert, sjekk om gjesten har reservert osv!
     
     AbstractRoom room = findRoom(from, to, type);
@@ -59,11 +59,11 @@ public class BookingRegistry implements IStorable {
       list.add(booking);
       history.add(booking); // Save the booking for history!
       save();
-      return true;
+      return booking;
     }
     else {
       // There is no room!
-      return false;
+      return null;
     }
   }
   private AbstractRoom findRoom(Date from, Date to, String type) {

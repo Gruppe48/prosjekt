@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package prosjekt.interfaces;
+package prosjekt.interfaces.admin;
 
 import com.toedter.calendar.JDateChooser;
 import java.awt.*;
@@ -13,8 +13,11 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import prosjekt.Main;
+import prosjekt.booking.BookingEntry;
 import prosjekt.guests.AbstractGuest;
 import prosjekt.guests.Company;
+import prosjekt.guests.Person;
+import prosjekt.utils.Utils;
 
 /**
  *
@@ -23,7 +26,7 @@ import prosjekt.guests.Company;
 public class BookingPanelGUI {
   private JPanel panelContainer, panelMenu, panelMain;
   private ActionListener btnListener;
-  private JButton btnNewBooking, btnShowBookings, btnSearch, btnNew, btnLookup;
+  private JButton btnMenuNewBooking, btnMenuShowBookings, btnSearch, btnNew, btnLookup, btnCompleteBooking;
   private JTextField txtFirstname, txtLastname, txtPhoneNumber, txtAddress, txtPostNumber, txtCompanyName;
   private JTextField txtFirstname2, txtLastname2, txtPhoneNumber2, txtAddress2, txtPostNumber2, txtCompanyName2;
   private ArrayList<AbstractGuest> arrListResults;
@@ -32,7 +35,10 @@ public class BookingPanelGUI {
   private SearchTableModel tableModel;
   private JTable tableSearchResults;
   private int selectedGuestID;
+  private AbstractGuest selectedGuest;
   private JTextArea display;
+  private JDateChooser arrivalDate, leavingDate;
+  private JComboBox cmbRoomType;
   
   public BookingPanelGUI() {
     if(panelContainer != null) {
@@ -58,10 +64,12 @@ public class BookingPanelGUI {
     // Create menu:
     panelMenu = new JPanel(new GridLayout(6,1));
     panelMenu.setBackground(Color.LIGHT_GRAY);
-    btnNewBooking   = new JButton("Ny booking");
-    btnShowBookings = new JButton("Vis alle");
-    panelMenu.add(btnNewBooking);
-    panelMenu.add(btnShowBookings);
+    btnMenuNewBooking   = new JButton("Ny booking");
+    btnMenuShowBookings = new JButton("Vis alle");
+    btnMenuNewBooking.addActionListener(btnListener);
+    btnMenuShowBookings.addActionListener(btnListener);
+    panelMenu.add(btnMenuNewBooking);
+    panelMenu.add(btnMenuShowBookings);
     
     // Place MENU
     c.insets  = new Insets(7,7,7,7);
@@ -110,12 +118,12 @@ public class BookingPanelGUI {
     inputPanel.add(btnNew);
     
     String[] roomTypes = Main.roomRegistry.getRoomTypes();
-    JComboBox cmbRoomType = new JComboBox(roomTypes);
+    cmbRoomType = new JComboBox(roomTypes);
     inputPanel.add(new JLabel("Velg romtype:"));
     inputPanel.add(cmbRoomType);
     
-    JDateChooser arrivalDate = new JDateChooser();
-    JDateChooser leavingDate = new JDateChooser();
+    arrivalDate = new JDateChooser();
+    leavingDate = new JDateChooser();
     arrivalDate.setBackground(Color.LIGHT_GRAY);
     leavingDate.setBackground(Color.LIGHT_GRAY);
     
@@ -130,8 +138,20 @@ public class BookingPanelGUI {
     c.gridx   = 0;
     c.gridy   = 0;
     c.weightx = 1;
-    c.weighty = 0.2;
+    c.weighty = 0;
     panel.add(inputPanel, c);
+    
+    btnCompleteBooking = new JButton("Reserver");
+    btnCompleteBooking.addActionListener(btnListener);
+    c.insets  = new Insets(0,0,0,0);
+    c.fill    = GridBagConstraints.NONE;
+    c.anchor  = GridBagConstraints.FIRST_LINE_END;
+    c.gridwidth =  0;
+    c.gridx   = 5;
+    c.gridy   = 1;
+    c.weightx = 1;
+    c.weighty = 0;
+    panel.add(btnCompleteBooking, c);
     
     
     // Create display
@@ -142,7 +162,7 @@ public class BookingPanelGUI {
     c.anchor  = GridBagConstraints.PAGE_START;
     c.gridwidth =  0;
     c.gridx   = 0;
-    c.gridy   = 1;
+    c.gridy   = 2;
     c.weightx = 1;
     c.weighty = 1;
     panel.add(display, c);
@@ -153,6 +173,45 @@ public class BookingPanelGUI {
   
   
   private JPanel showAllBookings(JPanel panel) {
+    // Create a contraints variable for gridbaglayout
+    GridBagConstraints c = new GridBagConstraints();
+    
+    tableSearchResults = new JTable();
+    ArrayList<BookingEntry> arrBookingList = Main.bookingRegistry.getList();
+    
+    if(arrBookingList != null) {
+      rowData = new String[arrBookingList.size()][6];
+      int i = 0;
+      for (BookingEntry r: arrBookingList) {
+        rowData[i][0] = r.getFromDate().toString();
+        rowData[i][1] = r.getToDate().toString();
+        rowData[i][2] = r.getGuest().getFirstName() + " " + r.getGuest().getLastName();
+        rowData[i][3] = r.getGuest().getPhoneNumber() + "";
+        rowData[i][4] = r.getRoom().getID() + "";
+        rowData[i][5] = r.getRoom().getRoomType();
+        i++;
+      }  
+    }
+    
+    // Array of columnnames for our JTable
+    columnNames = new String[]{"Fra", "Til", "Gjest", "Telefon", "RomNr", "Romtype"};
+        
+    // Create a JTable for guestPanelSearchresults           
+    tableModel = new SearchTableModel(rowData, columnNames);
+    tableSearchResults = new JTable(tableModel);
+    tableSearchResults.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    
+    // Place table
+    c.insets    = new Insets(0,0,0,0);
+    c.fill      = GridBagConstraints.BOTH;
+    c.anchor    = GridBagConstraints.LINE_START;
+    c.gridwidth = 0;
+    c.gridx     = 0;
+    c.gridy     = 0;
+    c.weightx   = 1;
+    c.weighty   = 1;
+    panel.add(new JScrollPane(tableSearchResults), c);
+    
     return panel;
   }
   
@@ -219,7 +278,7 @@ public class BookingPanelGUI {
     inputPanel.add(txtPostNumber);
     inputPanel.add(new JLabel("Telefonnummer"));
     inputPanel.add(txtPhoneNumber);
-    inputPanel.add(new JLabel("Bedrift"));
+    inputPanel.add(new JLabel("Bedrift*"));
     inputPanel.add(txtCompanyName);
     GridBagConstraints c = new GridBagConstraints();
     c.insets    = new Insets(0,0,0,0);
@@ -292,14 +351,6 @@ public class BookingPanelGUI {
     panel.add(new JScrollPane(tableSearchResults), c);
     
     Frame frame = new JFrame("Søk etter gjest");
-    /*
-    frame.add(panel);
-    JDialog d = new JDialog(frame, "test");
-    d.setVisible(true);
-    * 
-    */
-    //JDialog window = new JDialog(frame);
-    //JOptionPane.showMessageDialog(frame, panel);
     JOptionPane.showMessageDialog(frame, panel);
   }
   
@@ -320,12 +371,12 @@ public class BookingPanelGUI {
    private class ButtonListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
-      if(e.getSource() == btnNewBooking) {
+      if(e.getSource() == btnMenuNewBooking) {
         panelMain.removeAll();
         panelMain = newBooking(panelMain);
         panelMain.updateUI();
       }
-      else if(e.getSource() == btnShowBookings) {
+      else if(e.getSource() == btnMenuShowBookings) {
         panelMain.removeAll();
         panelMain = showAllBookings(panelMain);
         panelMain.updateUI();
@@ -333,13 +384,72 @@ public class BookingPanelGUI {
       else if (e.getSource() == btnSearch) {
         findGuest();
         if(selectedGuestID != -1) {
-          AbstractGuest selectedGuest = Main.guestRegistry.getGuest(selectedGuestID);
+          selectedGuest = Main.guestRegistry.getGuest(selectedGuestID);
           display.setText("Du har valg følgende gjest: " + selectedGuest.getFirstName() + " " + selectedGuest.getLastName());
+        } else {
+          display.setText("Du må velge en gjest");
+        }
+      }
+      else if (e.getSource() == btnCompleteBooking) {
+        String errors = "";
+        if(selectedGuest == null) {
+          errors += "Du må velge eller opprette en gjest \n";
+        }
+        if(arrivalDate.getDate() == null || leavingDate.getDate() == null) {
+          errors += "Du må fylle ut ankomst- og utsjekkingsdato \n";
+        }
+        if(leavingDate.getDate() != null && leavingDate.getDate().before(arrivalDate.getDate())) {
+          errors += "Utsjekkingsdato må være etter ankomstdato";
+        }
+        
+        // If there are any errors
+        if(errors != "") {
+          Utils.showErrorMessage(null, errors, "Error:");
+        }
+        else {
+          BookingEntry newBooking = Main.bookingRegistry.add(arrivalDate.getDate(), leavingDate.getDate(), selectedGuest, (String) cmbRoomType.getSelectedItem());
+          if(newBooking != null) {
+            display.append("Gjesten er nå booket inn på rom: " + newBooking.getRoom().getID() + "\n");
+            display.append("\n Å Betale: \n");
+            display.append(newBooking.getRoom().getPrice() + "kr for : " + newBooking.getRoom().getRoomType());
+          } else {
+            display.append("Hotellet er desverre fult. Vi har ikke plass til gjesten.");
+          }
+        
         }
       }
       else if (e.getSource() == btnNew) {
         newGuest();
-        System.out.println("test: " + txtFirstname2.getText());
+        String firstname    = txtFirstname2.getText();
+        String lastname     = txtLastname2.getText();
+        String phoneNumber  = txtPhoneNumber2.getText();
+        String postNumber   = "0";
+        String address      = txtAddress2.getText();
+        String companyName  = txtCompanyName2.getText();
+        
+        if(firstname.length()>0 && lastname.length()>0 && phoneNumber.length()>0 && txtPhoneNumber2.getText().length()>0 && address.length()>0) {
+          try {
+            postNumber = txtPostNumber2.getText();
+            
+            if(companyName.length()>0) {
+              Company newCompany = new Company(firstname, lastname, phoneNumber, address, postNumber, companyName);
+              Main.guestRegistry.add(newCompany);
+              display.setText("Ny firmagjest er opprettet: " + firstname + " " + lastname + " (" + companyName + ")\n");
+              selectedGuest = newCompany;
+            } else {
+              Person newPerson = new Person(firstname, lastname, phoneNumber, address, postNumber);
+              Main.guestRegistry.add(newPerson);
+              display.setText("Ny gjest er opprettet: " + firstname + " " + lastname + "\n");
+              selectedGuest = newPerson;
+            }  
+          }
+          catch(NumberFormatException nfe) {
+            System.err.println("Error: Numberformatexception");
+          }
+        } else {
+          display.setText("Vennligst fyll ut alle feltene");
+        }
+          
       }
       else if (e.getSource() == btnLookup) {
         String firstname    = txtFirstname.getText();

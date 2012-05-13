@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package prosjekt.interfaces;
+package prosjekt.interfaces.admin;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
