@@ -1,5 +1,3 @@
-/*
- */
 package prosjekt.guests;
 
 /**
@@ -10,6 +8,7 @@ package prosjekt.guests;
  */
 public interface ICompany {
   /**
+   * Getter for companyName
    * @return the company name
    */
   public String getCompanyName();

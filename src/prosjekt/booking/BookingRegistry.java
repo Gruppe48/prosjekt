@@ -1,10 +1,7 @@
-/*
- */
 package prosjekt.booking;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedList;
 import prosjekt.IStorable;
 import prosjekt.Main;
 import prosjekt.guests.AbstractGuest;

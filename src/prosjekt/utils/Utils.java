@@ -1,5 +1,3 @@
-/*
- */
 package prosjekt.utils;
 
 import com.cedarsoftware.util.io.JsonReader;
@@ -21,29 +19,59 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
- *
+ * This is the Utils class.
+ * This class contains methods for loading and saving objects (JSON serialization). 
+ * As well as methods for reading and writing regular files (text strings).
+ * We also have a few methods to show popup messages/dialogues.
+ * 
  * @author Kristoffer Berdal <web@flexd.net>
- * @studnr 180212
  * @date Mar 26, 2012
  */
 public class Utils {
-  
+  /**
+   * This method shows a JOptionPane error message
+   * @param c the component (i.e the host window).
+   * @param m the message to show
+   * @param title the title to show.
+   */
   public static void showErrorMessage(Component c, String m, String title) {
     JOptionPane.showMessageDialog(c, m, title,
         JOptionPane.ERROR_MESSAGE);
   }
+  /**
+   * This method shows a JOptionPane information message
+   * @param c the component (i.e the host window).
+   * @param m the message to show
+   * @param title the title to show.
+   */
   public static void showInformationMessage(Component c, String m, String title) {
     JOptionPane.showMessageDialog(c, m, title,
         JOptionPane.INFORMATION_MESSAGE);
   }
+  /**
+   * This method shows a JOptionPane warning message
+   * @param c the component (i.e the host window).
+   * @param m the message to show
+   * @param title the title to show.
+   */
   public static void showWarningMessage(Component c, String m, String title) {
     JOptionPane.showMessageDialog(c, m, title,
         JOptionPane.WARNING_MESSAGE);
   }
+  /**
+   * This method checks if a file exists.
+   * @param filename the filename to check for.
+   * @return true/false, false if the file does not exist.
+   */
   public static boolean fileExists(String filename) {
     File f = new File(filename);
     return f.exists();
   }
+  /**
+   * This method saves/serializes a object to a JSON file.
+   * @param o the object to save.
+   * @param filename the filename to save to, could be named anything but the format is JSON.
+   */
   public static void save(Object o, String filename) {
     {
       JsonWriter jw = null;
@@ -59,6 +87,12 @@ public class Utils {
       }
     }
   }
+  /**
+   * This method loads a previously JSON serialized object from a file.
+   * Remember to cast it back to what object type is!
+   * @param filename the filename to load.
+   * @return The object loaded!
+   */
   public static Object load(String filename) {
     {
       JsonReader jr = null;
@@ -79,7 +113,11 @@ public class Utils {
       return out;
     }
   }
-  
+  /**
+   * This method reads a file and returns the string.
+   * @param filenam the file to read.
+   * @return The full file in a string.
+   */
   public static String read(String filename) {
     StringBuilder output = new StringBuilder();
     try {
@@ -96,7 +134,11 @@ public class Utils {
     }
     return output.toString();
   }
-
+  /**
+   * This method writes a string to a file.
+   * @param filename the file to write to.
+   * @param data the string we want to write to file.
+   */
   public static void write(String filename, String data) {
         
         BufferedWriter bufferedWriter = null;
