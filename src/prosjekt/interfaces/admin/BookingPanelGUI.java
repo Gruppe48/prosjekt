@@ -278,7 +278,7 @@ public class BookingPanelGUI {
     inputPanel.add(txtPostNumber);
     inputPanel.add(new JLabel("Telefonnummer"));
     inputPanel.add(txtPhoneNumber);
-    inputPanel.add(new JLabel("Bedrift"));
+    inputPanel.add(new JLabel("Bedrift*"));
     inputPanel.add(txtCompanyName);
     GridBagConstraints c = new GridBagConstraints();
     c.insets    = new Insets(0,0,0,0);
