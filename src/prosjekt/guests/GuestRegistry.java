@@ -12,6 +12,11 @@ import prosjekt.utils.Utils;
 
 /**
  *
+ * This is the class implementing the guest registry.
+ * This class is responsible for keeping track of all guests at the hotel, current and previous guests alike.
+ * 
+ * The list is loaded from the file 'guestRegistry.json' and is saved whenever modifications are done, such as adding or removing a guest.
+ *  
  * @author Kristoffer Berdal <web@flexd.net>
  * @since 2012-04-16
  */
@@ -64,7 +69,6 @@ public class GuestRegistry implements IStorable {
       for (AbstractGuest g : guests) {
         add(g);
       }
-      save();
     }
   }
   
@@ -90,7 +94,7 @@ public class GuestRegistry implements IStorable {
     list = (HashMap<String, AbstractGuest>) Utils.load("guestRegistry.json");
   }
 
-  /*
+  /**
    * This method creates a very simple hash based on the guests first name, last name and phoneNumber.
    * In the future this should be replaced with a better solution.
    * 
@@ -111,8 +115,12 @@ public class GuestRegistry implements IStorable {
   
   /**
    * This method adds a guest to the guestregistry.
-   * This method saves the list to the file 'guestRegistry.json'
-   *
+   * Before adding the guest the method checks if 
+   * the guest is already in the list and if the
+   * guest is valid.
+   * 
+   * @param guest the guest to add.
+   * @return true or false based on success.
    */
   public boolean add(AbstractGuest guest) {
     if (exists(guest)) {
@@ -124,32 +132,43 @@ public class GuestRegistry implements IStorable {
     }
     String hash = getHash(guest);
     list.put(hash, guest);
+    save();
     return true;
   }
-  /*
-   * @return List of guests (all guests, for all history)
+  /**
+   * This method returns the list of guests.
+   * 
+   * @return HashMap<String,AbstractGuest> of all guests in the list.
    */
   public HashMap<String, AbstractGuest> getList() {
     return list;
   }
-  /*
-   * @param guest guest to remove!
-   * @return true/false om gjesten ble fjernet/fantes!
+  /**
+   * This method removes a guest from the list
+   * It takes one parameter, which is the guest we want to remove.
+   * 
+   * @param guest the guest we want to remove from the list
+   * @return true or false based on result.
    */
-
   public boolean remove(AbstractGuest guest) {
     boolean result = false;
     String hash = getHash(guest);
     if (list.remove(hash) != null) {
       System.out.println("Removed guest with hash: " + hash);
       result = true;
+      save();
     }
     return result;
   }
-  /*
-   * @param firstName Fornavn til gjest du skal finne
-   * @param lastName  Etternavn til gjest du skal finne.
-   * @param phoneNumber Telefonnummer til gjest du skal finne.
+  /**
+   * 
+   * This method gets a guest from the list (if it exists) based on the guests first name, last name and phone Number.
+   * The methods generates a hash based on the parameters and fetches the guest.
+   * 
+   * @param firstName the first name of the guest
+   * @param lastName  the last name of  the guest
+   * @param phoneNumber the phone number of the guest
+   * @return AbstractGuest guest or null if the guest does not exist.
    */
   public AbstractGuest getGuest(String firstName, String lastName, String phoneNumber) {
     //TODO: Normaliser telefonnummer med regulært utrykk: Hvis noen skriver f.eks 93 82 81 06 må vi kunne matche det mot 93828106 osv.
@@ -157,50 +176,51 @@ public class GuestRegistry implements IStorable {
     String hash = firstName + lastName + phoneNumber;
     return list.get(hash);
   }
-  /*
+  
+  /**
    * @param guest Guest to find
    * @returns AbstractGuest guest
    */
-
   public AbstractGuest getGuest(AbstractGuest guest) {
     return list.get(getHash(guest));
   }
-
-  public AbstractGuest getGuest(int i) {
+  
+  /**
+   * This method returns a guest with the guestID==i.
+   * 
+   * @param guestID guestID of the guest we want.
+   * @return AbstractGuest guest or null if the guest does not exist.
+   */
+  public AbstractGuest getGuest(int guestID) {
     for (AbstractGuest g : list.values()) {
-      if (g.getID() == i) {
+      if (g.getID() == guestID) {
         return g;
       }
     }
     return null;
   }
 
-  public boolean swapGuest(AbstractGuest oldGuest, AbstractGuest newGuest) {
-    ListIterator listIterator = (ListIterator) list.values().iterator();
-
-    while (listIterator.hasNext()) {
-      if (listIterator.next().equals(oldGuest)) {
-        listIterator.set(newGuest);
-        return true;
-      }
-    }
-    return false;
-  }
-
-  /*
-   * @param AbstractGuest guest, guest to find
-   * @return true/false
+  /**
+   * This method checks if the guestRegistry contains a specific guest.
+   * 
+   * @param guest The guest to check for.
+   * @return true or false.
    */
   public boolean exists(AbstractGuest guest) {
     return list.containsKey(getHash(guest));
   }
 
-  /*
-   * @param firstName, string to search for as a substring of firstname
-   * @param lastName, string to search for as a substring of lastname
-   * @param phoneNumber, string to search for as a substring of phoneNumber
-   * @param address, string to search for as a substring of address
-   * @param postNumber, int to match a guest's postNumber
+  /**
+   * 
+   * This method searches through the list based on incoming parameters.
+   * It is used to search for guests in the administration interface.
+   * 
+   * 
+   * @param firstName The guests first name
+   * @param lastName The guests last name
+   * @param phoneNumber The guests phone Number
+   * @param address The guests address
+   * @param postNumber The guests post number.
    * 
    * @returns an ArrayList of matching guests or null if there is no matches.
    */
@@ -234,7 +254,13 @@ public class GuestRegistry implements IStorable {
     }
     return (matches.isEmpty()) ? null : matches;
   }
-
+  /**
+   * 
+   * This method generates a printable (or displayable) text string with the contents
+   * of our guest list.
+   * 
+   * @return A nicely formatted string of guests that can be printed or displayed in a dialogue.
+   */
   @Override
   public String toString() {
     StringBuilder r = new StringBuilder();

@@ -1,49 +1,49 @@
 package prosjekt.guests;
 
-import prosjekt.Main;
-import prosjekt.rooms.types.ConferenceRoom;
-import prosjekt.rooms.types.DoubleRoom;
-import prosjekt.rooms.types.MeetingRoom;
-import prosjekt.rooms.types.SingleRoom;
-import prosjekt.utils.Utils;
-
 /**
+ *
+ * This is the base abstract superclass for our guest classes.
+ * It holds the basic implementations of most methods and variables needed,
+ * such as simple getters and basic validation.
  *
  * @author Kristoffer Berdal <web@flexd.net>
  * @since 2012-04-16
  */
 public class AbstractGuest implements IGuest {
-  /*
+  /**
    * Counter to keep track of what then next guestID will be.
    */
   private static int guestCounter = 0;
-  /*
+  /**
    * The guest's ID
    */
   private int guestID;
-  /*
+  /**
    * The guest's first name
    */
   private String firstName;
-  /*
+  /**
    * The guest's last name
    */
   private String lastName;
-  /*
+  /**
    * The guest's phone number
    */
   private String phoneNumber;
-  /*
+  /**
    * The guest's address
    */
   private String address;
-  /*
+  /**
    * The guest's post number
    */
   private String postNumber;
+  /**
+   * A StringBuilder buffer to hold validation errors.
+   */
   private StringBuilder errors = new StringBuilder();
   
-  /*
+  /**
    * Constructor for AbstractGuest
    * 
    * Initializes the new AbstractGuest object with the values provided.
@@ -51,6 +51,8 @@ public class AbstractGuest implements IGuest {
    * @param firstName
    * @param lastName
    * @param phoneNumber
+   * @param address
+   * @param postNumber
    */
   public AbstractGuest(String firstName, String lastName, String phoneNumber, String address, String postNumber) {
     guestID = guestCounter++;
@@ -92,6 +94,11 @@ public class AbstractGuest implements IGuest {
   }
 
   
+  /**
+   * This method returns a printable String for this guest.
+   * 
+   * @return Printable string with guest information.
+   */
   @Override
   public String toString() {
     return "GjesteID: " + guestID + "\n" +
@@ -100,6 +107,7 @@ public class AbstractGuest implements IGuest {
             "Addresse: " + postNumber + " " + address + "\n"; 
   }
 
+  @Override
   public boolean validate() {
     boolean status = true;
     if (!phoneNumber.matches("\\d{8}")) {
@@ -115,6 +123,7 @@ public class AbstractGuest implements IGuest {
     return status;
   }
 
+  @Override
   public String getErrors() {
     return errors.toString();
   }
