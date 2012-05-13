@@ -25,7 +25,7 @@ import javax.swing.JOptionPane;
  * We also have a few methods to show popup messages/dialogues.
  * 
  * @author Kristoffer Berdal <web@flexd.net>
- * @date Mar 26, 2012
+ * 
  */
 public class Utils {
   /**

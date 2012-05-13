@@ -11,7 +11,7 @@ import prosjekt.rooms.AbstractRoom;
  * period of time.
  * 
  * @author Kristoffer Berdal <web@flexd.net>
- * @date Mar 29, 2012
+ * 
  */
 public class BookingEntry {
   /**

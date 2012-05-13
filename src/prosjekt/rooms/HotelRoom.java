@@ -7,7 +7,7 @@ package prosjekt.rooms;
  * to the hotelrooms.
  * 
  * @author Kristoffer Berdal <web@flexd.net>
- * @date Mar 26, 2012
+ * 
  */
 public abstract class HotelRoom extends AbstractRoom implements IHotelRoom {
    /**
