@@ -16,6 +16,7 @@ import javax.swing.table.TableModel;
 import prosjekt.Main;
 import prosjekt.guests.AbstractGuest;
 import prosjekt.guests.Company;
+import prosjekt.utils.Utils;
 
 /**
  *
@@ -346,7 +347,7 @@ public class GuestPanelGUI {
           tableSearchResults.setModel(tableModel);
         }
         catch(NumberFormatException nfe) {
-          System.out.println("error! NumberFormatException");
+          Utils.showErrorMessage(null, "Postnummer må være et tall.", "Error: Postnummer");
         }
       }
     }

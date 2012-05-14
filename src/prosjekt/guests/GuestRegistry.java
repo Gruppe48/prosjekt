@@ -150,7 +150,6 @@ public class GuestRegistry implements IStorable {
     boolean result = false;
     String hash = getHash(guest);
     if (list.remove(hash) != null) {
-      System.out.println("Removed guest with hash: " + hash);
       result = true;
       save();
     }

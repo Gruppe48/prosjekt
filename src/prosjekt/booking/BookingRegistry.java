@@ -75,8 +75,7 @@ public class BookingRegistry implements IStorable {
     AbstractRoom room = findRoom(from, to, type);
     
     if (room != null) {
-      System.out.println("Rommet er ikke null, lager booking entry!");
-      // We actually found a free room!
+      // We actually found an avaible room!
       BookingEntry booking = new BookingEntry(from, to, guest, room);
       list.add(booking);
       history.add(booking); // Save the booking for history!
@@ -102,7 +101,6 @@ public class BookingRegistry implements IStorable {
     ArrayList<AbstractRoom> rooms = findUnbookedRooms(type);
     
     if (rooms.size() > 0) {
-      System.out.println("There is: " + rooms.size() + " free rooms!");
       // We have one (or more) free rooms.
       room = rooms.get(0); // Get the first room in the list!
     }

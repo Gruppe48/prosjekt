@@ -544,7 +544,7 @@ public class BookingPanelGUI {
             }  
           }
           catch(NumberFormatException nfe) {
-            System.err.println("Error: Numberformatexception");
+            Utils.showErrorMessage(null, "Postnummer må være et tall.", "Error: Postnummer");
           }
         } else {
           display.setText("Vennligst fyll ut alle feltene\n");
@@ -590,7 +590,7 @@ public class BookingPanelGUI {
           tableSearchResults.setModel(tableModel);
         }
         catch(NumberFormatException nfe) {
-          System.out.println("error! NumberFormatException");
+          Utils.showErrorMessage(null, "Postnummer må være et tall.", "Error: Postnummer");
         }
       }
     }
