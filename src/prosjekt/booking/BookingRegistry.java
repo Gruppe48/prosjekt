@@ -238,7 +238,6 @@ public class BookingRegistry implements IStorable {
     }
     return out;
   }
-
  /**
    * This method returns all the rooms that exist in the booking list.
    * @return A list of all rooms that have previously (or are currently) booked.
@@ -249,5 +248,18 @@ public class BookingRegistry implements IStorable {
       rooms.add(bookingEntry.getRoom());
     }
     return rooms;
+  } 
+  /**
+   * This method is searching for matching bookingentry
+   * @param bookingnr
+   * @return the BookingEntry which matches the specified bookingnumber, or null if there is no match.
+   */
+  public BookingEntry getBooking(int bookingnr) {
+    for(BookingEntry be : list) {
+      if(be.getBookingNumber() == bookingnr) {
+        return be;
+      }
+    }
+    return null;
   }
 }

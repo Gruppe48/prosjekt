@@ -23,9 +23,10 @@ import prosjekt.utils.Utils;
 public class BookingPanelGUI {
   private JPanel panelContainer, panelMenu, panelMain;
   private ActionListener btnListener;
-  private JButton btnMenuNewBooking, btnMenuShowBookings, btnMenuCheckInOut, btnSearch, btnNew, btnLookup, btnCompleteBooking;
+  private JButton btnMenuNewBooking, btnMenuShowBookings, btnMenuCheckInOut, btnSearch, btnNew, btnLookup, btnCompleteBooking, btnCheckin, btnCheckout;
   private JTextField txtFirstname, txtLastname, txtPhoneNumber, txtAddress, txtPostNumber, txtCompanyName;
   private JTextField txtFirstname2, txtLastname2, txtPhoneNumber2, txtAddress2, txtPostNumber2, txtCompanyName2;
+  private JTextField txtBookingNumber;
   private ArrayList<AbstractGuest> arrListResults;
   private String[][] rowData;
   private String[] columnNames;
@@ -222,9 +223,9 @@ public class BookingPanelGUI {
     // Create inputpanel
     JPanel inputPanel = new JPanel(new GridLayout(1, 4));
     inputPanel.setBackground(Color.LIGHT_GRAY);
-    JTextField txtBookingNumber = new JTextField(10);
-    JButton btnCheckin  = new JButton("Sjekkinn");
-    JButton btnCheckout = new JButton("Sjekkut");
+    txtBookingNumber = new JTextField(10);
+    btnCheckin  = new JButton("Sjekkinn");
+    btnCheckout = new JButton("Sjekkut");
     btnCheckin.addActionListener(btnListener);
     btnCheckout.addActionListener(btnListener);
     inputPanel.add(new JLabel("Bookingnummer:"));
@@ -458,13 +459,63 @@ public class BookingPanelGUI {
         else {
           BookingEntry newBooking = Main.bookingRegistry.add(arrivalDate.getDate(), leavingDate.getDate(), selectedGuest, (String) cmbRoomType.getSelectedItem());
           if(newBooking != null) {
-            display.append("Gjesten er nå booket inn på rom: " + newBooking.getRoom().getID() + "\n");
-            display.append("\n Å Betale: \n");
+            display.append("\nGjesten er nå booket inn på rom: " + newBooking.getRoom().getID() + "\n");
+            display.append("Bookingnummer: " + newBooking.getBookingNumber() + " må vises ved inn/utsjekking\n");
+            display.append("Å Betale: \n");
             display.append(newBooking.getRoom().getPrice() + "kr for : " + newBooking.getRoom().getRoomType() + "\n");
           } else {
             display.append("Hotellet er desverre fult. Vi har ikke plass til gjesten.\n");
           }
         
+        }
+      }
+      else if (e.getSource() == btnCheckin) {
+        if(txtBookingNumber.getText().length() > 0) {
+          try {
+            int bookingnr = Integer.parseInt(txtBookingNumber.getText());
+            BookingEntry booking = Main.bookingRegistry.getBooking(bookingnr);
+            
+            if(booking != null) {
+              if(booking.getRoom().isOccupied()) {
+                displayCheckInOut.setText("Gjesten har allerede sjekket inn");
+                return;
+              }
+              booking.getRoom().checkIn();
+              displayCheckInOut.setText(booking.getGuest().getFirstName() + " " + booking.getGuest().getLastName() + " er nå sjekket inn på rom: " + booking.getRoom().getID());
+            } else {
+              displayCheckInOut.setText("Finner ikke bookingen. Prøv på nytt");
+            }
+          }
+          catch(NumberFormatException nfe) {
+            Utils.showErrorMessage(null, "Bookingnummer kan kun bestå av tall", "Error: Bookingnummer");
+          }
+        } else { 
+          Utils.showWarningMessage(null, "Vennligst fyll inn bookingnummer", "Warning: Bookingnummer"); 
+        } 
+      }
+      else if (e.getSource() == btnCheckout) {
+        if(txtBookingNumber.getText().length() > 0) {
+          try {
+            int bookingnr = Integer.parseInt(txtBookingNumber.getText());
+            BookingEntry booking = Main.bookingRegistry.getBooking(bookingnr);
+            
+            if(booking != null) {
+              if(booking.getRoom().isOccupied() == false) {
+                displayCheckInOut.setText("Bookingnummer: " + bookingnr + " har enten ikke sjekket inn eller har allerede sjekket ut");
+                return;
+              }
+              booking.getRoom().checkOut();
+              displayCheckInOut.setText(booking.getGuest().getFirstName() + " " + booking.getGuest().getLastName() + " er nå sjekket ut av rom: " + booking.getRoom().getID());
+            } else {
+              displayCheckInOut.setText("Finner ikke bookingen. Prøv på nytt");
+            }
+          }
+          catch(NumberFormatException nfe) {
+            Utils.showErrorMessage(null, "Bookingnummer kan kun bestå av tall", "Error: Bookingnummer");
+          }
+        }
+        else {
+          Utils.showWarningMessage(null, "Vennligst fyll inn bookingnummer", "Warning: Bookingnummer");
         }
       }
       else if (e.getSource() == btnNew) {

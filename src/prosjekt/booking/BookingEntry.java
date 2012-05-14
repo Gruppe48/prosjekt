@@ -30,7 +30,13 @@ public class BookingEntry {
    * The to date
    */
   private Date to = null;
-  private int bookingCounter = 0;
+  /*
+   * Counter to keep track of the next bookingnumber
+   */
+  private static int bookingCounter = 0;
+  /*
+   * The bookingnumber
+   */
   private int bookingNumber;
 
   /**

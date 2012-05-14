@@ -48,7 +48,7 @@ public abstract class AbstractRoom implements IRoom {
   * This constructor sets the roomID by increasing the roomCounter variable.
   */
   public AbstractRoom() {
-    roomID = roomCounter++;
+    roomID = ++roomCounter;
     occupied = false;
   }
 
@@ -60,16 +60,16 @@ public abstract class AbstractRoom implements IRoom {
   public void empty() {
     this.guest = null;
   }
-  @Override
-  public boolean isOccupied() {
-    return occupied;
-  }
   
   public void checkIn() {
     occupied = true;
   }
   public void checkOut() {
     occupied = false;
+  }
+  @Override
+  public boolean isOccupied() {
+    return occupied;
   }
   
   @Override
