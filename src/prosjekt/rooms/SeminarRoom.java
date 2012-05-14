@@ -1,14 +1,12 @@
-/*
- */
 package prosjekt.rooms;
 
-import prosjekt.rooms.RoomMisc.facilities;
-
 /**
- *
+ * This is the SeminarRoom class
+ * This class holds the methods and variables unique to a SeminarRoom
+ * Currently there are no unique methods.
+ * 
  * @author Kristoffer Berdal <web@flexd.net>
- * @studnr 180212
- * @date Mar 26, 2012
+ * 
  */
 public abstract class SeminarRoom extends AbstractRoom implements ISeminarRoom {
   

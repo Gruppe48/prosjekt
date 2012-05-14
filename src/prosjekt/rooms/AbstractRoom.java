@@ -1,5 +1,3 @@
-/*
- */
 package prosjekt.rooms;
 
 import prosjekt.guests.AbstractGuest;
@@ -10,21 +8,45 @@ import prosjekt.rooms.types.MeetingRoom;
 import prosjekt.rooms.types.SingleRoom;
 
 /**
- *
+ * This is the AbstractRoom class.
+ * This class is the superclass for all room types in the hotel.
+ * This class defines variables and methods common to all rooms.
+ * 
  * @author Kristoffer Berdal <web@flexd.net>
- * @studnr 180212
- * @date Mar 26, 2012
+ * 
  */
 public abstract class AbstractRoom implements IRoom {
+  /**
+   * This variable holds the roomCounter, which is increased each time a new room is added.
+   * The variable is shared between all instances of the object so that each time we add a room the number
+   * increases (by using roomCounter++).
+   */
   protected static int roomCounter = 0;
+   /**
+   * This is the roomID.
+   */
   protected int roomID;
+   /**
+   * This is a variable holding the rooms price, it is statically defined on a per room type basis.
+   */
   protected float price = 0;
-
+  
+   /**
+   * This variable holds the guest currently living in the room.
+   */
   protected AbstractGuest guest;
+   /**
+   * This variable tells us what kind of facilities you can find in this room.
+   * Like a minibar, tv, jacuzzi and so on.
+   */
   protected facilities facilities;
   
   private boolean occupied;
   
+  /**
+  * This is the AbstractRoom constructor.
+  * This constructor sets the roomID by increasing the roomCounter variable.
+  */
   public AbstractRoom() {
     roomID = roomCounter++;
     occupied = false;
@@ -71,6 +93,7 @@ public abstract class AbstractRoom implements IRoom {
     return facilities;
   }
   
+  @Override
   public String getRoomType() {
     String rt = "";
     

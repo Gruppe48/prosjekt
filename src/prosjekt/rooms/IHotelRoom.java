@@ -1,20 +1,20 @@
-/*
- */
 package prosjekt.rooms;
 
 /**
- *
+ * This is the IHotelRoom interface.
+ * 
  * @author Kristoffer Berdal <web@flexd.net>
  */
 public interface IHotelRoom {
-  /*
+  /**
    * Sets the amount of beds for a room
-   * @param amount amount of Beds
+   * @param amount of beds in the room
    */
   public void setBedCount(int amount);
   
-  /*
-   * gets the amount of beds in this room.
+  /**
+   * This method returns the amount of beds in this room.
+   * @return The amount of beds in this room.
    */
   public int getBedCount();
 }

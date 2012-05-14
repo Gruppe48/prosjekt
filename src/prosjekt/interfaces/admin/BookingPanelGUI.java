@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package prosjekt.interfaces.admin;
 
 import com.toedter.calendar.JDateChooser;
@@ -20,8 +16,9 @@ import prosjekt.guests.Person;
 import prosjekt.utils.Utils;
 
 /**
- *
- * @author Even
+ * This is the BookingPanelGUI (A part of the tabbed panel in AdminWindow).
+ * 
+ * @author Even Augdal
  */
 public class BookingPanelGUI {
   private JPanel panelContainer, panelMenu, panelMain;

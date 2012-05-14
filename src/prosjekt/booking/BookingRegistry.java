@@ -1,5 +1,3 @@
-/*
- */
 package prosjekt.booking;
 
 import java.util.ArrayList;
@@ -16,7 +14,7 @@ import prosjekt.utils.Utils;
  * 
  * 
  * @author Kristoffer Berdal <web@flexd.net>
- * @date Mar 29, 2012
+ * 
  */
 public class BookingRegistry implements IStorable {
   /**

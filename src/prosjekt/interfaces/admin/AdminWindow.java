@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package prosjekt.interfaces.admin;
 
 import java.awt.Container;
@@ -15,15 +11,21 @@ import prosjekt.interfaces.GenericWindow;
 
 
 /**
- *
- * @author Even
+ * The AdminWindow class
+ * This class is responsible for all bits administrational.
+ * 
+ * @author Even Augdal
  */
 public class AdminWindow extends GenericWindow {
   // General
   private JTabbedPane tabbedPane;
   private JComponent panelGuest, panelRoom, panelBooking, panelInformation;
   
+  /**
+   * This is the constructor for AdminWindow.
+   */
   public AdminWindow() {
+    // Tell GenericWindow our title and dimensions.
     super("Administratorpanel", 900, 500);
   }
 
@@ -63,24 +65,44 @@ public class AdminWindow extends GenericWindow {
     super.destroy();
   }
 
+  
   @Override
   public void buttonPressed(ActionEvent e) {
+    /*(
+     * This is a bit more advanced with multiple panels, so for simplicity
+     * we make our own button listeners where needed. 
+     */
     
   }
 
-
+  /**
+   * This method sets up the guestPanel
+   * @return The guestPanel's JPanel.
+   */
   private JPanel guestPanel() {
     GuestPanelGUI guestPanel = new GuestPanelGUI();
     return guestPanel.getPanel();
   }
+  /**
+   * This method sets up the roomPanel
+   * @return The roomPanel's JPanel.
+   */
   private JPanel roomPanel() {
     RoomPanelGUI roomPanel = new RoomPanelGUI();
     return roomPanel.getPanel();
   }
+  /**
+   * This method sets up the bookingPanel
+   * @return The bookingPanel's JPanel.
+   */
   private JPanel bookingPanel() {
     BookingPanelGUI bookingPanel = new BookingPanelGUI();
     return bookingPanel.getPanel();
   }
+  /**
+   * This method sets up the informationPanel
+   * @return The informationPanel's JPanel.
+   */
   private JPanel informationPanel() {
     InformationPanelGUI informationPanel = new InformationPanelGUI();
     return informationPanel.getPanel();
