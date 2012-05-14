@@ -62,17 +62,5 @@ public class Main {
       System.out.println("ikke plass");
     
     
-    // test:
-    String test = "";
-    ArrayList<BookingEntry> liste = bookingRegistry.getList();
-    int i = 0;
-    System.out.println(liste.size() + "");
-    for(BookingEntry be : liste) {
-      test += be.getRoom().getRoomType() + "\n";
-      i++;
-    }
-    Utils.showInformationMessage(null, "hmm" + test, test);
-    System.out.println(i);
-    
   }
 }

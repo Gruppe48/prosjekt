@@ -151,25 +151,20 @@ public class BookingRegistry implements IStorable {
     // Lets loop through all matching rooms
     for (AbstractRoom r : rooms) {
       // For each room, we want to loop through the bookinglist
-      System.out.println("nytt rom.." + r.getID());
       for (BookingEntry e : list) {
         // if we find the room in our bookinglist...
         if (e.getRoom().getID() == r.getID()) {
-          System.out.println("Fant rommet i bokinglista.." + e.getRoom().getID());
           //...we grab a list of it's occupied dates
           bookedDates = OccupiedDates(e.getRoom());
           // Let's make it more complicated by looping all booked dates for our room
           for(Date[] d : bookedDates) {
             // if the any date is between a booking...
-            //if ((!d[0].after(from) && !d[1].after(to)) || (!d[0].before(from) && !d[1].before(to))) {
             if(d[0].compareTo(from)*from.compareTo(d[1]) > 0 || d[0].compareTo(to)*to.compareTo(d[1]) > 0 || d[0].equals(from) || 
                     d[1].equals(to) || from.before(d[0]) && to.after(d[1]) || from.after(d[0]) && to.before(d[1])) {
               //...we simply leave it. No reason to be in this loop
-              System.out.println("Datokrasj!!" + r.getID());
               break;
             } 
             // hah! We made it. This room should be avaible in this period. Return it!
-            System.out.println("JAAAAA!!!!" + r.getID());
             return r;
           }
         }
