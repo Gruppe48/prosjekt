@@ -23,8 +23,11 @@ public abstract class AbstractRoom implements IRoom {
   protected AbstractGuest guest;
   protected facilities facilities;
   
+  private boolean occupied;
+  
   public AbstractRoom() {
     roomID = roomCounter++;
+    occupied = false;
   }
 
   @Override
@@ -37,7 +40,14 @@ public abstract class AbstractRoom implements IRoom {
   }
   @Override
   public boolean isOccupied() {
-    return (guest != null);
+    return occupied;
+  }
+  
+  public void checkIn() {
+    occupied = true;
+  }
+  public void checkOut() {
+    occupied = false;
   }
   
   @Override

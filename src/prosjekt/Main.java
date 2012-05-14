@@ -4,6 +4,7 @@ package prosjekt;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import prosjekt.booking.BookingEntry;
 import prosjekt.guests.GuestBook;
 import prosjekt.utils.Options;
@@ -11,6 +12,7 @@ import prosjekt.booking.BookingRegistry;
 import prosjekt.guests.GuestRegistry;
 import prosjekt.rooms.RoomRegistry;
 import prosjekt.interfaces.admin.AdminWindow;
+import prosjekt.utils.Utils;
 
 
 /**
@@ -56,7 +58,21 @@ public class Main {
     BookingEntry result = bookingRegistry.add(formatter.parse("1/02/2012"), formatter.parse("1/02/2013"), guestRegistry.getGuest("Even0", "Augdal0", "Tlf0"), "SingleRoom");
     if(result != null )
       System.out.println("booked!");
-    else
+      else
       System.out.println("ikke plass");
+    
+    
+    // test:
+    String test = "";
+    ArrayList<BookingEntry> liste = bookingRegistry.getList();
+    int i = 0;
+    System.out.println(liste.size() + "");
+    for(BookingEntry be : liste) {
+      test += be.getRoom().getRoomType() + "\n";
+      i++;
+    }
+    Utils.showInformationMessage(null, "hmm" + test, test);
+    System.out.println(i);
+    
   }
 }

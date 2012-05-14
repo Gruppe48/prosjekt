@@ -17,6 +17,8 @@ public class BookingEntry {
   private AbstractRoom room = null;
   private Date from = null;
   private Date to = null;
+  private int bookingCounter = 0;
+  private int bookingNumber;
 
   public BookingEntry(Date from, Date to, AbstractGuest guest, AbstractRoom room) {
     //TODO: Validering!
@@ -24,6 +26,7 @@ public class BookingEntry {
     this.to = to;
     this.guest = guest;
     this.room = room;
+    bookingNumber = ++bookingCounter;
   }
 
   public Date getFromDate() {
@@ -42,6 +45,9 @@ public class BookingEntry {
     return to;
   }
   
+  public int getBookingNumber() {
+    return bookingNumber;
+  }
   
   
 }

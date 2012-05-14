@@ -26,7 +26,7 @@ import prosjekt.utils.Utils;
 public class BookingPanelGUI {
   private JPanel panelContainer, panelMenu, panelMain;
   private ActionListener btnListener;
-  private JButton btnMenuNewBooking, btnMenuShowBookings, btnSearch, btnNew, btnLookup, btnCompleteBooking;
+  private JButton btnMenuNewBooking, btnMenuShowBookings, btnMenuCheckInOut, btnSearch, btnNew, btnLookup, btnCompleteBooking;
   private JTextField txtFirstname, txtLastname, txtPhoneNumber, txtAddress, txtPostNumber, txtCompanyName;
   private JTextField txtFirstname2, txtLastname2, txtPhoneNumber2, txtAddress2, txtPostNumber2, txtCompanyName2;
   private ArrayList<AbstractGuest> arrListResults;
@@ -36,7 +36,7 @@ public class BookingPanelGUI {
   private JTable tableSearchResults;
   private int selectedGuestID;
   private AbstractGuest selectedGuest;
-  private JTextArea display;
+  private JTextArea display, displayCheckInOut;
   private JDateChooser arrivalDate, leavingDate;
   private JComboBox cmbRoomType;
   
@@ -65,11 +65,14 @@ public class BookingPanelGUI {
     panelMenu = new JPanel(new GridLayout(6,1));
     panelMenu.setBackground(Color.LIGHT_GRAY);
     btnMenuNewBooking   = new JButton("Ny booking");
-    btnMenuShowBookings = new JButton("Vis alle");
+    btnMenuShowBookings = new JButton("Vis Bookinger");
+    btnMenuCheckInOut   = new JButton("Inn/utsjekking");
     btnMenuNewBooking.addActionListener(btnListener);
     btnMenuShowBookings.addActionListener(btnListener);
+    btnMenuCheckInOut.addActionListener(btnListener);
     panelMenu.add(btnMenuNewBooking);
     panelMenu.add(btnMenuShowBookings);
+    panelMenu.add(btnMenuCheckInOut);
     
     // Place MENU
     c.insets  = new Insets(7,7,7,7);
@@ -165,7 +168,7 @@ public class BookingPanelGUI {
     c.gridy   = 2;
     c.weightx = 1;
     c.weighty = 1;
-    panel.add(display, c);
+    panel.add(new JScrollPane(display), c);
     
     
     return panel;
@@ -211,6 +214,50 @@ public class BookingPanelGUI {
     c.weightx   = 1;
     c.weighty   = 1;
     panel.add(new JScrollPane(tableSearchResults), c);
+    
+    return panel;
+  }
+  
+  private JPanel checkInOut(JPanel panel) {
+    // Create a contraints variable for gridbaglayout
+    GridBagConstraints c = new GridBagConstraints();
+    
+    // Create inputpanel
+    JPanel inputPanel = new JPanel(new GridLayout(1, 4));
+    inputPanel.setBackground(Color.LIGHT_GRAY);
+    JTextField txtBookingNumber = new JTextField(10);
+    JButton btnCheckin  = new JButton("Sjekkinn");
+    JButton btnCheckout = new JButton("Sjekkut");
+    btnCheckin.addActionListener(btnListener);
+    btnCheckout.addActionListener(btnListener);
+    inputPanel.add(new JLabel("Bookingnummer:"));
+    inputPanel.add(txtBookingNumber);
+    inputPanel.add(btnCheckin);
+    inputPanel.add(btnCheckout);
+    
+    // Place elements
+    c.insets    = new Insets(0,0,0,0);
+    c.fill      = GridBagConstraints.HORIZONTAL;
+    c.anchor    = GridBagConstraints.FIRST_LINE_START;
+    c.gridwidth = 0;
+    c.gridx     = 0;
+    c.gridy     = 0;
+    c.weightx   = 1;
+    c.weighty   = 0.1;
+    panel.add(inputPanel, c);
+    
+    // Create display
+    displayCheckInOut = new JTextArea(10, 10);
+    displayCheckInOut.setEditable(false);
+    c.insets    = new Insets(0,0,0,0);
+    c.fill      = GridBagConstraints.BOTH;
+    c.anchor    = GridBagConstraints.LINE_START;
+    c.gridwidth = 0;
+    c.gridx     = 0;
+    c.gridy     = 1;
+    c.weightx   = 1;
+    c.weighty   = 1;
+    panel.add(displayCheckInOut, c);
     
     return panel;
   }
@@ -381,13 +428,18 @@ public class BookingPanelGUI {
         panelMain = showAllBookings(panelMain);
         panelMain.updateUI();
       }
+      else if(e.getSource() == btnMenuCheckInOut) {
+        panelMain.removeAll();
+        panelMain = checkInOut(panelMain);
+        panelMain.updateUI();
+      }
       else if (e.getSource() == btnSearch) {
         findGuest();
         if(selectedGuestID != -1) {
           selectedGuest = Main.guestRegistry.getGuest(selectedGuestID);
-          display.setText("Du har valg følgende gjest: " + selectedGuest.getFirstName() + " " + selectedGuest.getLastName());
+          display.setText("Du har valg følgende gjest: " + selectedGuest.getFirstName() + " " + selectedGuest.getLastName() + "\n");
         } else {
-          display.setText("Du må velge en gjest");
+          display.setText("Du må velge en gjest\n");
         }
       }
       else if (e.getSource() == btnCompleteBooking) {
@@ -411,9 +463,9 @@ public class BookingPanelGUI {
           if(newBooking != null) {
             display.append("Gjesten er nå booket inn på rom: " + newBooking.getRoom().getID() + "\n");
             display.append("\n Å Betale: \n");
-            display.append(newBooking.getRoom().getPrice() + "kr for : " + newBooking.getRoom().getRoomType());
+            display.append(newBooking.getRoom().getPrice() + "kr for : " + newBooking.getRoom().getRoomType() + "\n");
           } else {
-            display.append("Hotellet er desverre fult. Vi har ikke plass til gjesten.");
+            display.append("Hotellet er desverre fult. Vi har ikke plass til gjesten.\n");
           }
         
         }
@@ -447,7 +499,7 @@ public class BookingPanelGUI {
             System.err.println("Error: Numberformatexception");
           }
         } else {
-          display.setText("Vennligst fyll ut alle feltene");
+          display.setText("Vennligst fyll ut alle feltene\n");
         }
           
       }

@@ -41,5 +41,4 @@ public interface IRoom {
   public void empty();
   
   
-  
 }
