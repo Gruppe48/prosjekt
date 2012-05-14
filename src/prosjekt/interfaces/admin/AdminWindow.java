@@ -3,10 +3,9 @@ package prosjekt.interfaces.admin;
 import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
+import javax.swing.*;
 import prosjekt.interfaces.GenericWindow;
 
 
@@ -17,9 +16,9 @@ import prosjekt.interfaces.GenericWindow;
  * @author Even Augdal
  */
 public class AdminWindow extends GenericWindow {
-  // General
   private JTabbedPane tabbedPane;
   private JComponent panelGuest, panelRoom, panelBooking, panelInformation;
+  private JMenuBar menuBar;
   
   /**
    * This is the constructor for AdminWindow.
@@ -27,6 +26,21 @@ public class AdminWindow extends GenericWindow {
   public AdminWindow() {
     // Tell GenericWindow our title and dimensions.
     super("Administratorpanel", 900, 500);
+    
+    // Create menubar
+    menuBar = new JMenuBar();
+    setJMenuBar(menuBar);
+    JMenu fileMenu = new JMenu("Fil");
+    JMenuItem exitAction = new JMenuItem("Avslutt");
+    exitAction.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+          System.exit(0);
+      }
+    });
+    fileMenu.add(exitAction);
+    menuBar.add(fileMenu);
+
   }
 
   @Override

@@ -3,16 +3,12 @@
 package prosjekt;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import prosjekt.booking.BookingEntry;
-import prosjekt.guests.GuestBook;
-import prosjekt.utils.Options;
 import prosjekt.booking.BookingRegistry;
+import prosjekt.guests.GuestBook;
 import prosjekt.guests.GuestRegistry;
-import prosjekt.rooms.RoomRegistry;
 import prosjekt.interfaces.admin.AdminWindow;
-import prosjekt.utils.Utils;
+import prosjekt.rooms.RoomRegistry;
+import prosjekt.utils.Options;
 
 
 /**
@@ -52,15 +48,5 @@ public class Main {
    */
   public static void main(String[] args) throws ParseException {
     new AdminWindow();
-    SimpleDateFormat formatter = new SimpleDateFormat("d/M/yyyy");
-    
-
-    BookingEntry result = bookingRegistry.add(formatter.parse("1/02/2012"), formatter.parse("1/02/2013"), guestRegistry.getGuest("Even0", "Augdal0", "Tlf0"), "SingleRoom");
-    if(result != null )
-      System.out.println("booked!");
-      else
-      System.out.println("ikke plass");
-    
-    
   }
 }
