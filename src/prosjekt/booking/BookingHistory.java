@@ -11,7 +11,7 @@ import prosjekt.utils.Utils;
  * This should be a way of tracking statistics and guest history.
  * 
  * @author Kristoffer Berdal <web@flexd.net>
- * @date Mar 29, 2012
+ * 
  */
 public class BookingHistory implements IStorable {
   /**

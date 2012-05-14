@@ -13,7 +13,7 @@ import prosjekt.rooms.types.SingleRoom;
  * This class defines variables and methods common to all rooms.
  * 
  * @author Kristoffer Berdal <web@flexd.net>
- * @date Mar 26, 2012
+ * 
  */
 public abstract class AbstractRoom implements IRoom {
   /**

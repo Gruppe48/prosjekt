@@ -12,7 +12,7 @@ import prosjekt.IStorable;
  * The default values are defined in init()
  * 
  * @author Kristoffer Berdal <web@flexd.net>
- * @date Mar 26, 2012
+ * 
  */
 public class Options implements IStorable {
   /**

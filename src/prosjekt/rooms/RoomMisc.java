@@ -6,7 +6,7 @@ package prosjekt.rooms;
  * that did not fit in a specific spot for rooms.
  * 
  * @author Kristoffer Berdal <web@flexd.net>
- * @date Mar 29, 2012
+ * 
  */
 public class RoomMisc {
    /**

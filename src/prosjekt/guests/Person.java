@@ -7,7 +7,7 @@ package prosjekt.guests;
  * All methods exclusive to Person are defined in the IPerson interface.
  * 
  * @author Kristoffer Berdal <web@flexd.net>
- * @date Mar 29, 2012
+ * 
  */
 public class Person extends AbstractGuest implements IPerson {
   

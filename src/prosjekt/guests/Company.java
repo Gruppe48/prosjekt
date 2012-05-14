@@ -6,7 +6,7 @@ package prosjekt.guests;
  * All methods exclusive to Company are defined in the ICompany interface.
  * 
  * @author Kristoffer Berdal <web@flexd.net>
- * @date Mar 29, 2012
+ * 
  */
 public class Company extends AbstractGuest implements ICompany {
   
