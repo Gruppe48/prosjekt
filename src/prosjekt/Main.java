@@ -6,6 +6,7 @@ import java.text.ParseException;
 import prosjekt.booking.BookingRegistry;
 import prosjekt.guests.GuestBook;
 import prosjekt.guests.GuestRegistry;
+import prosjekt.interfaces.LoginWindow;
 import prosjekt.interfaces.admin.AdminWindow;
 import prosjekt.rooms.RoomRegistry;
 import prosjekt.utils.Options;
@@ -47,6 +48,6 @@ public class Main {
    * @param args the command line arguments
    */
   public static void main(String[] args) throws ParseException {
-    new AdminWindow();
+    new LoginWindow();
   }
 }

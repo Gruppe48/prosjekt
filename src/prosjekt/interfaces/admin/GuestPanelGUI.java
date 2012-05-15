@@ -357,8 +357,8 @@ public class GuestPanelGUI {
         txtPostNumber.setText("");
         txtAddress.setText("");
         txtCompanyName.setText("");
-        arrListResults = new ArrayList<AbstractGuest>();
-        updateTable();
+        arrListResults = new ArrayList<AbstractGuest>(); // Clear the JTable values;
+        updateTable(); // Update the table
       }
       else if(e.getSource() == btnRemove) {
         
