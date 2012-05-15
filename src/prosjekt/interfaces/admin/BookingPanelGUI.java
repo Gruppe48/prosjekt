@@ -4,7 +4,10 @@ import com.toedter.calendar.JDateChooser;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -181,21 +184,24 @@ public class BookingPanelGUI {
     ArrayList<BookingEntry> arrBookingList = Main.bookingRegistry.getList();
     
     if(arrBookingList != null) {
-      rowData = new String[arrBookingList.size()][6];
+      SimpleDateFormat dateformat = new SimpleDateFormat("dd.MM.yyyy");
+      
+      rowData = new String[arrBookingList.size()][7];
       int i = 0;
       for (BookingEntry r: arrBookingList) {
-        rowData[i][0] = r.getFromDate().toString();
-        rowData[i][1] = r.getToDate().toString();
-        rowData[i][2] = r.getGuest().getFirstName() + " " + r.getGuest().getLastName();
-        rowData[i][3] = r.getGuest().getPhoneNumber() + "";
-        rowData[i][4] = r.getRoom().getID() + "";
-        rowData[i][5] = r.getRoom().getRoomType();
+        rowData[i][0] = r.getBookingNumber() + "";
+        rowData[i][1] = dateformat.format(r.getFromDate());
+        rowData[i][2] = dateformat.format(r.getToDate());
+        rowData[i][3] = r.getGuest().getFirstName() + " " + r.getGuest().getLastName();
+        rowData[i][4] = r.getGuest().getPhoneNumber() + "";
+        rowData[i][5] = r.getRoom().getID() + "";
+        rowData[i][6] = r.getRoom().getRoomType();
         i++;
       }  
     }
     
     // Array of columnnames for our JTable
-    columnNames = new String[]{"Fra", "Til", "Gjest", "Telefon", "RomNr", "Romtype"};
+    columnNames = new String[]{"Bookingnr","Fra", "Til", "Gjest", "Telefon", "RomNr", "Romtype"};
         
     // Create a JTable for guestPanelSearchresults           
     tableModel = new SearchTableModel(rowData, columnNames);
