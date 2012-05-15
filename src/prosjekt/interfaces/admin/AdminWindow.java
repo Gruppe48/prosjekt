@@ -82,7 +82,7 @@ public class AdminWindow extends GenericWindow {
   
   @Override
   public void buttonPressed(ActionEvent e) {
-    /*(
+    /*
      * This is a bit more advanced with multiple panels, so for simplicity
      * we make our own button listeners where needed. 
      */

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package prosjekt.interfaces.admin;
 
 import java.awt.*;
@@ -19,24 +15,53 @@ import prosjekt.guests.Company;
 import prosjekt.utils.Utils;
 
 /**
- *
- * @author Even
+ * This is the GuestPanelGUI part of the AdminWindow.
+ * This window allows the employees to add or find guests. 
+ * @author Even Augdal
  */
 public class GuestPanelGUI {
-  // General
+  /**
+   * JPanels for window elements.
+   */
   private JPanel panelContainer, panelMenu, panelMain;
+  /**
+   * Column names for the search results in a JTable.
+   */
   private String columnNames[];
+  /**
+   * Search result holders.
+   */
   String[][] rowData, rowData2;
+  /**
+   * Tablemodel to define how the table acts.
+   */
   private TableModel tableModel;
+  /**
+   * Button listener so we can catch button events.
+   */
   private ActionListener btnListener;
   
-  // guestPanel
+  /**
+   * Setup all text fields.
+   */
   private JTextField txtFirstname, txtLastname, txtPhoneNumber, txtAddress, txtPostNumber, txtCompanyName;
+  /**
+   * The JTable for search results.
+   */
   private JTable tableSearchResults;
+  /**
+   * Buttons
+   */
   private JButton btnSearch, btnClear, btnSearchGuest, btnShowGuests;
+  /**
+   * ArrayList with search results.
+   */
   private ArrayList<AbstractGuest> arrListResults;
 
-  
+  /**
+   * GuestPanelGUI constructor.
+   * This constructor sets up the button listener and panelContainer.
+   */
   public GuestPanelGUI() {
     if(panelContainer != null) {
       panelContainer.removeAll();
@@ -49,12 +74,18 @@ public class GuestPanelGUI {
     panelContainer = guestPanel();
   }
   
+  /**
+   * Getter for panelContainer.
+   */
   public JPanel getPanel() {
     return panelContainer;
   }
   
   
-  
+  /**
+   * This method sets up the guest panel
+   * @return JPanel the guest panel.
+   */
   private JPanel guestPanel() {
     JPanel frame = new JPanel(new GridBagLayout());
     GridBagConstraints c = new GridBagConstraints();
@@ -99,7 +130,10 @@ public class GuestPanelGUI {
     return frame;
     
   }
-  
+  /**
+   * This method sets up the search panel
+   * @return JPanel the search panel.
+   */
   private JPanel searchGuest(JPanel panel) {
     JPanel inputPanel, buttonPanel;
     
@@ -204,7 +238,10 @@ public class GuestPanelGUI {
     return panel;
   }
   
-  
+  /**
+   * This is the TableResultsListener.
+   * This enables us to see which guest is selected in the list.
+   */
   private class TableResultsListener implements ListSelectionListener {
     JTable table;
 
@@ -233,7 +270,10 @@ public class GuestPanelGUI {
       } 
     }
   }
-  
+  /**
+   * This method sets up the panel that shows all the guests registered.
+   * @return A JPanel that shows all the guests in a JTable.
+   */
   private JPanel showAllGuests(JPanel panel) {
     GridBagConstraints c = new GridBagConstraints();
     rowData2 = null;
@@ -286,7 +326,10 @@ public class GuestPanelGUI {
     return panel;
   }
   
-  
+  /**
+   * This is the button listener.
+   * This enables us to catch button events.
+   */
   private class ButtonListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
