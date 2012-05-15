@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package prosjekt.interfaces.admin;
 
 import java.awt.*;
@@ -16,18 +12,58 @@ import javax.swing.text.rtf.RTFEditorKit;
 import prosjekt.utils.Utils;
 
 /**
- *
- * @author Even
+ * This is the InformationPanelGUI.
+ * This panel allows the employees to do basic editing of
+ * the information displayed to guests in the GuestWindow.
+ * This window will work fine for editing typographical errors,
+ * but a better way of editing (which would allow you to make style changes)
+ * would be to use a Rich text editor and edit the files in 'assets/guests/' in the
+ * root path of this folder.
+ * 
+ * @author Even Augdal
+ * @author Kristoffer Berdal
  */
 public class InformationPanelGUI {
+  /**
+   * Create the panels.
+   */
   private JPanel panelContainer, panelMenu, panelMain;
+  /**
+   * Button listener.
+   */
   private ActionListener buttonListener;
+  /**
+   * Buttons
+   */
   private JButton homeButton, facilitiesButton, foodButton;
+  /**
+   * Editor panel to hold the text.
+   */
   private JEditorPane display;
+  /**
+   * Root path of the files we are editing.
+   */
   private final String ROOT_PATH = "assets/guests/";
+  /**
+   * A single button to save the file.
+   */
   private JButton saveButton;
+  /**
+   * The default file is 'index.rtf' which is the first
+   * page a guest sees in the guest window.
+   *
+   * '.rtf' is a rich text format file.
+   * TextEdit on OSX or WordPad on Window can both edit these.
+   * 
+   */
   private String currentFile = "index.rtf";
   
+  
+  /**
+   * InformationPanel constructor.
+   * This sets up the panelContainer, button listener
+   * and window contents.
+   */
   public InformationPanelGUI() {
     if(panelContainer != null) {
       panelContainer.removeAll();
@@ -80,10 +116,17 @@ public class InformationPanelGUI {
     panelContainer.add(panelMain, c);
   }
   
+  /**
+   * Getter for panelContainer.
+   */
   public JPanel getPanel() {
     return panelContainer;
   }
   
+  /**
+   * This method sets up the home panel.
+   * @return JPanel home panel.
+   */
   private JPanel home(JPanel panel) {
     
     // Create a contraints variable for gridbaglayout
@@ -121,14 +164,14 @@ public class InformationPanelGUI {
     c.weighty = 0;
     panel.add(saveButton, c);
     saveButton.addActionListener(buttonListener);
-    
-    
-    
+
     return panel;
   }
   
   
-  
+  /**
+   * Button listener for button events.
+   */
   private class ButtonListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -149,7 +192,7 @@ public class InformationPanelGUI {
         try {
           display.getEditorKit().write(new FileOutputStream(new File(ROOT_PATH+ currentFile)), display.getDocument(), 0, display.getDocument().getLength());
         } catch (Exception err) {
-          err.printStackTrace();
+          Utils.showErrorMessage(null, err.getMessage(), "Error");
         }
       }
     }

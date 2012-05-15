@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package prosjekt.interfaces.admin;
 
 import java.awt.*;
@@ -14,21 +10,57 @@ import prosjekt.Main;
 import prosjekt.rooms.AbstractRoom;
 
 /**
- *
- * @author Even
+ * This is the RoomPanelGUI of the AdminWindow.
+ * This panel lists up the rooms and status in the hotel.
+ * 
+ * @author Even Augdal
  */
 public class RoomPanelGUI {
+  /**
+   * Declare the panels.
+   */
   private JPanel panelContainer, panelMenu, panelMain;
+  /**
+   * JTable column names.
+   */
   private String columnNames[];
+  /**
+   * TableModel for JTable
+   */
   private TableModel tableModel;
+  /**
+   * Button listener.
+   */
   private ActionListener btnListener;
+  /**
+   * Search result dataa.
+   */
   private String[][] rowData, rowData2;
+  /**
+   * Text field for room Number
+   */
   private JTextField txtRoomNumber;
+  /**
+   * Combobox for room type to search for.
+   */
   private JComboBox cmbRoomTypes;
-  private JButton btnSearch, btnSearchRooms, btnShowRooms;;
+  /**
+   * Buttons
+   */
+  private JButton btnSearch, btnSearchRooms, btnShowRooms;
+  /**
+   * JTable for search results.
+   */
   private JTable tableSearchResults;
+  /**
+   * ArrayList with actual search results.
+   */
   private ArrayList<AbstractRoom> arrListResults;
   
+  /**
+   * Constructor sets up the panelContainer, button listener
+   * and the roomPanel.
+   */
   public RoomPanelGUI() {
     if(panelContainer != null) {
       panelContainer.removeAll();
@@ -40,11 +72,17 @@ public class RoomPanelGUI {
     // Lets make this panel
     panelContainer = roomPanel();
   }
-  
+  /**
+   * Getter for panelContainer.
+   * @return panelContainer
+   */
   public JPanel getPanel() {
     return panelContainer;
   }
-  
+  /**
+   * This method sets up the room Panel
+   * @return the room panel.
+   */
   private JPanel roomPanel() {
     JPanel frame;
     
@@ -91,7 +129,10 @@ public class RoomPanelGUI {
     
     return frame; 
   }
-  
+  /**
+   * This method sets up the panel for room search.
+   * @return Room search panel.
+   */
   private JPanel searchRooms(JPanel panel) {
     JPanel inputPanel;
     
@@ -173,7 +214,10 @@ public class RoomPanelGUI {
     
     return panel;
   }
-  
+  /**
+   * This panel sets up the panel that shows all rooms.
+   * @return A panel with all rooms in a Jtable.
+   */
   private JPanel showAllRooms(JPanel panel) {
     GridBagConstraints c = new GridBagConstraints();
     rowData2 = null;
@@ -211,7 +255,9 @@ public class RoomPanelGUI {
     
     return panel;
   }
-  
+  /**
+   * Button listener.
+   */
   private class ButtonListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {

@@ -24,23 +24,79 @@ import prosjekt.utils.Utils;
  * @author Even Augdal
  */
 public class BookingPanelGUI {
+  /**
+   * The panels
+   */
   private JPanel panelContainer, panelMenu, panelMain;
+  /**
+   * Button Listener
+   */
   private ActionListener btnListener;
+  /**
+   * All the buttons.
+   */
   private JButton btnMenuNewBooking, btnMenuShowBookings, btnMenuCheckInOut, btnSearch, btnNew, btnLookup, btnCompleteBooking, btnCheckin, btnCheckout;
+  /**
+   * Text fields for one of the panels.
+   */
   private JTextField txtFirstname, txtLastname, txtPhoneNumber, txtAddress, txtPostNumber, txtCompanyName;
+  /**
+   * Text fields for the other panels.
+   * These should really have better names.
+   */
   private JTextField txtFirstname2, txtLastname2, txtPhoneNumber2, txtAddress2, txtPostNumber2, txtCompanyName2;
+  /**
+   * Booking number text field. 
+   */
   private JTextField txtBookingNumber;
+  /**
+   * ArrayList to hold guest searching results.
+   */
   private ArrayList<AbstractGuest> arrListResults;
+  /**
+   * This holds the row data for guest search
+   */
   private String[][] rowData;
+  /**
+   * This holds the column titles in the guest search.
+   */
   private String[] columnNames;
+  /**
+   * Table model for the guest search.
+   */
   private SearchTableModel tableModel;
+  /**
+   * Table to hold guest search results.
+   */
   private JTable tableSearchResults;
+  /**
+   * This holds the guestID of the guest selected in the
+   * JTable.
+   */
   private int selectedGuestID;
+  /**
+   * This holds the actual guest selected.
+   */
   private AbstractGuest selectedGuest;
+  /**
+   * Text areas to display information.
+   */
   private JTextArea display, displayCheckInOut;
+  /**
+   * JDateChooser to chose dates
+   * @see JDateChooser
+   */
   private JDateChooser arrivalDate, leavingDate;
+  /**
+   * Combobox to select room type.
+   */
   private JComboBox cmbRoomType;
   
+  /**
+   * This is the BookingPanelGUI constructor.
+   * Sets up the panelContainer and button listener
+   * as well as the "default" panel, which is the booking panel.
+   */
   public BookingPanelGUI() {
     if(panelContainer != null) {
       panelContainer.removeAll();
@@ -52,11 +108,16 @@ public class BookingPanelGUI {
     // Lets make this panel
     panelContainer = bookingPanel();
   }
-  
+  /**
+   * Getter for panelContainer.
+   */
   public JPanel getPanel() {
     return panelContainer;
   }
-  
+  /**
+   * This method sets up the bookingPanel
+   * @return JPanel the booking panel.
+   */
   private JPanel bookingPanel() {
     JPanel frame = new JPanel(new GridBagLayout());
     GridBagConstraints c = new GridBagConstraints();
@@ -104,6 +165,11 @@ public class BookingPanelGUI {
     return frame;
   }
   
+  /**
+   * This method sets up the panel for creating
+   * a new booking.
+   * @return JPanel The new booking panel.
+   */
   private JPanel newBooking(JPanel panel) {
     
     // Create a contraints variable for gridbaglayout
@@ -175,7 +241,10 @@ public class BookingPanelGUI {
     return panel;
   }
   
-  
+  /**
+   * This method sets up the panel that shows all the bookings.
+   * @return JPanel the show all bookings panel.
+   */
   private JPanel showAllBookings(JPanel panel) {
     // Create a contraints variable for gridbaglayout
     GridBagConstraints c = new GridBagConstraints();
@@ -221,7 +290,10 @@ public class BookingPanelGUI {
     
     return panel;
   }
-  
+  /**
+   * This method sets up the panel for checking in/out of the hotel.
+   * @return JPanel the checkin/checkout panel.
+   */
   private JPanel checkInOut(JPanel panel) {
     // Create a contraints variable for gridbaglayout
     GridBagConstraints c = new GridBagConstraints();
@@ -265,7 +337,10 @@ public class BookingPanelGUI {
     
     return panel;
   }
-  
+  /**
+   * This method creates a JOptionPane popup where you are
+   * asked to input the details for a new guest.
+   */
   private void newGuest() {
     JPanel panel = new JPanel(new GridBagLayout());
     
@@ -306,7 +381,10 @@ public class BookingPanelGUI {
     
     
   }
-  
+  /**
+   * This method creates a JOptionPane popup where you are asked
+   * to enter the details of the guest you want to find.
+   */
   private void findGuest() {
     selectedGuestID = -1;
     JPanel panel = new JPanel(new GridBagLayout());
@@ -405,6 +483,10 @@ public class BookingPanelGUI {
     JOptionPane.showMessageDialog(frame, panel);
   }
   
+  /**
+   * This is the TableResultsListener.
+   * This enables us to see which guest is selected in the JTables.
+   */
   private class TableResultsListener implements ListSelectionListener {
     JTable table;
     TableResultsListener() {
@@ -418,7 +500,11 @@ public class BookingPanelGUI {
       } 
     }
   }
-  
+   /**
+   * This is the ButtonListener.
+   * This enables us to see what buttons are clicked and 
+   * act accordingly.
+   */
    private class ButtonListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -459,7 +545,7 @@ public class BookingPanelGUI {
         }
         
         // If there are any errors
-        if(errors != "") {
+        if(!errors.equals("")) {
           Utils.showErrorMessage(null, errors, "Error:");
         }
         else {
@@ -468,7 +554,10 @@ public class BookingPanelGUI {
             display.append("\nGjesten er nå booket inn på rom: " + newBooking.getRoom().getID() + "\n");
             display.append("Bookingnummer: " + newBooking.getBookingNumber() + " må vises ved inn/utsjekking\n");
             display.append("Å Betale: \n");
-            display.append(newBooking.getRoom().getPrice() + "kr for : " + newBooking.getRoom().getRoomType() + "\n");
+            int dayCount = Utils.getDifference(newBooking.getFromDate(), newBooking.getToDate());
+            float roomPrice = newBooking.getRoom().getPrice();
+            float price = dayCount * roomPrice;
+            display.append(price + " kr for " + newBooking.getRoom().getRoomType() + " @ " + roomPrice + " x " + dayCount + " dager \n");
           } else {
             display.append("Hotellet er desverre fult. Vi har ikke plass til gjesten.\n");
           }

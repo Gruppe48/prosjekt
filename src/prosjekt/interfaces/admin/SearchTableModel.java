@@ -1,19 +1,11 @@
 package prosjekt.interfaces.admin;
 
 
-import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
-import prosjekt.guests.AbstractGuest;
-import prosjekt.guests.Company;
-
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 
 /**
- *
- * @author Even
+ * This is the search table model for all JTables used for search.
+ * @author Even Augdal
  */
 class SearchTableModel extends AbstractTableModel {
   private String[] columnNames;

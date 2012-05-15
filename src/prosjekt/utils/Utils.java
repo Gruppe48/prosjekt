@@ -4,6 +4,8 @@ import com.cedarsoftware.util.io.JsonReader;
 import com.cedarsoftware.util.io.JsonWriter;
 import java.awt.Component;
 import java.io.*;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -18,6 +20,28 @@ import javax.swing.JOptionPane;
  * 
  */
 public class Utils {
+  /**
+   * This method returns the difference between two dates in days.
+   * Returns -1 if the endDate is before the startDate.
+   * @param startdate The start date
+   * @param enddate The end date
+   * @return Integer days between these.
+   */
+  public static int getDifference(Date startDate, Date endDate) {
+    if (endDate.before(startDate)) return -1; //The end date is before the start date.. Clearly wrong!
+    Calendar start = Calendar.getInstance();
+    Calendar end = Calendar.getInstance();
+    start.setTime(startDate);
+    end.setTime(endDate);
+    long startMillis = start.getTimeInMillis();
+    long endMillis = end.getTimeInMillis();
+
+    // Calculate the difference
+    long diff = endMillis - startMillis;
+    // Divide by amount of milliseconds in 24 hours.
+    int diffDays = (int)(diff / (24 * 60 * 60 * 1000));
+    return diffDays;
+  }
   /**
    * This method shows a JOptionPane error message
    * @param c the component (i.e the host window).
