@@ -1,19 +1,34 @@
-/*
- */
+
 package prosjekt.rooms;
 
-import prosjekt.rooms.RoomMisc.facilities;
-
 /**
- *
+ * This is the HotelRoom class.
+ * This class defines methods and variables unique
+ * to the hotelrooms.
+ * 
  * @author Kristoffer Berdal <web@flexd.net>
- * @studnr 180212
- * @date Mar 26, 2012
+ * 
  */
 public abstract class HotelRoom extends AbstractRoom implements IHotelRoom {
-
-  public HotelRoom(float price) {
-    super(price);
+   /**
+   * The amount of beds a room has.
+   */
+  protected int bedCount = 0;
+   
+  /**
+   * This is the HotelRoom constructor.
+   */
+  public HotelRoom() {
+    super();
+  }
+  @Override
+  public int getBedCount() {
+    return bedCount;
   }
 
+  @Override
+  public void setBedCount(int amount) {
+    this.bedCount = amount;
+  }
+  
 }

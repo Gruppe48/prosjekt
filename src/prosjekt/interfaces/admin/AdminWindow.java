@@ -1,30 +1,46 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package prosjekt.interfaces;
+package prosjekt.interfaces.admin;
 
 import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
+import javax.swing.*;
+import prosjekt.interfaces.GenericWindow;
 
 
 /**
- *
- * @author Even
+ * The AdminWindow class
+ * This class is responsible for all bits administrational.
+ * 
+ * @author Even Augdal
  */
-public class AdminWindow2 extends GenericWindow {
-  // General
+public class AdminWindow extends GenericWindow {
   private JTabbedPane tabbedPane;
   private JComponent panelGuest, panelRoom, panelBooking, panelInformation;
+  private JMenuBar menuBar;
   
-  public AdminWindow2() {
+  /**
+   * This is the constructor for AdminWindow.
+   */
+  public AdminWindow() {
+    // Tell GenericWindow our title and dimensions.
     super("Administratorpanel", 900, 500);
+    
+    // Create menubar
+    menuBar = new JMenuBar();
+    setJMenuBar(menuBar);
+    JMenu fileMenu = new JMenu("Fil");
+    JMenuItem exitAction = new JMenuItem("Avslutt");
+    exitAction.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+          System.exit(0);
+      }
+    });
+    fileMenu.add(exitAction);
+    menuBar.add(fileMenu);
+
   }
 
   @Override
@@ -50,7 +66,7 @@ public class AdminWindow2 extends GenericWindow {
     tabbedPane.setMnemonicAt(2, KeyEvent.VK_3);
     
     panelInformation = informationPanel();
-    tabbedPane.addTab("Fasiliteter", panelInformation);
+    tabbedPane.addTab("Informasjon", panelInformation);
     tabbedPane.setMnemonicAt(3, KeyEvent.VK_4);
 
  
@@ -63,24 +79,44 @@ public class AdminWindow2 extends GenericWindow {
     super.destroy();
   }
 
+  
   @Override
   public void buttonPressed(ActionEvent e) {
+    /*
+     * This is a bit more advanced with multiple panels, so for simplicity
+     * we make our own button listeners where needed. 
+     */
     
   }
 
-
+  /**
+   * This method sets up the guestPanel
+   * @return The guestPanel's JPanel.
+   */
   private JPanel guestPanel() {
     GuestPanelGUI guestPanel = new GuestPanelGUI();
     return guestPanel.getPanel();
   }
+  /**
+   * This method sets up the roomPanel
+   * @return The roomPanel's JPanel.
+   */
   private JPanel roomPanel() {
     RoomPanelGUI roomPanel = new RoomPanelGUI();
     return roomPanel.getPanel();
   }
+  /**
+   * This method sets up the bookingPanel
+   * @return The bookingPanel's JPanel.
+   */
   private JPanel bookingPanel() {
     BookingPanelGUI bookingPanel = new BookingPanelGUI();
     return bookingPanel.getPanel();
   }
+  /**
+   * This method sets up the informationPanel
+   * @return The informationPanel's JPanel.
+   */
   private JPanel informationPanel() {
     InformationPanelGUI informationPanel = new InformationPanelGUI();
     return informationPanel.getPanel();

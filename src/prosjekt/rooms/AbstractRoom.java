@@ -1,27 +1,55 @@
-/*
- */
 package prosjekt.rooms;
 
 import prosjekt.guests.AbstractGuest;
 import prosjekt.rooms.RoomMisc.facilities;
+import prosjekt.rooms.types.ConferenceRoom;
+import prosjekt.rooms.types.DoubleRoom;
+import prosjekt.rooms.types.MeetingRoom;
+import prosjekt.rooms.types.SingleRoom;
 
 /**
- *
+ * This is the AbstractRoom class.
+ * This class is the superclass for all room types in the hotel.
+ * This class defines variables and methods common to all rooms.
+ * 
  * @author Kristoffer Berdal <web@flexd.net>
- * @studnr 180212
- * @date Mar 26, 2012
+ * 
  */
 public abstract class AbstractRoom implements IRoom {
-  private static int roomCounter = 0;
-  private int roomID;
-  private float price = 0;
-
-  private AbstractGuest guest;
+  /**
+   * This variable holds the roomCounter, which is increased each time a new room is added.
+   * The variable is shared between all instances of the object so that each time we add a room the number
+   * increases (by using roomCounter++).
+   */
+  protected static int roomCounter = 0;
+   /**
+   * This is the roomID.
+   */
+  protected int roomID;
+   /**
+   * This is a variable holding the rooms price, it is statically defined on a per room type basis.
+   */
+  protected float price = 0;
+  
+   /**
+   * This variable holds the guest currently living in the room.
+   */
+  protected AbstractGuest guest;
+   /**
+   * This variable tells us what kind of facilities you can find in this room.
+   * Like a minibar, tv, jacuzzi and so on.
+   */
   protected facilities facilities;
   
-  public AbstractRoom(float price) {
-    roomID = roomCounter++;
-    this.price = price;
+  private boolean occupied;
+  
+  /**
+  * This is the AbstractRoom constructor.
+  * This constructor sets the roomID by increasing the roomCounter variable.
+  */
+  public AbstractRoom() {
+    roomID = ++roomCounter;
+    occupied = false;
   }
 
   @Override
@@ -32,9 +60,16 @@ public abstract class AbstractRoom implements IRoom {
   public void empty() {
     this.guest = null;
   }
+  
+  public void checkIn() {
+    occupied = true;
+  }
+  public void checkOut() {
+    occupied = false;
+  }
   @Override
   public boolean isOccupied() {
-    return (guest != null);
+    return occupied;
   }
   
   @Override
@@ -52,11 +87,22 @@ public abstract class AbstractRoom implements IRoom {
     return roomID;
   }
   
-  
 
   @Override
   public facilities getFacilities() {
     return facilities;
+  }
+  
+  @Override
+  public String getRoomType() {
+    String rt = "";
+    
+    if(this instanceof SingleRoom) { rt = "Enkeltrom"; }
+    else if (this instanceof DoubleRoom) { rt = "Dobbeltrom"; }
+    else if (this instanceof ConferenceRoom) { rt = "Konferanserom"; }
+    else if (this instanceof MeetingRoom) { rt = "Møterom"; }
+    
+    return rt;
   }
 
   @Override

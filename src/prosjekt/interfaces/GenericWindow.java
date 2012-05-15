@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package prosjekt.interfaces;
 
 import java.awt.event.ActionEvent;
@@ -13,12 +9,24 @@ import java.util.logging.Logger;
 import javax.swing.JFrame;
 
 /**
- *
- * @author kristoffer
+ * This is the class GenericWindow.
+ * This class is meant to serve as a super class for
+ * all our window classes.
+ * We setup some sane defaults here and add a button listener.
+ * 
+ * @author Kristoffer Berdal <web@flexd.net>
  */
 public class GenericWindow extends JFrame implements IWindow {
-
+  /**
+   * A button listener.
+   */
   protected ButtonListener buttonListener = new ButtonListener();
+  /**
+   * This is the constructor for GenericWindow
+   * @param title The title of the window
+   * @param width the desired width of the window in pixels
+   * @param height the desired height of the window in pixels
+   */
   public GenericWindow(String title, int width, int height) {
     super(title);
     try {

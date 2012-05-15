@@ -1,13 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package prosjekt.interfaces;
+package prosjekt.interfaces.admin;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -15,27 +12,56 @@ import javax.swing.table.TableModel;
 import prosjekt.Main;
 import prosjekt.guests.AbstractGuest;
 import prosjekt.guests.Company;
-import prosjekt.guests.Person;
+import prosjekt.utils.Utils;
 
 /**
- *
- * @author Even
+ * This is the GuestPanelGUI part of the AdminWindow.
+ * This window allows the employees to add or find guests. 
+ * @author Even Augdal
  */
 public class GuestPanelGUI {
-  // General
+  /**
+   * JPanels for window elements.
+   */
   private JPanel panelContainer, panelMenu, panelMain;
+  /**
+   * Column names for the search results in a JTable.
+   */
   private String columnNames[];
-  String[][] rowData;
+  /**
+   * Search result holders.
+   */
+  String[][] rowData, rowData2;
+  /**
+   * Tablemodel to define how the table acts.
+   */
   private TableModel tableModel;
+  /**
+   * Button listener so we can catch button events.
+   */
   private ActionListener btnListener;
   
-  // guestPanel
+  /**
+   * Setup all text fields.
+   */
   private JTextField txtFirstname, txtLastname, txtPhoneNumber, txtAddress, txtPostNumber, txtCompanyName;
+  /**
+   * The JTable for search results.
+   */
   private JTable tableSearchResults;
-  private JButton btnSearch, btnEdit, btnSearchGuest, btnShowGuests;
+  /**
+   * Buttons
+   */
+  private JButton btnSearch, btnClear, btnSearchGuest, btnShowGuests;
+  /**
+   * ArrayList with search results.
+   */
   private ArrayList<AbstractGuest> arrListResults;
 
-  
+  /**
+   * GuestPanelGUI constructor.
+   * This constructor sets up the button listener and panelContainer.
+   */
   public GuestPanelGUI() {
     if(panelContainer != null) {
       panelContainer.removeAll();
@@ -48,12 +74,18 @@ public class GuestPanelGUI {
     panelContainer = guestPanel();
   }
   
+  /**
+   * Getter for panelContainer.
+   */
   public JPanel getPanel() {
     return panelContainer;
   }
   
   
-  
+  /**
+   * This method sets up the guest panel
+   * @return JPanel the guest panel.
+   */
   private JPanel guestPanel() {
     JPanel frame = new JPanel(new GridBagLayout());
     GridBagConstraints c = new GridBagConstraints();
@@ -98,7 +130,10 @@ public class GuestPanelGUI {
     return frame;
     
   }
-  
+  /**
+   * This method sets up the search panel
+   * @return JPanel the search panel.
+   */
   private JPanel searchGuest(JPanel panel) {
     JPanel inputPanel, buttonPanel;
     
@@ -144,18 +179,17 @@ public class GuestPanelGUI {
     // add inputPanel to panel
     panel.add(inputPanel, c);
     
-    // Create search and edit button
+    // Create buttons
     btnSearch = new JButton("Søk");
-    btnEdit   = new JButton("Endre");
-    btnEdit.setEnabled(false);
+    btnClear  = new JButton("Tøm");
     btnSearch.addActionListener(btnListener);
-    btnEdit.addActionListener(btnListener);
+    btnClear.addActionListener(btnListener);
           
     
     // Add the buttons to our buttonPanel
     buttonPanel = new JPanel(new GridLayout(1,2));
     buttonPanel.setBackground(Color.LIGHT_GRAY);
-    buttonPanel.add(btnEdit);
+    buttonPanel.add(btnClear);
     buttonPanel.add(btnSearch);
     
     // New constraints
@@ -182,7 +216,7 @@ public class GuestPanelGUI {
 
     
     // Add actionlistener for our JTable
-    tableResultsListener tableListener = new tableResultsListener();
+    TableResultsListener tableListener = new TableResultsListener();
     tableSearchResults.getSelectionModel().addListSelectionListener(tableListener);
     //guestPanelSearchResults.getColumnModel().getSelectionModel().addListSelectionListener(tableListener);
     
@@ -204,11 +238,14 @@ public class GuestPanelGUI {
     return panel;
   }
   
-  
-  private class tableResultsListener implements ListSelectionListener {
+  /**
+   * This is the TableResultsListener.
+   * This enables us to see which guest is selected in the list.
+   */
+  private class TableResultsListener implements ListSelectionListener {
     JTable table;
 
-    tableResultsListener() {
+    TableResultsListener() {
       table = tableSearchResults;
     }
 
@@ -225,8 +262,6 @@ public class GuestPanelGUI {
           txtPostNumber.setText(arrListResults.get(i).getPostNumber() + "");
           txtCompanyName.setText("");
 
-          btnEdit.setEnabled(true);
-
           if(arrListResults.get(i) instanceof Company) {
             Company c = (Company) arrListResults.get(i);
             txtCompanyName.setText(c.getCompanyName());
@@ -234,34 +269,67 @@ public class GuestPanelGUI {
         }
       } 
     }
-    
   }
-  
+  /**
+   * This method sets up the panel that shows all the guests registered.
+   * @return A JPanel that shows all the guests in a JTable.
+   */
   private JPanel showAllGuests(JPanel panel) {
     GridBagConstraints c = new GridBagConstraints();
+    rowData2 = null;
     
-    // Display area
-    JTextArea display = new JTextArea(10,30);
-    display.setForeground(Color.BLACK);
-    display.setBackground(Color.WHITE);
-    display.setText(Main.guestRegistry.toString());
-    display.setEditable(false);
-    JScrollPane scroll = new JScrollPane(display);
-    c.insets  = new Insets(0,0,0,0);
-    c.fill    = GridBagConstraints.BOTH;
-    c.anchor  = GridBagConstraints.FIRST_LINE_START;
-    c.gridwidth = 8;
-    c.gridx   = 0;
-    c.gridy   = 0;
-    c.weightx = 1;
-    c.weighty = 1;
-    panel.add(scroll, c);
+    // Array of columnnames for our JTable
+    columnNames = new String[]{"Fornavn", "Etternavn", "Telefon", "Postnummer", "Addresse", "Company"};
+    
+    // Create a JTable for guestPanelSearchresults           
+    tableModel = new SearchTableModel(rowData2, columnNames);
+    tableSearchResults = new JTable(tableModel);
+    tableSearchResults.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    
+    // New constraints
+    c.insets    = new Insets(0,0,0,0);
+    c.fill      = GridBagConstraints.BOTH;
+    c.anchor    = GridBagConstraints.LINE_START;
+    c.gridwidth = 10;
+    c.gridx     = 0;
+    c.gridy     = 2;
+    c.weightx   = 1;
+    c.weighty   = 1;
+    
+    HashMap<String, AbstractGuest> hashmapAllGuests = Main.guestRegistry.getList();
+          
+    // Lets create and fill rowData
+    if(hashmapAllGuests != null) {
+      rowData2 = new String[hashmapAllGuests.size()][6];
+      int i = 0;
+      for (AbstractGuest g : hashmapAllGuests.values()) {
+        rowData2[i][0] = g.getFirstName();
+        rowData2[i][1] = g.getLastName();
+        rowData2[i][2] = g.getPhoneNumber();
+        rowData2[i][3] = g.getPostNumber() + "";
+        rowData2[i][4] = g.getAddress();
+        if(g instanceof Company) {
+          Company company = (Company) g;
+          rowData2[i][5] = company.getCompanyName();
+        }
+        i++;
+      }
+    }
+
+    // Tablemodel for our JTable
+    tableModel = new SearchTableModel(rowData2, columnNames);
+    tableSearchResults.setModel(tableModel);
+    
+    // add guestPanelSearchResults (JTable) to panel
+    panel.add(new JScrollPane(tableSearchResults), c);
     
     return panel;
   }
   
-  
-  
+  /**
+   * This is the button listener.
+   * This enables us to catch button events.
+   */
   private class ButtonListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -275,8 +343,15 @@ public class GuestPanelGUI {
         panelMain = showAllGuests(panelMain);
         panelMain.updateUI();
       }
+      else if(e.getSource() == btnClear) {
+        txtFirstname.setText("");
+        txtLastname.setText("");
+        txtPhoneNumber.setText("");
+        txtPostNumber.setText("");
+        txtAddress.setText("");
+        txtCompanyName.setText("");
+      }
       else if(e.getSource() == btnSearch) {
-        btnEdit.setEnabled(false);
         String firstname    = txtFirstname.getText();
         String lastname     = txtLastname.getText();
         String phoneNumber  = txtPhoneNumber.getText();
@@ -284,12 +359,12 @@ public class GuestPanelGUI {
         String companyName  = txtCompanyName.getText();
 
         try {
-          int postNumber = 0;
+          String postNumber = "0";
 
           if(!txtPostNumber.getText().equals("")) {
-            postNumber = Integer.parseInt(txtPostNumber.getText());
+            postNumber = txtPostNumber.getText();
           }
-
+          
           arrListResults = Main.guestRegistry.searchGuests(firstname, lastname, phoneNumber, address, postNumber, companyName);
           
           // Lets create and fill rowData
@@ -312,47 +387,11 @@ public class GuestPanelGUI {
           
           // Tablemodel for our JTable
           tableModel = new SearchTableModel(rowData, columnNames);
-
           tableSearchResults.setModel(tableModel);
         }
         catch(NumberFormatException nfe) {
-          System.out.println("error! NumberFormatException");
+          Utils.showErrorMessage(null, "Postnummer må være et tall.", "Error: Postnummer");
         }
-      }
-      else if(e.getSource() == btnEdit) {
-        String firstname    = txtFirstname.getText();
-        String lastname     = txtLastname.getText();
-        String phoneNumber  = txtPhoneNumber.getText();
-        String address      = txtAddress.getText();
-        String companyName  = txtCompanyName.getText();
-        AbstractGuest editedGuest;
-
-        try {
-          int postNumber = 0;
-
-          if(!txtPostNumber.getText().equals("")) {
-            postNumber = Integer.parseInt(txtPostNumber.getText());
-          }
-
-          // Create new guest based on the old
-          if(companyName.length() > 0) {
-            editedGuest = new Company(firstname, lastname, phoneNumber, address, postNumber, companyName);
-          }
-          else {
-            editedGuest = new Person(firstname, lastname, phoneNumber, address, postNumber);
-          }
-
-          // Swap the old one with the new one.
-          Main.guestRegistry.swapGuest(arrListResults.get(tableSearchResults.getSelectedRow()), editedGuest);
-
-        }
-        catch(NumberFormatException nfe) {
-          System.out.println("error! NumberFormatException");
-        }
-        catch(NullPointerException npe) {
-          System.out.println("error! NullPointerException");
-        }
-
       }
     }
   }

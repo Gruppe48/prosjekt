@@ -1,8 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package prosjekt.interfaces;
+package prosjekt.interfaces.admin;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -11,42 +7,82 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.table.TableModel;
 import prosjekt.Main;
-import prosjekt.guests.AbstractGuest;
-import prosjekt.guests.Company;
-import prosjekt.guests.Person;
 import prosjekt.rooms.AbstractRoom;
 
 /**
- *
- * @author Even
+ * This is the RoomPanelGUI of the AdminWindow.
+ * This panel lists up the rooms and status in the hotel.
+ * 
+ * @author Even Augdal
  */
 public class RoomPanelGUI {
-  // General
+  /**
+   * Declare the panels.
+   */
   private JPanel panelContainer, panelMenu, panelMain;
+  /**
+   * JTable column names.
+   */
   private String columnNames[];
+  /**
+   * TableModel for JTable
+   */
   private TableModel tableModel;
+  /**
+   * Button listener.
+   */
   private ActionListener btnListener;
-  
-  // roomPanel
+  /**
+   * Search result dataa.
+   */
+  private String[][] rowData, rowData2;
+  /**
+   * Text field for room Number
+   */
   private JTextField txtRoomNumber;
+  /**
+   * Combobox for room type to search for.
+   */
   private JComboBox cmbRoomTypes;
-  private JButton btnSearch, btnEdit, btnSearchRooms, btnShowRooms;;
+  /**
+   * Buttons
+   */
+  private JButton btnSearch, btnSearchRooms, btnShowRooms;
+  /**
+   * JTable for search results.
+   */
   private JTable tableSearchResults;
+  /**
+   * ArrayList with actual search results.
+   */
   private ArrayList<AbstractRoom> arrListResults;
   
+  /**
+   * Constructor sets up the panelContainer, button listener
+   * and the roomPanel.
+   */
   public RoomPanelGUI() {
     if(panelContainer != null) {
       panelContainer.removeAll();
     }
     
+    // Create buttonlistener
+    btnListener = new ButtonListener();
+    
     // Lets make this panel
     panelContainer = roomPanel();
   }
-  
+  /**
+   * Getter for panelContainer.
+   * @return panelContainer
+   */
   public JPanel getPanel() {
     return panelContainer;
   }
-  
+  /**
+   * This method sets up the room Panel
+   * @return the room panel.
+   */
   private JPanel roomPanel() {
     JPanel frame;
     
@@ -59,6 +95,8 @@ public class RoomPanelGUI {
     panelMenu.setBackground(Color.LIGHT_GRAY);
     btnSearchRooms = new JButton("Søk");
     btnShowRooms   = new JButton("Vis alle");
+    btnSearchRooms.addActionListener(btnListener);
+    btnShowRooms.addActionListener(btnListener);
     panelMenu.add(btnSearchRooms);
     panelMenu.add(btnShowRooms);
     
@@ -89,27 +127,12 @@ public class RoomPanelGUI {
     frame.add(panelMain, c);
 
     
-    // Add ActionListeners
-    btnSearchRooms.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        panelMain.removeAll();
-        panelMain = searchRooms(panelMain);
-        panelMain.updateUI();
-      }
-    });
-    btnShowRooms.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-       panelMain.removeAll();
-       panelMain = showAllRooms(panelMain);
-       panelMain.updateUI();
-      }
-    });
-    
     return frame; 
   }
-  
+  /**
+   * This method sets up the panel for room search.
+   * @return Room search panel.
+   */
   private JPanel searchRooms(JPanel panel) {
     JPanel inputPanel;
     
@@ -127,7 +150,7 @@ public class RoomPanelGUI {
     // Adding all labels and textfields to inputPanel
     inputPanel.add(new JLabel("Romnummer"));
     inputPanel.add(txtRoomNumber);
-    inputPanel.add(new JLabel("Sengeplasser"));
+    inputPanel.add(new JLabel("Romtype"));
     inputPanel.add(cmbRoomTypes);
             
     // Create a contraints variable for gridbaglayout
@@ -167,9 +190,10 @@ public class RoomPanelGUI {
     
     // Array of columnnames for our JTable
     columnNames = new String[]{"Romnummer", "Type", "Status"};
-        
+    
+    
     // Create a JTable for roomPanelSearchresults           
-    tableModel = new SearchRoomTableModel(arrListResults, columnNames);
+    tableModel = new SearchTableModel(rowData, columnNames);
     tableSearchResults = new JTable(tableModel);
     tableSearchResults.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
@@ -190,17 +214,35 @@ public class RoomPanelGUI {
     
     return panel;
   }
-  
+  /**
+   * This panel sets up the panel that shows all rooms.
+   * @return A panel with all rooms in a Jtable.
+   */
   private JPanel showAllRooms(JPanel panel) {
     GridBagConstraints c = new GridBagConstraints();
+    rowData2 = null;
     
-    // Display area
-    JTextArea display = new JTextArea(10,30);
-    display.setForeground(Color.BLACK);
-    display.setBackground(Color.WHITE);
-    display.setText(Main.roomRegistry.toString());
-    display.setEditable(false);
-    JScrollPane scroll = new JScrollPane(display);
+    // Array of columnnames for our JTable
+    columnNames = new String[]{"Romnummer", "Type", "Status"};
+    arrListResults = Main.roomRegistry.getList();
+    
+    // Lets create and fill rowData
+    if(arrListResults != null) {
+      rowData2 = new String[arrListResults.size()][3];
+      int i = 0;
+      for (AbstractRoom r : arrListResults) {
+        rowData2[i][0] = r.getID() + "";
+        rowData2[i][1] = r.getRoomType();
+        rowData2[i][2] = (r.isOccupied()) ? "Opptatt" : "Ledig";
+        i++;
+      }
+    }
+        
+    // Create a JTable for roomPanelSearchresults           
+    tableModel = new SearchTableModel(rowData2, columnNames);
+    tableSearchResults = new JTable(tableModel);
+    tableSearchResults.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    
     c.insets  = new Insets(0,0,0,0);
     c.fill    = GridBagConstraints.BOTH;
     c.anchor  = GridBagConstraints.FIRST_LINE_START;
@@ -209,68 +251,52 @@ public class RoomPanelGUI {
     c.gridy   = 0;
     c.weightx = 1;
     c.weighty = 1;
-    panel.add(scroll, c);
+    panel.add(new JScrollPane(tableSearchResults), c);
     
     return panel;
   }
- /* 
+  /**
+   * Button listener.
+   */
   private class ButtonListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
-      if(e.getSource() == btnSearch) {
-        btnEdit.setEnabled(false);
+      if(e.getSource() == btnSearchRooms) {
+        panelMain.removeAll();
+        panelMain = searchRooms(panelMain);
+        panelMain.updateUI();
+      }
+      else if(e.getSource() == btnShowRooms) {
+        panelMain.removeAll();
+        panelMain = showAllRooms(panelMain);
+        panelMain.updateUI();
+      }
+      else if(e.getSource() == btnSearch) {
         String roomNumber = txtRoomNumber.getText();
         String roomType   = (String) cmbRoomTypes.getSelectedItem();
-
-        try {
-          arrListResults = Main.roomRegistry.searchRooms(roomNumber, roomType);
-
-          // Tablemodel for our JTable
-          tableModel = new SearchTableModel(arrListResults, columnNames, "rooms");
-
-          tableSearchResults.setModel(tableModel);
+        
+        arrListResults = Main.roomRegistry.searchRoom(roomNumber, roomType);
+    
+        // Lets create and fill rowData
+        if(arrListResults != null) {
+          rowData = new String[arrListResults.size()][3];
+          int i = 0;
+          for (AbstractRoom r : arrListResults) {
+            rowData[i][0] = r.getID() + "";
+            rowData[i][1] = r.getRoomType();
+            rowData[i][2] = (r.isOccupied()) ? "Opptatt" : "Ledig";
+            i++;
+          }
         }
-        catch(NumberFormatException nfe) {
-          System.out.println("error! NumberFormatException");
-        }
+        
+        // Tablemodel for our JTable
+        tableModel = new SearchTableModel(rowData, columnNames);
+        tableSearchResults.setModel(tableModel);
       }
-      else if(e.getSource() == btnEdit) {
-        String firstname    = txtFirstname.getText();
-        String lastname     = txtLastname.getText();
-        String phoneNumber  = txtPhoneNumber.getText();
-        String address      = txtAddress.getText();
-        String companyName  = txtCompanyName.getText();
-        AbstractGuest editedGuest;
-
-        try {
-          int postNumber = 0;
-
-          if(!txtPostNumber.getText().equals("")) {
-            postNumber = Integer.parseInt(txtPostNumber.getText());
-          }
-
-          // Create new guest based on the old
-          if(companyName.length() > 0) {
-            editedGuest = new Company(firstname, lastname, phoneNumber, address, postNumber, companyName);
-          }
-          else {
-            editedGuest = new Person(firstname, lastname, phoneNumber, address, postNumber);
-          }
-
-          // Swap the old one with the new one.
-          Main.guestRegistry.swapGuest(arrListResults.get(tableSearchResults.getSelectedRow()), editedGuest);
-
-        }
-        catch(NumberFormatException nfe) {
-          System.out.println("error! NumberFormatException");
-        }
-        catch(NullPointerException npe) {
-          System.out.println("error! NullPointerException");
-        }
-
-      }
+      
     }
-  }*/
+
+  }
   
   
 }
