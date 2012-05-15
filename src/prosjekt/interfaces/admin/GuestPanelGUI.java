@@ -357,18 +357,22 @@ public class GuestPanelGUI {
         txtPostNumber.setText("");
         txtAddress.setText("");
         txtCompanyName.setText("");
+        arrListResults = new ArrayList<AbstractGuest>();
+        updateTable();
       }
       else if(e.getSource() == btnRemove) {
-        txtFirstname.setText("");
-        txtLastname.setText("");
-        txtPhoneNumber.setText("");
-        txtPostNumber.setText("");
-        txtAddress.setText("");
-        txtCompanyName.setText("");
+        
         // Let's delete the guest then.
         boolean result = Main.guestRegistry.remove(selectedGuest);
         if (result) {
+          
           Utils.showInformationMessage(null, "Fjerning av gjest velykket!", "Velykket!");
+          txtFirstname.setText("");
+          txtLastname.setText("");
+          txtPhoneNumber.setText("");
+          txtPostNumber.setText("");
+          txtAddress.setText("");
+          txtCompanyName.setText("");
           searchGuests(); // Update the table!
         }
         else {
