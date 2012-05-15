@@ -3,6 +3,7 @@ package prosjekt.guests;
 import java.util.ArrayList;
 import java.util.HashMap;
 import prosjekt.IStorable;
+import prosjekt.Main;
 import prosjekt.utils.Utils;
 
 /**
@@ -17,7 +18,14 @@ import prosjekt.utils.Utils;
  */
 public class GuestRegistry implements IStorable {
 
+  /**
+   * This holds the guests!
+   */
   private HashMap<String, AbstractGuest> list = new HashMap<String, AbstractGuest>();
+  /**
+   * This holds any errors produced since the last time we called getErrors();
+   */
+  private StringBuilder errors;
 
   /**
    * This is the constructor for the GuestRegistry.
@@ -152,6 +160,11 @@ public class GuestRegistry implements IStorable {
     if (list.remove(hash) != null) {
       result = true;
       save();
+      Main.bookingRegistry.removeGuestBookings(guest); // Remove all of this guests bookings.
+    }
+    else {
+      errors.append("Denne gjesten finnes ikke!");
+      result = false;
     }
     return result;
   }
@@ -264,5 +277,11 @@ public class GuestRegistry implements IStorable {
       r.append("\n");
     }
     return r.toString();
+  }
+
+  public String getErrors() {
+    String err = errors.toString();
+    errors = new StringBuilder();
+    return err;
   }
 }

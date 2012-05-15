@@ -260,4 +260,15 @@ public class BookingRegistry implements IStorable {
     }
     return null;
   }
+  /**
+   * This method removes all bookings this guest have made.
+   * @param guest The guest we want bookings removed for.
+   */
+  public void removeGuestBookings(AbstractGuest guest) {
+    for (BookingEntry e : list) {
+      if (e.getGuest().getID() == guest.getID()) {
+        list.remove(e);
+      }
+    }
+  }
 }
