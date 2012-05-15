@@ -160,7 +160,7 @@ public class GuestRegistry implements IStorable {
     if (list.remove(hash) != null) {
       result = true;
       save();
-      Main.bookingRegistry.removeGuestBookings(guest); // Remove all of this guests bookings.
+      //Main.bookingRegistry.removeGuestBookings(guest); // Remove all of this guests bookings.
     }
     else {
       errors.append("Denne gjesten finnes ikke!");
