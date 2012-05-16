@@ -136,7 +136,7 @@ public class Utils {
     StringBuilder output = new StringBuilder();
     try {
       BufferedReader reader = new BufferedReader(new FileReader(filename));
-      String line = "";
+      String line;
       while ((line = reader.readLine()) != null) {
         output.append(line).append("\n");
       }

@@ -3,7 +3,6 @@ package prosjekt.guests;
 import java.util.ArrayList;
 import java.util.HashMap;
 import prosjekt.IStorable;
-import prosjekt.Main;
 import prosjekt.utils.Utils;
 
 /**
@@ -51,7 +50,7 @@ public class GuestRegistry implements IStorable {
       // Default values
       ArrayList<AbstractGuest> guests = new ArrayList<AbstractGuest>();
       // 10 people
-      guests.add(new Person("Even", "Augdal", "1234567822", "Skoleveien 1", "1002"));
+      guests.add(new Person("Even", "Augdal", "12345678", "Skoleveien 1", "1002"));
       guests.add(new Person("Kristoffer", "Berdal", "93828106", "Skoleveien 2", "1000"));
       guests.add(new Person("Ole", "Hansen", "38383838", "Skoleveien 5", "1000"));
       guests.add(new Person("Ole", "Augdal", "99999999", "En vei 2", "4000"));
@@ -155,7 +154,7 @@ public class GuestRegistry implements IStorable {
    * @return true or false based on result.
    */
   public boolean remove(AbstractGuest guest) {
-    boolean result = false;
+    boolean result;
     String hash = getHash(guest);
     if (list.remove(hash) != null) {
       result = true;
