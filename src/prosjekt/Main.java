@@ -7,13 +7,14 @@ import prosjekt.booking.BookingRegistry;
 import prosjekt.guests.GuestBook;
 import prosjekt.guests.GuestRegistry;
 import prosjekt.interfaces.LoginWindow;
-import prosjekt.interfaces.admin.AdminWindow;
 import prosjekt.rooms.RoomRegistry;
 import prosjekt.utils.Options;
 
 
 /**
- *
+ * This class sets up our registries and opens the initial window (Login Window).
+ * 
+ * 
  * @author Kristoffer Berdal <web@flexd.net>
  */
 public class Main {
@@ -47,7 +48,7 @@ public class Main {
    * 
    * @param args the command line arguments
    */
-  public static void main(String[] args) throws ParseException {
+  public static void main(String[] args) {
     new LoginWindow();
   }
 }

@@ -243,6 +243,10 @@ public class RoomPanelGUI {
     
     return panel;
   }
+  /**
+   * This method updates the JTable with the arrListResults content.
+   * 
+   */
   public void updateTable() {
       // Lets create and fill rowData
       if(arrListResults != null) {

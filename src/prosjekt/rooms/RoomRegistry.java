@@ -138,6 +138,7 @@ public class RoomRegistry implements IStorable {
   
    /**
    * This method returns a printable string of all the rooms in the list.
+   * @return A string with the information for all rooms in the list.
    */
   @Override
   public String toString() {
@@ -162,6 +163,7 @@ public class RoomRegistry implements IStorable {
    * This method searches for a specific room based on room type and roomID.
    * @param roomNumber the roomNumber/roomID of the room you want.
    * @param roomType the type of room you are looking for to filter the results a bit quicker.
+   * @return A ArrayList<AbstractRoom> with the room.
    */
   public ArrayList<AbstractRoom> searchRoom(String roomNumber, String roomType) {
     ArrayList<AbstractRoom> matches = new ArrayList();

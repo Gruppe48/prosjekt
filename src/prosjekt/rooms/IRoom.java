@@ -1,7 +1,6 @@
 package prosjekt.rooms;
 
 import prosjekt.guests.AbstractGuest;
-import prosjekt.rooms.RoomMisc.facilities;
 
 
 /**
@@ -33,11 +32,6 @@ public interface IRoom {
    * @return roomID (used as roomNumbers)
    */
   public int getID();
-  /**
-   * Getter for room facilities.
-   * @return The facilities enum the room has.
-   */
-  public facilities getFacilities();
   /**
    * This method rents out a room to a specific guest (i.e assigns it to a guest).
    * @param guest , the guest to rent the room to.

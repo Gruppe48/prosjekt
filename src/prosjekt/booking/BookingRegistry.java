@@ -222,7 +222,9 @@ public class BookingRegistry implements IStorable {
     return false;
   }
   /**
-   * TODO: Fix this!
+   * This method checks in a VERY simple way if the room has ever been booked.
+   * @param room The room to check for
+   * @return true or false, false if the room has never been booked.
    */
   public boolean isBooked(AbstractRoom room) {
     for (BookingEntry e : list) {

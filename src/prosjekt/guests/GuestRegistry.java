@@ -229,6 +229,7 @@ public class GuestRegistry implements IStorable {
    * @param phoneNumber The guests phone Number
    * @param address The guests address
    * @param postNumber The guests post number.
+   * @param company the company to search for. Leave as "" to search for normal guests.
    * 
    * @return an ArrayList of matching guests or null if there is no matches.
    */
@@ -279,6 +280,10 @@ public class GuestRegistry implements IStorable {
     return r.toString();
   }
 
+  /**
+   * This method returns all the errors accumulated since the last time we called this method.
+   * @return A string of errors, if any.
+   */
   public String getErrors() {
     String err = errors.toString();
     errors = new StringBuilder();

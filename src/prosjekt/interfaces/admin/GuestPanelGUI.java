@@ -79,6 +79,7 @@ public class GuestPanelGUI {
   
   /**
    * Getter for panelContainer.
+   * @return the panelContainer
    */
   public JPanel getPanel() {
     return panelContainer;

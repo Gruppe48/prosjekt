@@ -1,7 +1,6 @@
 package prosjekt.rooms;
 
 import prosjekt.guests.AbstractGuest;
-import prosjekt.rooms.RoomMisc.facilities;
 import prosjekt.rooms.types.ConferenceRoom;
 import prosjekt.rooms.types.DoubleRoom;
 import prosjekt.rooms.types.MeetingRoom;
@@ -35,12 +34,7 @@ public abstract class AbstractRoom implements IRoom {
    * This variable holds the guest currently living in the room.
    */
   protected AbstractGuest guest;
-   /**
-   * This variable tells us what kind of facilities you can find in this room.
-   * Like a minibar, tv, jacuzzi and so on.
-   */
-  protected facilities facilities;
-  
+   
   private boolean occupied = false;
   
   /**
@@ -61,9 +55,17 @@ public abstract class AbstractRoom implements IRoom {
     occupied = false;
   }
   
+  /**
+   * This method checks a guest into the room.
+   * ie. the room is marked as occupied.
+   */
   public void checkIn() {
     occupied = true;
   }
+  /**
+   * This method checks a guest out of the room.
+   * ie. the room is marked as unoccupied.
+   */
   public void checkOut() {
     occupied = false;
   }
@@ -86,13 +88,7 @@ public abstract class AbstractRoom implements IRoom {
   public int getID() {
     return roomID;
   }
-  
-
-  @Override
-  public facilities getFacilities() {
-    return facilities;
-  }
-  
+   
   @Override
   public String getRoomType() {
     String rt = "";
@@ -104,7 +100,11 @@ public abstract class AbstractRoom implements IRoom {
     
     return rt;
   }
-
+  
+  /**
+   * This method returns a string with all the room info.
+   * @return A string containing all the room info.
+   */
   @Override
   public String toString() {
     String r = "RomID: " + getID() + 

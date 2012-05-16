@@ -64,7 +64,17 @@ public class GenericWindow extends JFrame implements IWindow {
   public void buttonPressed(ActionEvent e) {
     
   }
+  /**
+   * This is the button listener, this enables us to
+   * catch button events
+   */
   protected class ButtonListener implements ActionListener {
+    /**
+     * This catches button events, and they are all passed to
+     * buttonPressed(ActionEvent e)
+     * 
+     * @param e
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
       buttonPressed(e);

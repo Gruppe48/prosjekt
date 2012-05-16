@@ -24,7 +24,7 @@ public class Utils {
    * This method returns the difference between two dates in days.
    * Returns -1 if the endDate is before the startDate.
    * @param startDate The start date
-   * @param endEate The end date
+   * @param endDate The end date
    * @return days between these dates.
    */
   public static int getDifference(Date startDate, Date endDate) {
