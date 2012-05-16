@@ -25,7 +25,7 @@ public class AdminWindow extends GenericWindow {
    */
   public AdminWindow() {
     // Tell GenericWindow our title and dimensions.
-    super("Administratorpanel", 900, 500);
+    super("Administratorpanel", 900, 550);
     
     // Create menubar
     menuBar = new JMenuBar();

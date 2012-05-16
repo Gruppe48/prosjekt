@@ -56,9 +56,8 @@ public class RoomHistory implements IStorable {
     list.add(room);
   }
    /**
-   * This method gets a list of previous AbstractRoom's for this room.
+   * This method gets a list of all revisions of all rooms.
    * 
-   * @param roomID ID of the room you want history for.
    * @return List containing the room history, or empty list.
    * 
    */

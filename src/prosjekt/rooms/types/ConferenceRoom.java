@@ -11,6 +11,10 @@ import prosjekt.rooms.SeminarRoom;
  */
 public class ConferenceRoom extends SeminarRoom {
 
+  /**
+   * Construactor for conference room.
+   * This sets the price.
+   */
   public ConferenceRoom() {
     super();
     price = 3000;

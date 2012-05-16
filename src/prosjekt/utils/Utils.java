@@ -23,9 +23,9 @@ public class Utils {
   /**
    * This method returns the difference between two dates in days.
    * Returns -1 if the endDate is before the startDate.
-   * @param startdate The start date
-   * @param enddate The end date
-   * @return Integer days between these.
+   * @param startDate The start date
+   * @param endDate The end date
+   * @return days between these dates.
    */
   public static int getDifference(Date startDate, Date endDate) {
     if (endDate.before(startDate)) return -1; //The end date is before the start date.. Clearly wrong!
@@ -129,7 +129,7 @@ public class Utils {
   }
   /**
    * This method reads a file and returns the string.
-   * @param filenam the file to read.
+   * @param filename the file to read.
    * @return The full file in a string.
    */
   public static String read(String filename) {

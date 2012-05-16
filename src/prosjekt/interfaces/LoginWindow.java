@@ -43,17 +43,17 @@ public class LoginWindow extends GenericWindow {
    * and the window dimensions.
    */
   public LoginWindow() {
-    super("Login", 400, 200);
+    super("Login", 450, 350);
   }
 
   @Override
   public void create() {
     // Notify our overlord!
     super.create();
-    
+    setResizable(false);
     try {
       // Load the logo from our assets folder.
-      logo = new ImageIcon("assets/avatar.gif");
+      logo = new ImageIcon("assets/logo.jpg");
     }
     catch (Exception e) {
       System.err.println("Logo finnes ikke!");

@@ -52,12 +52,15 @@ public class GuestPanelGUI {
   /**
    * Buttons
    */
-  private JButton btnSearch, btnClear, btnSearchGuest, btnShowGuests;
+  private JButton btnSearch, btnClear, btnRemove, btnSearchGuest, btnShowGuests;
   /**
    * ArrayList with search results.
    */
   private ArrayList<AbstractGuest> arrListResults;
-
+  /**
+   * This holds the guest currently selected in the JTable.
+   */
+  private AbstractGuest selectedGuest;
   /**
    * GuestPanelGUI constructor.
    * This constructor sets up the button listener and panelContainer.
@@ -76,6 +79,7 @@ public class GuestPanelGUI {
   
   /**
    * Getter for panelContainer.
+   * @return the panelContainer
    */
   public JPanel getPanel() {
     return panelContainer;
@@ -182,14 +186,17 @@ public class GuestPanelGUI {
     // Create buttons
     btnSearch = new JButton("Søk");
     btnClear  = new JButton("Tøm");
+    btnRemove  = new JButton("Slett gjest");
     btnSearch.addActionListener(btnListener);
     btnClear.addActionListener(btnListener);
+    btnRemove.addActionListener(btnListener);
           
     
     // Add the buttons to our buttonPanel
     buttonPanel = new JPanel(new GridLayout(1,2));
     buttonPanel.setBackground(Color.LIGHT_GRAY);
     buttonPanel.add(btnClear);
+    buttonPanel.add(btnRemove);
     buttonPanel.add(btnSearch);
     
     // New constraints
@@ -244,6 +251,7 @@ public class GuestPanelGUI {
    */
   private class TableResultsListener implements ListSelectionListener {
     JTable table;
+    
 
     TableResultsListener() {
       table = tableSearchResults;
@@ -261,7 +269,7 @@ public class GuestPanelGUI {
           txtPhoneNumber.setText(arrListResults.get(i).getPhoneNumber());
           txtPostNumber.setText(arrListResults.get(i).getPostNumber() + "");
           txtCompanyName.setText("");
-
+          selectedGuest = arrListResults.get(i);
           if(arrListResults.get(i) instanceof Company) {
             Company c = (Company) arrListResults.get(i);
             txtCompanyName.setText(c.getCompanyName());
@@ -350,49 +358,77 @@ public class GuestPanelGUI {
         txtPostNumber.setText("");
         txtAddress.setText("");
         txtCompanyName.setText("");
+        arrListResults = new ArrayList<AbstractGuest>(); // Clear the JTable values;
+        updateTable(); // Update the table
+      }
+      else if(e.getSource() == btnRemove) {
+        
+        // Let's delete the guest then.
+        boolean result = Main.guestRegistry.remove(selectedGuest);
+        if (result) {
+          
+          Utils.showInformationMessage(null, "Fjerning av gjest velykket!", "Velykket!");
+          txtFirstname.setText("");
+          txtLastname.setText("");
+          txtPhoneNumber.setText("");
+          txtPostNumber.setText("");
+          txtAddress.setText("");
+          txtCompanyName.setText("");
+          searchGuests(); // Update the table!
+        }
+        else {
+          Utils.showErrorMessage(null, "Feil ved sletting av gjest: " + Main.guestRegistry.getErrors(), "Error!");
+        }
       }
       else if(e.getSource() == btnSearch) {
-        String firstname    = txtFirstname.getText();
-        String lastname     = txtLastname.getText();
-        String phoneNumber  = txtPhoneNumber.getText();
-        String address      = txtAddress.getText();
-        String companyName  = txtCompanyName.getText();
+        searchGuests();
+      }
+    }
 
-        try {
-          String postNumber = "0";
+    public void searchGuests() {
+      String firstname    = txtFirstname.getText();
+      String lastname     = txtLastname.getText();
+      String phoneNumber  = txtPhoneNumber.getText();
+      String address      = txtAddress.getText();
+      String companyName  = txtCompanyName.getText();
 
-          if(!txtPostNumber.getText().equals("")) {
-            postNumber = txtPostNumber.getText();
-          }
-          
-          arrListResults = Main.guestRegistry.searchGuests(firstname, lastname, phoneNumber, address, postNumber, companyName);
-          
-          // Lets create and fill rowData
-          if(arrListResults != null) {
-            rowData = new String[arrListResults.size()][6];
-            int i = 0;
-            for (AbstractGuest g : arrListResults) {
-              rowData[i][0] = g.getFirstName();
-              rowData[i][1] = g.getLastName();
-              rowData[i][2] = g.getPhoneNumber();
-              rowData[i][3] = g.getPostNumber() + "";
-              rowData[i][4] = g.getAddress();
-              if(g instanceof Company) {
-                Company c = (Company) g;
-                rowData[i][5] = c.getCompanyName();
-              }
-              i++;
-            }
-          }
-          
-          // Tablemodel for our JTable
-          tableModel = new SearchTableModel(rowData, columnNames);
-          tableSearchResults.setModel(tableModel);
+      try {
+        String postNumber = "0";
+
+        if(!txtPostNumber.getText().equals("")) {
+          postNumber = txtPostNumber.getText();
         }
-        catch(NumberFormatException nfe) {
-          Utils.showErrorMessage(null, "Postnummer må være et tall.", "Error: Postnummer");
+        
+        arrListResults = Main.guestRegistry.searchGuests(firstname, lastname, phoneNumber, address, postNumber, companyName);
+        updateTable();
+      }
+      catch(NumberFormatException nfe) {
+        Utils.showErrorMessage(null, "Postnummer må være et tall.", "Error: Postnummer");
+      }
+    }
+
+    public void updateTable() {
+      // Lets create and fill rowData
+      if(arrListResults != null) {
+        rowData = new String[arrListResults.size()][6];
+        int i = 0;
+        for (AbstractGuest g : arrListResults) {
+          rowData[i][0] = g.getFirstName();
+          rowData[i][1] = g.getLastName();
+          rowData[i][2] = g.getPhoneNumber();
+          rowData[i][3] = g.getPostNumber() + "";
+          rowData[i][4] = g.getAddress();
+          if(g instanceof Company) {
+            Company c = (Company) g;
+            rowData[i][5] = c.getCompanyName();
+          }
+          i++;
         }
       }
+      
+      // Tablemodel for our JTable
+      tableModel = new SearchTableModel(rowData, columnNames);
+      tableSearchResults.setModel(tableModel);
     }
   }
   

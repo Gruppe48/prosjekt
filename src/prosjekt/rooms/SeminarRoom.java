@@ -10,6 +10,10 @@ package prosjekt.rooms;
  */
 public abstract class SeminarRoom extends AbstractRoom implements ISeminarRoom {
   
+  /**
+   * Constructor for seminarroom
+   * This is never called!
+   */
   public SeminarRoom() {
     super();
   }

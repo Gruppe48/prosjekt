@@ -26,7 +26,11 @@ public class BookingRegistry implements IStorable {
    * Currently it is actually a bit surplus since bookings are never removed from the booking list.
    */
   private BookingHistory history = new BookingHistory();
-
+  
+  /**
+   * Holds if the list needs to be reloaded or not.
+   */
+  boolean dirty = false;
   /**
    * The constructor for BookingRegistry calls init() as per the IStorable interface.
    */
@@ -47,11 +51,13 @@ public class BookingRegistry implements IStorable {
   }
   @Override
   public void save() {
+    dirty = true;
     Utils.save(list, "bookingRegistry.json");
     history.save();
   }
   @Override
   public void load() {
+    dirty = false;
     list = (ArrayList<BookingEntry>) Utils.load("bookingRegistry.json");
     history.load();
   }
@@ -191,6 +197,9 @@ public class BookingRegistry implements IStorable {
    * @return A list of all the booking entries.
    */
   public ArrayList<BookingEntry> getList() {
+    if (dirty) {
+      load();
+    }
     return list;
   }
   /**
@@ -205,13 +214,17 @@ public class BookingRegistry implements IStorable {
     for (BookingEntry e : list) {
       if (e.getFromDate().equals(from) && e.getToDate().equals(to) && e.getRoom().equals(room)) {
         list.remove(e);
+        save();
         return true;
+        
       }
     }
     return false;
   }
   /**
-   * TODO: Fix this!
+   * This method checks in a VERY simple way if the room has ever been booked.
+   * @param room The room to check for
+   * @return true or false, false if the room has never been booked.
    */
   public boolean isBooked(AbstractRoom room) {
     for (BookingEntry e : list) {
@@ -259,5 +272,17 @@ public class BookingRegistry implements IStorable {
       }
     }
     return null;
+  }
+  /**
+   * This method removes all bookings this guest have made.
+   * @param guest The guest we want bookings removed for.
+   */
+  public void removeGuestBookings(AbstractGuest guest) {
+    for (BookingEntry e : list) {
+      if (e.getGuest().getID() == guest.getID()) {
+        list.remove(e);
+      }
+    }
+    save();
   }
 }

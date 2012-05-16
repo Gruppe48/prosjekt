@@ -61,6 +61,7 @@ public class BookingHistory implements IStorable {
   }
   /**
    * This method returns a list of all the booking entries.
+   * @return A list with all the booking entries
    */
   public ArrayList<BookingEntry> getList() {
     return list;

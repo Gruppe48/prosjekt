@@ -10,6 +10,10 @@ import prosjekt.rooms.HotelRoom;
  * @author Kristoffer Berdal <web@flexd.net>
  */
 public class SingleRoom extends HotelRoom {
+  /**
+   * Constructor for single room!
+   * This sets the price and bedcount.
+   */
   public SingleRoom() {
     super();
     bedCount = 2;

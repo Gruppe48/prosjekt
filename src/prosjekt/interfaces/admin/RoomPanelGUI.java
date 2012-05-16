@@ -35,7 +35,7 @@ public class RoomPanelGUI {
   /**
    * Search result dataa.
    */
-  private String[][] rowData, rowData2;
+  private String[][] rowData;
   /**
    * Text field for room Number
    */
@@ -189,7 +189,7 @@ public class RoomPanelGUI {
     panel.add(btnSearch, c);
     
     // Array of columnnames for our JTable
-    columnNames = new String[]{"Romnummer", "Type", "Status"};
+    columnNames = new String[]{"Romnummer", "Type"};
     
     
     // Create a JTable for roomPanelSearchresults           
@@ -220,26 +220,14 @@ public class RoomPanelGUI {
    */
   private JPanel showAllRooms(JPanel panel) {
     GridBagConstraints c = new GridBagConstraints();
-    rowData2 = null;
     
     // Array of columnnames for our JTable
-    columnNames = new String[]{"Romnummer", "Type", "Status"};
     arrListResults = Main.roomRegistry.getList();
     
-    // Lets create and fill rowData
-    if(arrListResults != null) {
-      rowData2 = new String[arrListResults.size()][3];
-      int i = 0;
-      for (AbstractRoom r : arrListResults) {
-        rowData2[i][0] = r.getID() + "";
-        rowData2[i][1] = r.getRoomType();
-        rowData2[i][2] = (r.isOccupied()) ? "Opptatt" : "Ledig";
-        i++;
-      }
-    }
+    updateTable();
         
     // Create a JTable for roomPanelSearchresults           
-    tableModel = new SearchTableModel(rowData2, columnNames);
+    tableModel = new SearchTableModel(rowData, columnNames);
     tableSearchResults = new JTable(tableModel);
     tableSearchResults.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     
@@ -255,6 +243,26 @@ public class RoomPanelGUI {
     
     return panel;
   }
+  /**
+   * This method updates the JTable with the arrListResults content.
+   * 
+   */
+  public void updateTable() {
+      // Lets create and fill rowData
+      if(arrListResults != null) {
+        rowData = new String[arrListResults.size()][2];
+        int i = 0;
+        for (AbstractRoom r : arrListResults) {
+          rowData[i][0] = r.getID() + "";
+          rowData[i][1] = r.getRoomType();
+          i++;
+        }
+      }
+      
+      // Tablemodel for our JTable
+      tableModel = new SearchTableModel(rowData, columnNames);
+      tableSearchResults.setModel(tableModel);
+    }
   /**
    * Button listener.
    */
@@ -276,25 +284,12 @@ public class RoomPanelGUI {
         String roomType   = (String) cmbRoomTypes.getSelectedItem();
         
         arrListResults = Main.roomRegistry.searchRoom(roomNumber, roomType);
-    
-        // Lets create and fill rowData
-        if(arrListResults != null) {
-          rowData = new String[arrListResults.size()][3];
-          int i = 0;
-          for (AbstractRoom r : arrListResults) {
-            rowData[i][0] = r.getID() + "";
-            rowData[i][1] = r.getRoomType();
-            rowData[i][2] = (r.isOccupied()) ? "Opptatt" : "Ledig";
-            i++;
-          }
-        }
-        
-        // Tablemodel for our JTable
-        tableModel = new SearchTableModel(rowData, columnNames);
-        tableSearchResults.setModel(tableModel);
+        updateTable();
       }
       
     }
+
+    
 
   }
   

@@ -11,6 +11,10 @@ import prosjekt.rooms.HotelRoom;
  */
 public class DoubleRoom extends HotelRoom {
 
+  /**
+   * Constructor for DoubleRoom
+   * This sets the price and bed count.
+   */
   public DoubleRoom() {
     super();
     bedCount = 4;

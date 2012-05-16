@@ -3,6 +3,7 @@ package prosjekt.guests;
 import java.util.ArrayList;
 import java.util.HashMap;
 import prosjekt.IStorable;
+import prosjekt.Main;
 import prosjekt.utils.Utils;
 
 /**
@@ -17,7 +18,14 @@ import prosjekt.utils.Utils;
  */
 public class GuestRegistry implements IStorable {
 
+  /**
+   * This holds the guests!
+   */
   private HashMap<String, AbstractGuest> list = new HashMap<String, AbstractGuest>();
+  /**
+   * This holds any errors produced since the last time we called getErrors();
+   */
+  private StringBuilder errors;
 
   /**
    * This is the constructor for the GuestRegistry.
@@ -94,7 +102,7 @@ public class GuestRegistry implements IStorable {
    * This method creates a very simple hash based on the guests first name, last name and phoneNumber.
    * In the future this should be replaced with a better solution.
    * 
-   * @param AbstractGuest guest
+   * @param guest guest to make a hash of.
    * @return String "hash" based on guest.
    * 
    */
@@ -152,6 +160,11 @@ public class GuestRegistry implements IStorable {
     if (list.remove(hash) != null) {
       result = true;
       save();
+      //Main.bookingRegistry.removeGuestBookings(guest); // Remove all of this guests bookings.
+    }
+    else {
+      errors.append("Denne gjesten finnes ikke!");
+      result = false;
     }
     return result;
   }
@@ -174,7 +187,7 @@ public class GuestRegistry implements IStorable {
   
   /**
    * @param guest Guest to find
-   * @returns AbstractGuest guest
+   * @return AbstractGuest guest
    */
   public AbstractGuest getGuest(AbstractGuest guest) {
     return list.get(getHash(guest));
@@ -216,8 +229,9 @@ public class GuestRegistry implements IStorable {
    * @param phoneNumber The guests phone Number
    * @param address The guests address
    * @param postNumber The guests post number.
+   * @param company the company to search for. Leave as "" to search for normal guests.
    * 
-   * @returns an ArrayList of matching guests or null if there is no matches.
+   * @return an ArrayList of matching guests or null if there is no matches.
    */
   public ArrayList<AbstractGuest> searchGuests(String firstName, String lastName, String phoneNumber, String address, String postNumber, String company) {
     ArrayList<AbstractGuest> matches = new ArrayList();
@@ -264,5 +278,15 @@ public class GuestRegistry implements IStorable {
       r.append("\n");
     }
     return r.toString();
+  }
+
+  /**
+   * This method returns all the errors accumulated since the last time we called this method.
+   * @return A string of errors, if any.
+   */
+  public String getErrors() {
+    String err = errors.toString();
+    errors = new StringBuilder();
+    return err;
   }
 }

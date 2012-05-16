@@ -2,6 +2,9 @@ package prosjekt.rooms;
 
 import java.util.ArrayList;
 import prosjekt.IStorable;
+import prosjekt.rooms.types.ConferenceRoom;
+import prosjekt.rooms.types.DoubleRoom;
+import prosjekt.rooms.types.MeetingRoom;
 import prosjekt.rooms.types.SingleRoom;
 import prosjekt.utils.Utils;
 
@@ -36,8 +39,21 @@ public class RoomRegistry implements IStorable {
       load();
     }
     else {
-      for (int i = 0; i < 10; i++) {
+      // Add some rooms!
+      for (int i = 0; i < 50; i++) {
         SingleRoom room = new SingleRoom();
+        list.add(room);
+      }
+      for (int i = 0; i < 50; i++) {
+        DoubleRoom room = new DoubleRoom();
+        list.add(room);
+      }
+      for (int i = 0; i < 20; i++) {
+        MeetingRoom room = new MeetingRoom();
+        list.add(room);
+      }
+      for (int i = 0; i < 5; i++) {
+        ConferenceRoom room = new ConferenceRoom();
         list.add(room);
       }
       save();
@@ -64,6 +80,7 @@ public class RoomRegistry implements IStorable {
     if (!exists(room)) {
           list.add(room);
           history.add(room);
+          save();
           return true;
     }
     return false;
@@ -97,8 +114,9 @@ public class RoomRegistry implements IStorable {
    */
   public boolean remove(AbstractRoom room) {
     for (AbstractRoom r : list) {
-      if (r.equals(room)) {
+      if (r.getID() ==  room.getID()) {
         list.remove(r);
+        save();
         return true;
       }
     }
@@ -120,6 +138,7 @@ public class RoomRegistry implements IStorable {
   
    /**
    * This method returns a printable string of all the rooms in the list.
+   * @return A string with the information for all rooms in the list.
    */
   @Override
   public String toString() {
@@ -144,6 +163,7 @@ public class RoomRegistry implements IStorable {
    * This method searches for a specific room based on room type and roomID.
    * @param roomNumber the roomNumber/roomID of the room you want.
    * @param roomType the type of room you are looking for to filter the results a bit quicker.
+   * @return A ArrayList<AbstractRoom> with the room.
    */
   public ArrayList<AbstractRoom> searchRoom(String roomNumber, String roomType) {
     ArrayList<AbstractRoom> matches = new ArrayList();

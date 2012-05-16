@@ -28,6 +28,7 @@ public interface IWindow {
    * simple alternative to setting up your own things, but
    * that might be needed in more advanced windows with multiple
    * panels.
+   * @param e 
    */
   public void buttonPressed(ActionEvent e);
 }

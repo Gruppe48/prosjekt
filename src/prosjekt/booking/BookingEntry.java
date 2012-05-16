@@ -57,30 +57,55 @@ public class BookingEntry {
   }
   /**
    * Getter for the from date.
+   * @return the from date
    */
   public Date getFromDate() {
     return from;
   }
   /**
    * Getter for the guest
+   * @return the guest
    */
   public AbstractGuest getGuest() {
     return guest;
   }
   /**
    * Getter for the room
+   * @return the room
    */
   public AbstractRoom getRoom() {
     return room;
   }
   /**
    * Getter for the to date.
+   * @return the to date
    */
   public Date getToDate() {
     return to;
   }
+  /**
+   * Getter for bookingNumber
+   * @return the booking number
+   */
   public int getBookingNumber() {
     return bookingNumber;
+  }
+
+  /**
+   * This method marks the guest/room as checked in.
+   */
+  public void checkIn() {
+    if (room != null) {
+      room.checkIn();
+    }
+  }
+  /**
+   * This method marks the guest/room as checked out.
+   */
+  public void checkOut() {
+    if (room != null) {
+      room.checkOut();
+    }
   }
   
 } // End of BookingEntry
