@@ -56,6 +56,10 @@ public class RoomPanelGUI {
    * ArrayList with actual search results.
    */
   private ArrayList<AbstractRoom> arrListResults;
+  /*
+   * Maincolor to use as background
+   */
+  private Color uiMainColor;
   
   /**
    * Constructor sets up the panelContainer, button listener
@@ -65,6 +69,9 @@ public class RoomPanelGUI {
     if(panelContainer != null) {
       panelContainer.removeAll();
     }
+    
+    // Get maincolor from Options
+    uiMainColor = (Color) Main.options.get("uiMainColor");
     
     // Create buttonlistener
     btnListener = new ButtonListener();
@@ -88,11 +95,11 @@ public class RoomPanelGUI {
     
     frame = new JPanel(new GridBagLayout());
     GridBagConstraints c = new GridBagConstraints();
-    frame.setBackground(Color.LIGHT_GRAY);
+    frame.setBackground(uiMainColor);
     
     // Create menu:
     panelMenu = new JPanel(new GridLayout(6,1));
-    panelMenu.setBackground(Color.LIGHT_GRAY);
+    panelMenu.setBackground(uiMainColor);
     btnSearchRooms = new JButton("Søk");
     btnShowRooms   = new JButton("Vis alle");
     btnSearchRooms.addActionListener(btnListener);
@@ -112,7 +119,7 @@ public class RoomPanelGUI {
     
     // PANEL
     panelMain  = new JPanel(new GridBagLayout());
-    panelMain.setBackground(Color.LIGHT_GRAY);
+    panelMain.setBackground(uiMainColor);
     panelMain = searchRooms(panelMain);
    
 
@@ -145,7 +152,7 @@ public class RoomPanelGUI {
     
     // Panel for input fields
     inputPanel = new JPanel(new GridLayout(1,2));
-    inputPanel.setBackground(Color.LIGHT_GRAY);
+    inputPanel.setBackground(uiMainColor);
     
     // Adding all labels and textfields to inputPanel
     inputPanel.add(new JLabel("Romnummer"));

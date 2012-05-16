@@ -4,10 +4,8 @@ import com.toedter.calendar.JDateChooser;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -91,6 +89,10 @@ public class BookingPanelGUI {
    * Combobox to select room type.
    */
   private JComboBox cmbRoomType;
+  /*
+   * Maincolor to use as background
+   */
+  private Color uiMainColor;
   
   /**
    * This is the BookingPanelGUI constructor.
@@ -101,6 +103,9 @@ public class BookingPanelGUI {
     if(panelContainer != null) {
       panelContainer.removeAll();
     }
+    
+    // Get maincolor from Options
+    uiMainColor = (Color) Main.options.get("uiMainColor");
     
     // Create buttonlistener
     btnListener = new ButtonListener();
@@ -122,11 +127,11 @@ public class BookingPanelGUI {
   private JPanel bookingPanel() {
     JPanel frame = new JPanel(new GridBagLayout());
     GridBagConstraints c = new GridBagConstraints();
-    frame.setBackground(Color.LIGHT_GRAY);
+    frame.setBackground(uiMainColor);
     
     // Create menu:
     panelMenu = new JPanel(new GridLayout(6,1));
-    panelMenu.setBackground(Color.LIGHT_GRAY);
+    panelMenu.setBackground(uiMainColor);
     btnMenuNewBooking   = new JButton("Ny booking");
     btnMenuShowBookings = new JButton("Vis Bookinger");
     btnMenuCheckInOut   = new JButton("Inn/utsjekking");
@@ -149,7 +154,7 @@ public class BookingPanelGUI {
     
     // MAIN PANEL
     panelMain  = new JPanel(new GridBagLayout());
-    panelMain.setBackground(Color.LIGHT_GRAY);
+    panelMain.setBackground(uiMainColor);
     panelMain = newBooking(panelMain);
    
 
@@ -179,7 +184,7 @@ public class BookingPanelGUI {
     
     // Create inputpanel
     JPanel inputPanel = new JPanel(new GridLayout(4,2));
-    inputPanel.setBackground(Color.LIGHT_GRAY);
+    inputPanel.setBackground(uiMainColor);
     
     btnSearch = new JButton("Finn gjest");
     btnNew    = new JButton("Ny gjest");
@@ -195,8 +200,8 @@ public class BookingPanelGUI {
     
     arrivalDate = new JDateChooser();
     leavingDate = new JDateChooser();
-    arrivalDate.setBackground(Color.LIGHT_GRAY);
-    leavingDate.setBackground(Color.LIGHT_GRAY);
+    arrivalDate.setBackground(uiMainColor);
+    leavingDate.setBackground(uiMainColor);
     
     inputPanel.add(new JLabel("Ankomstdato"));
     inputPanel.add(arrivalDate);
@@ -302,7 +307,7 @@ public class BookingPanelGUI {
     
     // Create inputpanel
     JPanel inputPanel = new JPanel(new GridLayout(1, 4));
-    inputPanel.setBackground(Color.LIGHT_GRAY);
+    inputPanel.setBackground(uiMainColor);
     txtBookingNumber = new JTextField(10);
     btnCheckin  = new JButton("Sjekkinn");
     btnCheckout = new JButton("Sjekkut");
@@ -622,29 +627,36 @@ public class BookingPanelGUI {
         String firstname    = txtFirstname2.getText();
         String lastname     = txtLastname2.getText();
         String phoneNumber  = txtPhoneNumber2.getText();
-        String postNumber   = "0";
+        String postNumber   = txtPostNumber2.getText();
         String address      = txtAddress2.getText();
         String companyName  = txtCompanyName2.getText();
         
         if(firstname.length()>0 && lastname.length()>0 && phoneNumber.length()>0 && txtPhoneNumber2.getText().length()>0 && address.length()>0) {
-          try {
-            postNumber = txtPostNumber2.getText();
-            
-            if(companyName.length()>0) {
-              Company newCompany = new Company(firstname, lastname, phoneNumber, address, postNumber, companyName);
-              Main.guestRegistry.add(newCompany);
-              display.setText("Ny firmagjest er opprettet: " + firstname + " " + lastname + " (" + companyName + ")\n");
-              selectedGuest = newCompany;
-            } else {
-              Person newPerson = new Person(firstname, lastname, phoneNumber, address, postNumber);
-              Main.guestRegistry.add(newPerson);
-              display.setText("Ny gjest er opprettet: " + firstname + " " + lastname + "\n");
-              selectedGuest = newPerson;
-            }  
+          String errors = "";
+          if(!postNumber.matches("^\\d{4}$")) {
+            errors += "Postnummer må være 4 siffer\n";
           }
-          catch(NumberFormatException nfe) {
-            Utils.showErrorMessage(null, "Postnummer må være et tall.", "Error: Postnummer");
+          else if(!phoneNumber.matches("^\\d{8}$")) {
+            errors += "Telefonnummer må være 8 siffer\n";
           }
+          
+          // if there are any errors:
+          if(errors.length()>0) {
+            Utils.showErrorMessage(null, errors, "Error: inputfeil");
+            return;
+          }
+          
+          if(companyName.length()>0) {
+            Company newCompany = new Company(firstname, lastname, phoneNumber, address, postNumber, companyName);
+            Main.guestRegistry.add(newCompany);
+            display.setText("Ny firmagjest er opprettet: " + firstname + " " + lastname + " (" + companyName + ")\n");
+            selectedGuest = newCompany;
+          } else {
+            Person newPerson = new Person(firstname, lastname, phoneNumber, address, postNumber);
+            Main.guestRegistry.add(newPerson);
+            display.setText("Ny gjest er opprettet: " + firstname + " " + lastname + "\n");
+            selectedGuest = newPerson;
+          }  
         } else {
           display.setText("Vennligst fyll ut alle feltene\n");
         }

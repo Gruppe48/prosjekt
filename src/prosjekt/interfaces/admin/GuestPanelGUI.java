@@ -61,6 +61,10 @@ public class GuestPanelGUI {
    * This holds the guest currently selected in the JTable.
    */
   private AbstractGuest selectedGuest;
+  /*
+   * Maincolor to use as background
+   */
+  private Color uiMainColor;
   /**
    * GuestPanelGUI constructor.
    * This constructor sets up the button listener and panelContainer.
@@ -69,6 +73,9 @@ public class GuestPanelGUI {
     if(panelContainer != null) {
       panelContainer.removeAll();
     }
+    
+    // Get maincolor from Options
+    uiMainColor = (Color) Main.options.get("uiMainColor");
     
     // Create buttonlistener
     btnListener = new ButtonListener();
@@ -93,11 +100,11 @@ public class GuestPanelGUI {
   private JPanel guestPanel() {
     JPanel frame = new JPanel(new GridBagLayout());
     GridBagConstraints c = new GridBagConstraints();
-    frame.setBackground(Color.LIGHT_GRAY);
+    frame.setBackground(uiMainColor);
     
     // Create menu:
     panelMenu = new JPanel(new GridLayout(6,1));
-    panelMenu.setBackground(Color.LIGHT_GRAY);
+    panelMenu.setBackground(uiMainColor);
     btnSearchGuest = new JButton("Søk");
     btnShowGuests  = new JButton("Vis alle");
     btnSearchGuest.addActionListener(btnListener);
@@ -117,7 +124,7 @@ public class GuestPanelGUI {
     
     // MAIN PANEL
     panelMain  = new JPanel(new GridBagLayout());
-    panelMain.setBackground(Color.LIGHT_GRAY);
+    panelMain.setBackground(uiMainColor);
     panelMain = searchGuest(panelMain);
    
 
@@ -151,7 +158,7 @@ public class GuestPanelGUI {
     
     // Panel for input fields
     inputPanel = new JPanel(new GridLayout(3,4));
-    inputPanel.setBackground(Color.LIGHT_GRAY);
+    inputPanel.setBackground(uiMainColor);
     
     // Adding all labels and textfields to inputPanel
     inputPanel.add(new JLabel("Fornavn"));
@@ -194,7 +201,7 @@ public class GuestPanelGUI {
     
     // Add the buttons to our buttonPanel
     buttonPanel = new JPanel(new GridLayout(1,2));
-    buttonPanel.setBackground(Color.LIGHT_GRAY);
+    buttonPanel.setBackground(uiMainColor);
     buttonPanel.add(btnClear);
     buttonPanel.add(btnRemove);
     buttonPanel.add(btnSearch);

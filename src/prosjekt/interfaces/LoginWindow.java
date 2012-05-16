@@ -1,11 +1,11 @@
 package prosjekt.interfaces;
 
-import prosjekt.interfaces.guest.GuestWindow;
-import prosjekt.interfaces.admin.AdminWindow;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import javax.swing.*;
+import prosjekt.interfaces.admin.AdminWindow;
+import prosjekt.interfaces.guest.GuestWindow;
 
 /**
  * This is the very simple LoginWindow class.

@@ -103,7 +103,7 @@ public class BookingRegistry implements IStorable {
    * @return A room that is available in that time frame, or null if none are available.
    */
   private AbstractRoom findRoom(Date from, Date to, String type) {
-    AbstractRoom room = null;
+    AbstractRoom room;
     ArrayList<AbstractRoom> rooms = findUnbookedRooms(type);
     
     if (rooms.size() > 0) {

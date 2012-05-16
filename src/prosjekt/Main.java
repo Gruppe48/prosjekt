@@ -2,7 +2,6 @@
  */
 package prosjekt;
 
-import java.text.ParseException;
 import prosjekt.booking.BookingRegistry;
 import prosjekt.guests.GuestBook;
 import prosjekt.guests.GuestRegistry;

@@ -3,7 +3,6 @@ package prosjekt.guests;
 import java.util.ArrayList;
 import java.util.HashMap;
 import prosjekt.IStorable;
-import prosjekt.Main;
 import prosjekt.utils.Utils;
 
 /**
@@ -155,7 +154,7 @@ public class GuestRegistry implements IStorable {
    * @return true or false based on result.
    */
   public boolean remove(AbstractGuest guest) {
-    boolean result = false;
+    boolean result;
     String hash = getHash(guest);
     if (list.remove(hash) != null) {
       result = true;

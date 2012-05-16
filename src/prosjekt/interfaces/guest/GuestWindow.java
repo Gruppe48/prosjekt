@@ -5,7 +5,6 @@ import java.awt.event.ActionEvent;
 import java.util.Collection;
 import javax.swing.*;
 import prosjekt.Main;
-import prosjekt.guests.GuestBook;
 import prosjekt.interfaces.GenericWindow;
 import prosjekt.utils.Utils;
 
@@ -26,7 +25,6 @@ public class GuestWindow extends GenericWindow {
   private JTextArea messageArea;
   private JTextField messageTextField;
   private Color uiMainColor;
-  private GuestBook guestBook = new GuestBook();
   private final String ROOT_PATH = "assets/guests/";
   private JScrollPane scrollPane;
   
