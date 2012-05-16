@@ -102,7 +102,7 @@ public class GuestRegistry implements IStorable {
    * This method creates a very simple hash based on the guests first name, last name and phoneNumber.
    * In the future this should be replaced with a better solution.
    * 
-   * @param AbstractGuest guest
+   * @param guest guest to make a hash of.
    * @return String "hash" based on guest.
    * 
    */
@@ -187,7 +187,7 @@ public class GuestRegistry implements IStorable {
   
   /**
    * @param guest Guest to find
-   * @returns AbstractGuest guest
+   * @return AbstractGuest guest
    */
   public AbstractGuest getGuest(AbstractGuest guest) {
     return list.get(getHash(guest));
@@ -230,7 +230,7 @@ public class GuestRegistry implements IStorable {
    * @param address The guests address
    * @param postNumber The guests post number.
    * 
-   * @returns an ArrayList of matching guests or null if there is no matches.
+   * @return an ArrayList of matching guests or null if there is no matches.
    */
   public ArrayList<AbstractGuest> searchGuests(String firstName, String lastName, String phoneNumber, String address, String postNumber, String company) {
     ArrayList<AbstractGuest> matches = new ArrayList();

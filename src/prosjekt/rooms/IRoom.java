@@ -40,7 +40,7 @@ public interface IRoom {
   public facilities getFacilities();
   /**
    * This method rents out a room to a specific guest (i.e assigns it to a guest).
-   * @param AbstractGuest guest, the guest to rent the room to.
+   * @param guest , the guest to rent the room to.
    */
   public void rent(AbstractGuest guest);
   /**
