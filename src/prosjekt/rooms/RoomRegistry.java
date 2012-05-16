@@ -2,6 +2,9 @@ package prosjekt.rooms;
 
 import java.util.ArrayList;
 import prosjekt.IStorable;
+import prosjekt.rooms.types.ConferenceRoom;
+import prosjekt.rooms.types.DoubleRoom;
+import prosjekt.rooms.types.MeetingRoom;
 import prosjekt.rooms.types.SingleRoom;
 import prosjekt.utils.Utils;
 
@@ -36,8 +39,21 @@ public class RoomRegistry implements IStorable {
       load();
     }
     else {
-      for (int i = 0; i < 10; i++) {
+      // Add some rooms!
+      for (int i = 0; i < 50; i++) {
         SingleRoom room = new SingleRoom();
+        list.add(room);
+      }
+      for (int i = 0; i < 50; i++) {
+        DoubleRoom room = new DoubleRoom();
+        list.add(room);
+      }
+      for (int i = 0; i < 20; i++) {
+        MeetingRoom room = new MeetingRoom();
+        list.add(room);
+      }
+      for (int i = 0; i < 5; i++) {
+        ConferenceRoom room = new ConferenceRoom();
         list.add(room);
       }
       save();
@@ -64,6 +80,7 @@ public class RoomRegistry implements IStorable {
     if (!exists(room)) {
           list.add(room);
           history.add(room);
+          save();
           return true;
     }
     return false;
@@ -97,8 +114,9 @@ public class RoomRegistry implements IStorable {
    */
   public boolean remove(AbstractRoom room) {
     for (AbstractRoom r : list) {
-      if (r.equals(room)) {
+      if (r.getID() ==  room.getID()) {
         list.remove(r);
+        save();
         return true;
       }
     }

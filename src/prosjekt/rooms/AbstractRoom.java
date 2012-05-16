@@ -41,7 +41,7 @@ public abstract class AbstractRoom implements IRoom {
    */
   protected facilities facilities;
   
-  private boolean occupied;
+  private boolean occupied = false;
   
   /**
   * This is the AbstractRoom constructor.
@@ -49,7 +49,6 @@ public abstract class AbstractRoom implements IRoom {
   */
   public AbstractRoom() {
     roomID = ++roomCounter;
-    occupied = false;
   }
 
   @Override
@@ -59,6 +58,7 @@ public abstract class AbstractRoom implements IRoom {
   @Override
   public void empty() {
     this.guest = null;
+    occupied = false;
   }
   
   public void checkIn() {

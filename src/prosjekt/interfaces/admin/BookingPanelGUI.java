@@ -255,22 +255,23 @@ public class BookingPanelGUI {
     if(arrBookingList != null) {
       SimpleDateFormat dateformat = new SimpleDateFormat("dd.MM.yyyy");
       
-      rowData = new String[arrBookingList.size()][7];
+      rowData = new String[arrBookingList.size()][8];
       int i = 0;
       for (BookingEntry r: arrBookingList) {
         rowData[i][0] = r.getBookingNumber() + "";
-        rowData[i][1] = dateformat.format(r.getFromDate());
-        rowData[i][2] = dateformat.format(r.getToDate());
-        rowData[i][3] = r.getGuest().getFirstName() + " " + r.getGuest().getLastName();
-        rowData[i][4] = r.getGuest().getPhoneNumber() + "";
-        rowData[i][5] = r.getRoom().getID() + "";
-        rowData[i][6] = r.getRoom().getRoomType();
+        rowData[i][1] = (r.getRoom().isOccupied()) ? "Innsjekket" : "Tomt";
+        rowData[i][2] = dateformat.format(r.getFromDate());
+        rowData[i][3] = dateformat.format(r.getToDate());
+        rowData[i][4] = r.getGuest().getFirstName() + " " + r.getGuest().getLastName();
+        rowData[i][5] = r.getGuest().getPhoneNumber() + "";
+        rowData[i][6] = r.getRoom().getID() + "";
+        rowData[i][7] = r.getRoom().getRoomType();
         i++;
       }  
     }
     
     // Array of columnnames for our JTable
-    columnNames = new String[]{"Bookingnr","Fra", "Til", "Gjest", "Telefon", "RomNr", "Romtype"};
+    columnNames = new String[]{"Bookingnr","Status", "Fra", "Til", "Gjest", "Telefon", "RomNr", "Romtype"};
         
     // Create a JTable for guestPanelSearchresults           
     tableModel = new SearchTableModel(rowData, columnNames);
@@ -575,7 +576,8 @@ public class BookingPanelGUI {
                 displayCheckInOut.setText("Gjesten har allerede sjekket inn");
                 return;
               }
-              booking.getRoom().checkIn();
+              booking.checkIn();
+              Main.bookingRegistry.save();
               displayCheckInOut.setText(booking.getGuest().getFirstName() + " " + booking.getGuest().getLastName() + " er nå sjekket inn på rom: " + booking.getRoom().getID());
             } else {
               displayCheckInOut.setText("Finner ikke bookingen. Prøv på nytt");
@@ -599,7 +601,8 @@ public class BookingPanelGUI {
                 displayCheckInOut.setText("Bookingnummer: " + bookingnr + " har enten ikke sjekket inn eller har allerede sjekket ut");
                 return;
               }
-              booking.getRoom().checkOut();
+              booking.checkOut();
+              Main.bookingRegistry.save();
               displayCheckInOut.setText(booking.getGuest().getFirstName() + " " + booking.getGuest().getLastName() + " er nå sjekket ut av rom: " + booking.getRoom().getID());
             } else {
               displayCheckInOut.setText("Finner ikke bookingen. Prøv på nytt");

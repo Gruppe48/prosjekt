@@ -82,5 +82,16 @@ public class BookingEntry {
   public int getBookingNumber() {
     return bookingNumber;
   }
+
+  public void checkIn() {
+    if (room != null) {
+      room.checkIn();
+    }
+  }
+  public void checkOut() {
+    if (room != null) {
+      room.checkOut();
+    }
+  }
   
 } // End of BookingEntry
