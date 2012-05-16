@@ -26,6 +26,12 @@ public class AdminWindow extends GenericWindow {
   public AdminWindow() {
     // Tell GenericWindow our title and dimensions.
     super("Administratorpanel", 900, 550);
+
+  }
+
+  @Override
+  public void create() {
+    super.create();
     
     // Create menubar
     menuBar = new JMenuBar();
@@ -40,12 +46,6 @@ public class AdminWindow extends GenericWindow {
     });
     fileMenu.add(exitAction);
     menuBar.add(fileMenu);
-
-  }
-
-  @Override
-  public void create() {
-    super.create();
 
     
     tabbedPane = new JTabbedPane();
